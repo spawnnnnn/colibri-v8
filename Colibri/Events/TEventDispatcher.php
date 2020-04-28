@@ -1,14 +1,11 @@
 <?php
 
     /**
-     * Добавки в класс, который собирается работать с событиями
+     * Events
      * 
-     * @author Ваган Григорян <vahan.grigoryan@gmail.com>
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
      * @copyright 2019 Colibri
      * @package Colibri\Events
-     * @version 1.0.0
-     * 
-     * 
      */
     namespace Colibri\Events {
 

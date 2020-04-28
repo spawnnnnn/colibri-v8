@@ -1,6 +1,12 @@
 <?php
 
-
+    /**
+     * Events
+     * 
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2019 Colibri
+     * @package Colibri\Events
+     */
     namespace Colibri\Events {
 
         use Colibri\Collections\ArrayList;

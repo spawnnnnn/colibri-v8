@@ -3,7 +3,7 @@
     /**
      * Encryption
      * 
-     * @author Ваган Григорян <vahan.grigoryan@gmail.com>
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
      * @copyright 2019 Colibri
      * @package Colibri\Encryption
      * 
