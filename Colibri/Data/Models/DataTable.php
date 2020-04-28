@@ -1,5 +1,11 @@
 <?php
-
+    /**
+     * Models
+     *
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2019 Colibri
+     * @package Colibri\Data\Models
+     */
     namespace Colibri\Data\Models {
 
         use ArrayAccess;
@@ -8,21 +14,20 @@
         use Colibri\Data\DataAccessPoint;
         use Colibri\Data\SqlClient\IDataReader;
         use Colibri\Helpers\Variable;
-        use Colibri\Utils\Debug;
         use Colibri\Utils\ObjectEx;
         use Countable;
-    use Traversable;
 
-/**
+        /**
          * Представление таблицы данных
-         * 
+         *
          * @property-read boolean $hasrows
          * @property-read integer $count
          * @property-read integer $affected
          * @property-read integer $loaded
          * @method mixed methodName()
          */
-        class DataTable implements Countable, ArrayAccess, \IteratorAggregate {
+        class DataTable implements Countable, ArrayAccess, \IteratorAggregate
+        {
             
             /**
              * Точка доступа
@@ -32,7 +37,7 @@
             protected $_point;
 
             /**
-             * Ридер    
+             * Ридер
              *
              * @var IDataReader
              */
@@ -57,7 +62,8 @@
              * @param IDataReader $reader
              * @param string $returnAs
              */
-            public function __construct(DataAccessPoint $point, IDataReader $reader = null, $returnAs = 'Colibri\\Data\\Models\\DataRow') {
+            public function __construct(DataAccessPoint $point, IDataReader $reader = null, $returnAs = 'Colibri\\Data\\Models\\DataRow')
+            {
                 $this->_point = $point;
                 $this->_reader = $reader;
                 $this->_cache = new ObjectList();
@@ -69,8 +75,9 @@
              *
              * @return DataTable
              */
-            public static function Create($point) {
-                if(is_string($point)) {
+            public static function Create($point)
+            {
+                if (is_string($point)) {
                     $point = App::$dataAccessPoints->Get($point);
                 }
                 return new DataTable($point);
@@ -88,33 +95,33 @@
 
             /**
              * Загружает данные из запроса или таблицы
-             * 
+             *
              * @param string $query название таблицы или запрос
              * @param string $params
              * @return DataTable
              */
-            public function Load($query, $params = []) {
+            public function Load($query, $params = [])
+            {
                 $params = (object)$params;
 
-                if($this->_reader) {
+                if ($this->_reader) {
                     $this->_reader->Close();
                 }
 
-                if(strstr($query, 'select') === false) {
+                if (strstr($query, 'select') === false) {
                     // если нет слова select, то это видимо название таблицы, надо проверить
-                    if(strstr($query, ' ') !== false) {
+                    if (strstr($query, ' ') !== false) {
                         // есть пробел, значит это не название таблицы нужно выдать ошибку
                         throw new DataModelException('Param query can be only the table name or select query');
-                    }
-                    else {
+                    } else {
                         $query = 'select * from '.$query;
                         $condition = [];
-                        if(isset($params->params)) {
-                            foreach($params->params as $key => $value) {
+                        if (isset($params->params)) {
+                            foreach ($params->params as $key => $value) {
                                 $condition[] = $key.'=[['.$key.']]';
                             }
                         }
-                        if(count($condition) > 0) {
+                        if (count($condition) > 0) {
                             $query .= ' where '.implode(' and ', $condition);
                         }
                     }
@@ -129,7 +136,8 @@
              *
              * @return int
              */
-            public function Count() {
+            public function Count()
+            {
                 return $this->_reader->Count();
             }
             
@@ -138,7 +146,8 @@
              *
              * @return int
              */
-            public function Affected() {
+            public function Affected()
+            {
                 return $this->_reader->Affected();
             }
 
@@ -147,7 +156,8 @@
              *
              * @return boolean
              */
-            public function HasRows() {
+            public function HasRows()
+            {
                 return $this->_reader->HasRows();
             }
 
@@ -156,7 +166,8 @@
              *
              * @return void
              */
-            public function Fields() {
+            public function Fields()
+            {
                 return Variable::ChangeArrayKeyCase($this->_reader->Fields(), CASE_LOWER);
             }
 
@@ -165,7 +176,8 @@
              *
              * @return DataAccessPoint
              */
-            public function Point() {
+            public function Point()
+            {
                 return $this->_point;
             }
             
@@ -175,15 +187,15 @@
              * @param ObjectEx $result
              * @return mixed
              */
-            protected function _createDataRowObject($result) {
-                
+            protected function _createDataRowObject($result)
+            {
                 $className = $this->_returnAs;
                 
                 // ищем класс, если нету то добавляем неймспейс App\Models
-                if(!class_exists($className)) {
+                if (!class_exists($className)) {
                     $className = 'App\\Models\\'.$className;
                     // ищем модель в приложении, если не нашли то берем стандартную модель
-                    if(!class_exists($className)) {
+                    if (!class_exists($className)) {
                         $className = 'Colibri\\Data\\Models\\DataRow';
                     }
                 }
@@ -196,7 +208,8 @@
              *
              * @return mixed
              */
-            protected function _read() {
+            protected function _read()
+            {
                 return $this->_createDataRowObject(
                     $this->_reader->Read()
                 );
@@ -208,8 +221,9 @@
              * @param integer $index
              * @return mixed
              */
-            protected function _readTo($index) {
-                while($this->_cache->Count() < $index) {
+            protected function _readTo($index)
+            {
+                while ($this->_cache->Count() < $index) {
                     $this->_cache->Add($this->_read());
                 }
                 return $this->_cache->Add($this->_read());
@@ -221,11 +235,11 @@
              * @param integer $index
              * @return mixed
              */
-            public function Item($index) {
-                if($index >= $this->_cache->Count()) {
+            public function Item($index)
+            {
+                if ($index >= $this->_cache->Count()) {
                     return $this->_readTo($index);
-                }
-                else {
+                } else {
                     return $this->_cache->Item($index);
                 }
             }
@@ -235,7 +249,8 @@
              *
              * @return mixed
              */
-            public function First() {
+            public function First()
+            {
                 return $this->Item(0);
             }
             
@@ -245,9 +260,10 @@
              * @param boolean $closeReader
              * @return mixed[]
              */
-            public function CacheAll($closeReader = true) {
+            public function CacheAll($closeReader = true)
+            {
                 $this->_readTo($this->Count() - 1);
-                if($closeReader) {
+                if ($closeReader) {
                     $this->_reader->Close();
                 }
                 return $this->_cache;
@@ -258,7 +274,8 @@
              *
              * @return mixed
              */
-            public function EmptyRow() {
+            public function EmptyRow()
+            {
                 return $this->_createDataRowObject(new \stdClass());
             }
             
@@ -269,7 +286,8 @@
              * @param ObjectEx $data
              * @return void
              */
-            public function Set($index, $data) {
+            public function Set($index, $data)
+            {
                 $this->_cache->Set($index, $data);
             }
 
@@ -279,23 +297,26 @@
              * @param boolean $noPrefix
              * @return void
              */
-            public function ToArray($noPrefix = false) {
+            public function ToArray($noPrefix = false)
+            {
                 $table = $this->CacheAll(false);
                 $ret = [];
-                foreach($table as $row) {
+                foreach ($table as $row) {
                     $ret[] = $row->ToArray($noPrefix);
                 }
                 return $ret;
             }
 
-            public function Save() {
-                foreach($this as $row) {
+            public function Save()
+            {
+                foreach ($this as $row) {
                     $row->Save();
-                } 
+                }
             }
 
-            public function Delete() {
-                foreach($this as $row) {
+            public function Delete()
+            {
+                foreach ($this as $row) {
                     $row->Delete();
                 }
             }
@@ -305,7 +326,8 @@
              * @param DataRow $value
              * @return void
              */
-            public function offsetSet($offset, $value) {
+            public function offsetSet($offset, $value)
+            {
                 if (is_null($offset)) {
                     $this->_cache->Add($value);
                 } else {
@@ -317,7 +339,8 @@
              * @param int $offset
              * @return bool
              */
-            public function offsetExists($offset) {
+            public function offsetExists($offset)
+            {
                 return $offset < $this->_cache->Count();
             }
         
@@ -325,7 +348,8 @@
              * @param int $offset
              * @return void
              */
-            public function offsetUnset($offset) {
+            public function offsetUnset($offset)
+            {
                 $this->_cache->DeleteAt($offset);
             }
         
@@ -335,10 +359,10 @@
              * @param int $offset
              * @return DataRow
              */
-            public function offsetGet($offset) {
+            public function offsetGet($offset)
+            {
                 return $this->Item($offset);
             }
-            
         }
 
     }

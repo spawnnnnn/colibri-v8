@@ -1,26 +1,23 @@
 <?php
-
     /**
-     * Драйвер для MySql
+     * MySql
      *
      * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
      * @copyright 2019 Colibri
-     * @package Colibri\Utils\Config
-     * 
-     *
+     * @package Colibri\Data\MySql
      */
     namespace Colibri\Data\MySql {
 
-    use Colibri\Data\SqlClient\DataField;
-    use Colibri\Data\SqlClient\IDataReader;
+        use Colibri\Data\SqlClient\DataField;
+        use Colibri\Data\SqlClient\IDataReader;
 
         /**
          * Класс обеспечивающий работу с результатами запросов
-         * 
+         *
          * @property-read bool $hasRows
          * @property-read int $affected
          * @property-read int $count
-         * 
+         *
          */
         final class DataReader implements IDataReader
         {
@@ -94,7 +91,6 @@
              */
             public function Fields()
             {
-                
                 $fields = array();
                 $num = mysqli_num_fields($this->_results);
                 for ($i=0; $i<$num; $i++) {
@@ -119,7 +115,8 @@
             /**
              * @inheritDoc
              */
-            public function Count() {
+            public function Count()
+            {
                 if (is_null($this->_count)) {
                     $this->_count = mysqli_num_rows($this->_results);
                 }
@@ -129,14 +126,16 @@
             /**
              * @inheritDoc
              */
-            public function Affected() {
+            public function Affected()
+            {
                 return $this->_affected;
             }
 
             /**
              * @inheritDoc
              */
-            public function HasRows() {
+            public function HasRows()
+            {
                 return $this->_results && mysqli_num_rows($this->_results) > 0;
             }
 
@@ -145,8 +144,7 @@
             {
                 static $types;
 
-                if (!isset($types))
-                {
+                if (!isset($types)) {
                     $types = array();
                     $constants = get_defined_constants(true);
                     foreach ($constants['mysqli'] as $c => $n) {
@@ -156,39 +154,30 @@
                     }
                 }
 
-                return array_key_exists($type_id, $types)? $types[$type_id] : NULL;
+                return array_key_exists($type_id, $types)? $types[$type_id] : null;
             }
 
             private function _flags2txt($flags_num)
             {
                 static $flags;
 
-                if (!isset($flags))
-                {
+                if (!isset($flags)) {
                     $flags = array();
                     $constants = get_defined_constants(true);
-                    foreach ($constants['mysqli'] as $c => $n) { 
-                        if (preg_match('/MYSQLI_(.*)_FLAG$/', $c, $m) && !array_key_exists($n, $flags)) { 
+                    foreach ($constants['mysqli'] as $c => $n) {
+                        if (preg_match('/MYSQLI_(.*)_FLAG$/', $c, $m) && !array_key_exists($n, $flags)) {
                             $flags[$n] = $m[1];
                         }
                     }
                 }
 
                 $result = array();
-                foreach ($flags as $n => $t) { 
+                foreach ($flags as $n => $t) {
                     if ($flags_num & $n) {
                         $result[] = $t;
                     }
                 }
                 return $result;
             }
-
-            
-            
         }
     }
-    
-    
-    
-    
-?>

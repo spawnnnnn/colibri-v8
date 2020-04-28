@@ -1,13 +1,10 @@
 <?php
-
     /**
-     * Доступ к базе данных
+     * MySql
      *
      * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
      * @copyright 2019 Colibri
-     * @package Colibri\Utils\Config
-     * 
-     *
+     * @package Colibri\Data\MySql
      */
     namespace Colibri\Data\MySql {
         
@@ -16,10 +13,8 @@
         /**
          * Класс исключения для драйвера MySql
          */
-        class Exception extends DataAccessPointsException {
-
+        class Exception extends DataAccessPointsException
+        {
         }
 
     }
-
-?>

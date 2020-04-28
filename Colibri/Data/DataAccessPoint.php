@@ -1,23 +1,20 @@
 <?php
     
     /**
-     * Доступ к базе данных
+     * Data
      *
      * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
      * @copyright 2019 Colibri
-     * @package Colibri\Utils\Config
+     * @package Colibri\Data
      *
      */
     namespace Colibri\Data {
 
         use Colibri\Data\SqlClient\IConnection;
-        use Colibri\Data\SqlClient\Command;
         use Colibri\Data\SqlClient\IDataReader;
-        use Colibri\Data\SqlClient\IQueryBuilder;
         use Colibri\Data\SqlClient\NonQueryInfo;
-    use Colibri\Utils\Debug;
 
-/**
+        /**
          * Точка доступа
          *
          * @property-read string $name
@@ -26,7 +23,6 @@
          */
         class DataAccessPoint
         {
-
             const QueryTypeReader = 'reader';
             const QueryTypeBigData = 'bigdata';
             const QueryTypeNonInfo = 'noninfo';
@@ -52,7 +48,6 @@
              */
             public function __construct($accessPointData)
             {
-                
                 $this->_accessPointData = $accessPointData;
                 
                 // получаем название класса Connection-а, должен быть классом интерфейса IDataConnection
@@ -60,7 +55,6 @@
                 
                 $this->_connection = new $connectionClassObject($this->_accessPointData->host, $this->_accessPointData->port, $this->_accessPointData->user, $this->_accessPointData->password, $this->_accessPointData->database);
                 $this->_connection->Open();
-
             }
             
             /**
@@ -71,13 +65,11 @@
              */
             public function __get($property)
             {
-                if($property == 'connection') {
+                if ($property == 'connection') {
                     return $this->_connection;
-                }
-                else {
+                } else {
                     return $this->Query('select * from '.$property);
                 }
-
             }
             
             /**
@@ -89,9 +81,9 @@
              * ! 2. параметры передаются в ассоциативном массиве, либо в виде stdClass
              * ! например: select * from test where id=[[id:integer]] and stringfield like [[likeparam:string]]
              * ! реальный запрос будет следующий с параметрами ['id' => '1', 'likeparam' => '%brbrbr%']: select * from test where id=1 and stringfield like '%brbrbr%'
-             * ! запросы можно засунуть в коллекцию и выполнять с разными параметрами 
-             * 
-             * @param string $query 
+             * ! запросы можно засунуть в коллекцию и выполнять с разными параметрами
+             *
+             * @param string $query
              * @param stdClass $commandParams [page, pagesize, params, type = bigdata|noninfo|reader (default reader), returning = '']
              * @return mixed
              */
@@ -100,7 +92,7 @@
                 // Превращаем параметры в обьект
                 $commandParams = (object)$commandParams;
 
-                $commandClassObject = $this->_accessPointData->driver->command; 
+                $commandClassObject = $this->_accessPointData->driver->command;
                 $cmd = new $commandClassObject($query, $this->_connection);
 
                 if (isset($commandParams->page)) {
@@ -119,14 +111,11 @@
 
                 if ($commandParams->type == self::QueryTypeReader) {
                     return $cmd->ExecuteReader();
-                }
-                else if($commandParams->type == self::QueryTypeBigData) {
+                } elseif ($commandParams->type == self::QueryTypeBigData) {
                     return $cmd->ExecuteReader(false);
-                }
-                else if($commandParams->type == self::QueryTypeNonInfo) {
+                } elseif ($commandParams->type == self::QueryTypeNonInfo) {
                     return $cmd->ExecuteNonQuery(isset($commandParams->returning) ? $commandParams->returning : '');
                 }
-                
             }
             
             /**
@@ -139,7 +128,7 @@
              */
             public function Insert($table, $row = array(), $returning = '')
             {
-                $querybuilderClassObject = $this->_accessPointData->driver->querybuilder; 
+                $querybuilderClassObject = $this->_accessPointData->driver->querybuilder;
                 $queryBuilder = new $querybuilderClassObject();
                 return $this->Query($queryBuilder->CreateInsert($table, $row), ['type' => self::QueryTypeNonInfo, 'returning' => $returning]);
             }
@@ -157,7 +146,7 @@
              */
             public function InsertOrUpdate($table, $row = array(), $exceptFields = array(), $returning = '' /* used only in postgres*/)
             {
-                $querybuilderClassObject = $this->_accessPointData->driver->querybuilder; 
+                $querybuilderClassObject = $this->_accessPointData->driver->querybuilder;
                 $queryBuilder = new $querybuilderClassObject();
 
                 return $this->Query($queryBuilder->CreateInsertOrUpdate($table, $row, $exceptFields), ['type' => self::QueryTypeNonInfo, 'returning' => $returning]);
@@ -166,18 +155,16 @@
             /**
              * Вводит кного строк разом
              *
-             * @param string $table таблица 
+             * @param string $table таблица
              * @param array $rows вводимые строки
              * @return NonQueryInfo
              */
             public function InsertBatch($table, $rows = array())
             {
-
-                $querybuilderClassObject = $this->_accessPointData->driver->querybuilder; 
+                $querybuilderClassObject = $this->_accessPointData->driver->querybuilder;
                 $queryBuilder = new $querybuilderClassObject();
 
                 return $this->Query($queryBuilder->CreateBatchInsert($table, $rows), ['type' => self::QueryTypeNonInfo]);
-
             }
             
             /**
@@ -190,8 +177,7 @@
              */
             public function Update($table, $row, $condition)
             {
-
-                $querybuilderClassObject = $this->_accessPointData->driver->querybuilder; 
+                $querybuilderClassObject = $this->_accessPointData->driver->querybuilder;
                 $queryBuilder = new $querybuilderClassObject();
 
                 return $this->Query($queryBuilder->CreateUpdate($table, $condition, $row), ['type' => self::QueryTypeNonInfo]);
@@ -206,12 +192,10 @@
              */
             public function Delete($table, $condition = '')
             {
-
-                $querybuilderClassObject = $this->_accessPointData->driver->querybuilder; 
+                $querybuilderClassObject = $this->_accessPointData->driver->querybuilder;
                 $queryBuilder = new $querybuilderClassObject();
 
                 return $this->Query($queryBuilder->CreateDelete($table, $condition), ['type' => self::QueryTypeNonInfo]);
-
             }
             
             /**
@@ -221,8 +205,7 @@
              */
             public function Tables()
             {
-
-                $querybuilderClassObject = $this->_accessPointData->driver->querybuilder; 
+                $querybuilderClassObject = $this->_accessPointData->driver->querybuilder;
                 $queryBuilder = new $querybuilderClassObject();
 
                 $reader = $this->Query($queryBuilder->CreateShowTables(), ['type' => self::QueryTypeReader]);
@@ -231,10 +214,6 @@
                 }
                     
                 return $reader;
-
             }
-            
         }
     }
-    
-?>

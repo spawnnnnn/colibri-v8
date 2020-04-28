@@ -1,13 +1,11 @@
 <?php
 
     /**
-     * Драйвер для MySql
+     * MySql
      *
      * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
      * @copyright 2019 Colibri
-     * @package Colibri\Utils\Config
-     * 
-     *
+     * @package Colibri\Data\MySql
      */
     namespace Colibri\Data\MySql {
         
@@ -151,7 +149,5 @@
             {
                 return "show columns from ".$table;
             }
-
         }
     }
-?>

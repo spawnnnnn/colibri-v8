@@ -1,10 +1,16 @@
 <?php
-
+    /**
+     * Models
+     *
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2019 Colibri
+     * @package Colibri\Data\Models
+     */
     namespace Colibri\Data\Models {
 
-    use Colibri\Data\DataAccessPoint;
-    use Colibri\Data\SqlClient\IDataReader;
-    use Colibri\Helpers\Variable;
+        use Colibri\Data\DataAccessPoint;
+        use Colibri\Data\SqlClient\IDataReader;
+        use Colibri\Helpers\Variable;
 
         class NestedSet
         {
@@ -35,12 +41,12 @@
                 $this->ERRORS[] = array(2, 'SQL query error.', $file . '::' . $class . '::' . $function . '::' . $line, 'SQL QUERY: ' . $sql, 'SQL ERROR: ' . $error);
                 $this->ERRORS_MES[] = extension_loaded('gettext') ? _('internal_error') : 'internal_error';
             }
-            
+                
             public function __get($property)
             {
                 return $this->{'_table_'.$property};
             }
-            
+                
             public function Clear($data = array())
             {
                 try {
@@ -49,37 +55,32 @@
                     $res = $this->dataPoint->Query($sql, ['type' => DataAccessPoint::QueryTypeNonInfo]);
                     if ($res->error) {
                         $this->_setError(__FILE__, __CLASS__, __FUNCTION__, __LINE__, $sql, $res->error);
-                    }
-                    else {
+                    } else {
                         $sql = 'DELETE FROM ' . $this->_table;
                         $res = $this->dataPoint->Query($sql);
                         if ($res->error) {
                             $this->_setError(__FILE__, __CLASS__, __FUNCTION__, __LINE__, $sql, $res->error);
-                        }
-                        else {
-                    
+                        } else {
                             $data[$this->_table_left] = 1;
                             $data[$this->_table_right] = 2;
                             $data[$this->_table_level] = 0;
                             $data[$this->_table_parent] = 0;
-                        
+                            
                             $res = $this->dataPoint->Insert($this->_table, $data, $this->_table_id);
                             if ($res->insertid == -1) {
                                 $this->_setError(__FILE__, __CLASS__, __FUNCTION__, __LINE__, $sql, $res->error);
-                            }
-                            else {
+                            } else {
                                 return $res->insertid;
                             }
                         }
                     }
                     return $return;
-                    
                 } catch (DataModelException $e) {
                     $this->_setError($e->getFile(), __CLASS__, __FUNCTION__, $e->getLine(), $sql, $e->getMessage());
                     return false;
                 }
             }
-            
+                
             public function Update($id, $data)
             {
                 try {
@@ -90,7 +91,7 @@
                     return false;
                 }
             }
-            
+                
             /**
             * Receives left, right and level for unit with number id.
             *
@@ -101,7 +102,7 @@
             private function GetNodeInfo($section_id)
             {
                 $sql = 'SELECT * FROM ' . $this->_table . ' WHERE ' . $this->_table_id . ' = ' . (int)$section_id;
-                
+                    
                 try {
                     $res = $this->dataPoint->Query($sql);
                     if ($res->Count() == 0) {
@@ -115,7 +116,7 @@
                     return false;
                 }
             }
-            
+                
             public function GetNode($section_id = false, $returnAsReader = false, $criteria = '')
             {
                 if ($section_id !== false) {
@@ -136,7 +137,7 @@
                     return false;
                 }
             }
-            
+                
             public function GetRootNode($returnAsReader = false)
             {
                 try {
@@ -157,7 +158,7 @@
                     return false;
                 }
             }
-            
+                
             /**
             * Receives parent left, right and level for unit with number $id.
             *
@@ -172,19 +173,19 @@
                 if (!$node_info) {
                     return false;
                 }
-                
+                    
                 list($leftId, $rightId, $level) = $node_info;
                 $level--;
                 if (!Variable::IsEmpty($condition)) {
                     $condition = $this->_PrepareCondition($condition);
                 }
-                
+                    
                 $sql = 'SELECT * FROM ' . $this->_table
-                    . ' WHERE ' . $this->_table_left . ' < ' . $leftId
-                    . ' AND ' . $this->_table_right . ' > ' . $rightId
-                    . ' AND ' . $this->_table_level . ' = ' . $level
-                    . $condition
-                    . ' ORDER BY ' . $this->_table_left;
+                        . ' WHERE ' . $this->_table_left . ' < ' . $leftId
+                        . ' AND ' . $this->_table_right . ' > ' . $rightId
+                        . ' AND ' . $this->_table_level . ' = ' . $level
+                        . $condition
+                        . ' ORDER BY ' . $this->_table_left;
 
                 try {
                     $res = $this->dataPoint->Query($sql);
@@ -194,7 +195,7 @@
                     return false;
                 }
             }
-            
+                
             /**
             * Add a new element in the tree to element with number $section_id.
             *
@@ -209,20 +210,20 @@
                 if (!$node_info) {
                     return false;
                 }
-                
+                    
                 list(, $rightId, $level) = $node_info;
-                
+                    
                 $data[$this->_table_left] = $rightId;
                 $data[$this->_table_right] = ($rightId + 1);
                 $data[$this->_table_level] = ($level + 1);
                 $data[$this->_table_parent] = $section_id;
 
                 $this->dataPoint->Query('BEGIN', ['type' => DataAccessPoint::QueryTypeNonInfo]);
-                
+                    
                 $sql = 'UPDATE ' . $this->_table . ' SET '
-                    . $this->_table_left . '=CASE WHEN ' . $this->_table_left . '>' . $rightId . ' THEN ' . $this->_table_left . '+2 ELSE ' . $this->_table_left . ' END, '
-                    . $this->_table_right . '=CASE WHEN ' . $this->_table_right . '>=' . $rightId . ' THEN ' . $this->_table_right . '+2 ELSE ' . $this->_table_right . ' END '
-                    . 'WHERE ' . $this->_table_right . '>=' . $rightId;
+                        . $this->_table_left . '=CASE WHEN ' . $this->_table_left . '>' . $rightId . ' THEN ' . $this->_table_left . '+2 ELSE ' . $this->_table_left . ' END, '
+                        . $this->_table_right . '=CASE WHEN ' . $this->_table_right . '>=' . $rightId . ' THEN ' . $this->_table_right . '+2 ELSE ' . $this->_table_right . ' END '
+                        . 'WHERE ' . $this->_table_right . '>=' . $rightId;
 
                 $return = false;
 
@@ -230,22 +231,20 @@
                 if ($res->affected == 0) {
                     $this->_setError(__FILE__, __CLASS__, __FUNCTION__, __LINE__, $sql, $res->error);
                     $this->dataPoint->Query('ROLLBACK', ['type' => DataAccessPoint::QueryTypeNonInfo]);
-                }
-                else {
+                } else {
                     $res = $this->dataPoint->Insert($this->_table, $data, $this->_table_id);
                     if ($res->insertid == -1) {
                         $this->_setError(__FILE__, __CLASS__, __FUNCTION__, __LINE__, 'insert node sql', $res->error);
                         $this->dataPoint->Query('ROLLBACK', ['type' => DataAccessPoint::QueryTypeNonInfo]);
-                    }
-                    else {
+                    } else {
                         $this->dataPoint->Query('COMMIT', ['type' => DataAccessPoint::QueryTypeNonInfo]);
                         $return = $res->insertid;
                     }
                 }
-                
+                    
                 return $return;
             }
-            
+                
             /**
             * Add a new element in the tree near element with number id.
             *
@@ -260,9 +259,9 @@
                 if (!$node_info) {
                     return false;
                 }
-                
+                    
                 list(, $rightId, $level, $parent) = $node_info;
-                
+                    
                 $data[$this->_table_left] = ($rightId + 1);
                 $data[$this->_table_right] = ($rightId + 2);
                 $data[$this->_table_level] = ($level);
@@ -271,13 +270,13 @@
                 if (!Variable::IsEmpty($condition)) {
                     $condition = $this->_PrepareCondition($condition);
                 }
-                
+                    
                 $this->dataPoint->Query('BEGIN', ['type' => DataAccessPoint::QueryTypeNonInfo]);
 
                 $sql = 'UPDATE ' . $this->_table . ' SET '
-                    . $this->_table_left . ' = CASE WHEN ' . $this->_table_left . ' > ' . $rightId . ' THEN ' . $this->_table_left . ' + 2 ELSE ' . $this->_table_left . ' END, '
-                    . $this->_table_right . ' = CASE WHEN ' . $this->_table_right . '> ' . $rightId . ' THEN ' . $this->_table_right . ' + 2 ELSE ' . $this->_table_right . ' END, '
-                    . 'WHERE ' . $this->_table_right . ' > ' . $rightId;
+                        . $this->_table_left . ' = CASE WHEN ' . $this->_table_left . ' > ' . $rightId . ' THEN ' . $this->_table_left . ' + 2 ELSE ' . $this->_table_left . ' END, '
+                        . $this->_table_right . ' = CASE WHEN ' . $this->_table_right . '> ' . $rightId . ' THEN ' . $this->_table_right . ' + 2 ELSE ' . $this->_table_right . ' END, '
+                        . 'WHERE ' . $this->_table_right . ' > ' . $rightId;
                 $sql .= $condition;
 
                 $return = false;
@@ -285,22 +284,19 @@
                 if ($res->affected == 0) {
                     $this->_setError(__FILE__, __CLASS__, __FUNCTION__, __LINE__, $sql, $res->error);
                     $this->dataPoint->Query('ROLLBACK', ['type' => DataAccessPoint::QueryTypeNonInfo]);
-                }
-                else {
-
+                } else {
                     $res = $this->dataPoint->Insert($this->_table, $data, $this->_table_id);
                     if ($res->affected == 0) {
                         $this->_setError(__FILE__, __CLASS__, __FUNCTION__, __LINE__, $sql, $res->error);
                         $this->dataPoint->Query('ROLLBACK', ['type' => DataAccessPoint::QueryTypeNonInfo]);
-                    }
-                    else {
+                    } else {
                         $this->dataPoint->Query('COMMIT', ['type' => DataAccessPoint::QueryTypeNonInfo]);
                         $return = $res->insertid;
                     }
                 }
                 return $return;
             }
-            
+                
             /**
             * Assigns a node with all its children to another parent.
             *
@@ -315,13 +311,13 @@
                 if (!$node_info) {
                     return false;
                 }
-                
+                    
                 list($leftId, $rightId, $level) = $node_info;
                 $node_info = $this->GetNodeInfo($newParentId);
                 if (!$node_info) {
                     return false;
                 }
-                
+                    
                 list($leftIdP, $rightIdP, $levelP) = $node_info;
                 if ($id == $newParentId || $leftId == $leftIdP || ($leftIdP >= $leftId && $leftIdP <= $rightId) || ($level == $levelP+1 && $leftId > $leftIdP && $rightId < $rightIdP)) {
                     $this->_setError(__FILE__, __CLASS__, __FUNCTION__, __LINE__, 'moving sql', 'cant_move_tree');
@@ -332,32 +328,32 @@
 
                 if ($leftIdP < $leftId && $rightIdP > $rightId && $levelP < $level - 1) {
                     $sql = 'UPDATE ' . $this->_table . ' SET '
-                        . $this->_table_parent . ' = '.$newParentId.', '
-                        . $this->_table_level . ' = CASE WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId . ' AND ' . $rightId . ' THEN ' . $this->_table_level.sprintf('%+d', -($level-1)+$levelP) . ' ELSE ' . $this->_table_level . ' END, '
-                        . $this->_table_right . ' = CASE WHEN ' . $this->_table_right . ' BETWEEN ' . ($rightId+1) . ' AND ' . ($rightIdP-1) . ' THEN ' . $this->_table_right . '-' . ($rightId-$leftId+1) . ' '
-                        . 'WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId . ' AND ' . $rightId . ' THEN ' . $this->_table_right . '+' . ((($rightIdP-$rightId-$level+$levelP)/2)*2+$level-$levelP-1) . ' ELSE ' . $this->_table_right . ' END, '
-                        . $this->_table_left . ' = CASE WHEN ' . $this->_table_left . ' BETWEEN ' . ($rightId+1) . ' AND ' . ($rightIdP-1) . ' THEN ' . $this->_table_left . '-' . ($rightId-$leftId+1) . ' '
-                        . 'WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId . ' AND ' . $rightId . ' THEN ' . $this->_table_left . '+' . ((($rightIdP-$rightId-$level+$levelP)/2)*2+$level-$levelP-1) . ' ELSE ' . $this->_table_left . ' END '
-                        . 'WHERE ' . $this->_table_left . ' BETWEEN ' . ($leftIdP+1) . ' AND ' . ($rightIdP-1);
+                            . $this->_table_parent . ' = '.$newParentId.', '
+                            . $this->_table_level . ' = CASE WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId . ' AND ' . $rightId . ' THEN ' . $this->_table_level.sprintf('%+d', -($level-1)+$levelP) . ' ELSE ' . $this->_table_level . ' END, '
+                            . $this->_table_right . ' = CASE WHEN ' . $this->_table_right . ' BETWEEN ' . ($rightId+1) . ' AND ' . ($rightIdP-1) . ' THEN ' . $this->_table_right . '-' . ($rightId-$leftId+1) . ' '
+                            . 'WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId . ' AND ' . $rightId . ' THEN ' . $this->_table_right . '+' . ((($rightIdP-$rightId-$level+$levelP)/2)*2+$level-$levelP-1) . ' ELSE ' . $this->_table_right . ' END, '
+                            . $this->_table_left . ' = CASE WHEN ' . $this->_table_left . ' BETWEEN ' . ($rightId+1) . ' AND ' . ($rightIdP-1) . ' THEN ' . $this->_table_left . '-' . ($rightId-$leftId+1) . ' '
+                            . 'WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId . ' AND ' . $rightId . ' THEN ' . $this->_table_left . '+' . ((($rightIdP-$rightId-$level+$levelP)/2)*2+$level-$levelP-1) . ' ELSE ' . $this->_table_left . ' END '
+                            . 'WHERE ' . $this->_table_left . ' BETWEEN ' . ($leftIdP+1) . ' AND ' . ($rightIdP-1);
                 } elseif ($leftIdP < $leftId) {
                     $sql = 'UPDATE ' . $this->_table . ' SET '
-                        . $this->_table_parent . ' = '.$newParentId.', '
-                        . $this->_table_level . ' = CASE WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId . ' AND ' . $rightId . ' THEN ' . $this->_table_level.sprintf('%+d', -($level-1)+$levelP) . ' ELSE ' . $this->_table_level . ' END, '
-                        . $this->_table_left . ' = CASE WHEN ' . $this->_table_left . ' BETWEEN ' . $rightIdP . ' AND ' . ($leftId-1) . ' THEN ' . $this->_table_left . '+' . ($rightId-$leftId+1) . ' '
-                        . 'WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId . ' AND ' . $rightId . ' THEN ' . $this->_table_left . '-' . ($leftId-$rightIdP) . ' ELSE ' . $this->_table_left . ' END, '
-                        . $this->_table_right . ' = CASE WHEN ' . $this->_table_right . ' BETWEEN ' . $rightIdP . ' AND ' . $leftId . ' THEN ' . $this->_table_right . '+' . ($rightId-$leftId+1) . ' '
-                        . 'WHEN ' . $this->_table_right . ' BETWEEN ' . $leftId . ' AND ' . $rightId . ' THEN ' . $this->_table_right . '-' . ($leftId-$rightIdP) . ' ELSE ' . $this->_table_right . ' END '
-                        . 'WHERE (' . $this->_table_left . ' BETWEEN ' . $leftIdP . ' AND ' . $rightId. ' '
-                        . 'OR ' . $this->_table_right . ' BETWEEN ' . $leftIdP . ' AND ' . $rightId . ')';
+                            . $this->_table_parent . ' = '.$newParentId.', '
+                            . $this->_table_level . ' = CASE WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId . ' AND ' . $rightId . ' THEN ' . $this->_table_level.sprintf('%+d', -($level-1)+$levelP) . ' ELSE ' . $this->_table_level . ' END, '
+                            . $this->_table_left . ' = CASE WHEN ' . $this->_table_left . ' BETWEEN ' . $rightIdP . ' AND ' . ($leftId-1) . ' THEN ' . $this->_table_left . '+' . ($rightId-$leftId+1) . ' '
+                            . 'WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId . ' AND ' . $rightId . ' THEN ' . $this->_table_left . '-' . ($leftId-$rightIdP) . ' ELSE ' . $this->_table_left . ' END, '
+                            . $this->_table_right . ' = CASE WHEN ' . $this->_table_right . ' BETWEEN ' . $rightIdP . ' AND ' . $leftId . ' THEN ' . $this->_table_right . '+' . ($rightId-$leftId+1) . ' '
+                            . 'WHEN ' . $this->_table_right . ' BETWEEN ' . $leftId . ' AND ' . $rightId . ' THEN ' . $this->_table_right . '-' . ($leftId-$rightIdP) . ' ELSE ' . $this->_table_right . ' END '
+                            . 'WHERE (' . $this->_table_left . ' BETWEEN ' . $leftIdP . ' AND ' . $rightId. ' '
+                            . 'OR ' . $this->_table_right . ' BETWEEN ' . $leftIdP . ' AND ' . $rightId . ')';
                 } else {
                     $sql = 'UPDATE ' . $this->_table . ' SET '
-                        . $this->_table_level . ' = CASE WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId . ' AND ' . $rightId . ' THEN ' . $this->_table_level.sprintf('%+d', -($level-1)+$levelP) . ' ELSE ' . $this->_table_level . ' END, '
-                        . $this->_table_left . ' = CASE WHEN ' . $this->_table_left . ' BETWEEN ' . $rightId . ' AND ' . $rightIdP . ' THEN ' . $this->_table_left . '-' . ($rightId-$leftId+1) . ' '
-                        . 'WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId . ' AND ' . $rightId . ' THEN ' . $this->_table_left . '+' . ($rightIdP-1-$rightId) . ' ELSE ' . $this->_table_left . ' END, '
-                        . $this->_table_right . ' = CASE WHEN ' . $this->_table_right . ' BETWEEN ' . ($rightId+1) . ' AND ' . ($rightIdP-1) . ' THEN ' . $this->_table_right . '-' . ($rightId-$leftId+1) . ' '
-                        . 'WHEN ' . $this->_table_right . ' BETWEEN ' . $leftId . ' AND ' . $rightId . ' THEN ' . $this->_table_right . '+' . ($rightIdP-1-$rightId) . ' ELSE ' . $this->_table_right . ' END '
-                        . 'WHERE (' . $this->_table_left . ' BETWEEN ' . $leftId . ' AND ' . $rightIdP . ' '
-                        . 'OR ' . $this->_table_right . ' BETWEEN ' . $leftId . ' AND ' . $rightIdP . ')';
+                            . $this->_table_level . ' = CASE WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId . ' AND ' . $rightId . ' THEN ' . $this->_table_level.sprintf('%+d', -($level-1)+$levelP) . ' ELSE ' . $this->_table_level . ' END, '
+                            . $this->_table_left . ' = CASE WHEN ' . $this->_table_left . ' BETWEEN ' . $rightId . ' AND ' . $rightIdP . ' THEN ' . $this->_table_left . '-' . ($rightId-$leftId+1) . ' '
+                            . 'WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId . ' AND ' . $rightId . ' THEN ' . $this->_table_left . '+' . ($rightIdP-1-$rightId) . ' ELSE ' . $this->_table_left . ' END, '
+                            . $this->_table_right . ' = CASE WHEN ' . $this->_table_right . ' BETWEEN ' . ($rightId+1) . ' AND ' . ($rightIdP-1) . ' THEN ' . $this->_table_right . '-' . ($rightId-$leftId+1) . ' '
+                            . 'WHEN ' . $this->_table_right . ' BETWEEN ' . $leftId . ' AND ' . $rightId . ' THEN ' . $this->_table_right . '+' . ($rightIdP-1-$rightId) . ' ELSE ' . $this->_table_right . ' END '
+                            . 'WHERE (' . $this->_table_left . ' BETWEEN ' . $leftId . ' AND ' . $rightIdP . ' '
+                            . 'OR ' . $this->_table_right . ' BETWEEN ' . $leftId . ' AND ' . $rightIdP . ')';
                 }
                 $res = $this->dataPoint->Query($sql, ['type' => DataAccessPoint::QueryTypeNonInfo]);
                 if ($res->affected == 0) {
@@ -368,7 +364,7 @@
                 $this->dataPoint->Query('COMMIT', ['type' => DataAccessPoint::QueryTypeNonInfo]);
                 return true;
             }
-            
+                
             /**
             * Change items position.
             *
@@ -392,24 +388,24 @@
                 $this->dataPoint->Query('BEGIN', ['type' => DataAccessPoint::QueryTypeNonInfo]);
 
                 $sql = 'UPDATE ' . $this->_table . ' SET '
-                    . $this->_table_parent . ' = ' . $parent2 .', '
-                    . $this->_table_left . ' = ' . $leftId2 .', '
-                    . $this->_table_right . ' = ' . $rightId2 .', '
-                    . $this->_table_level . ' = ' . $level2 .' '
-                    . 'WHERE ' . $this->_table_id . ' = ' . (int)$id1;
+                        . $this->_table_parent . ' = ' . $parent2 .', '
+                        . $this->_table_left . ' = ' . $leftId2 .', '
+                        . $this->_table_right . ' = ' . $rightId2 .', '
+                        . $this->_table_level . ' = ' . $level2 .' '
+                        . 'WHERE ' . $this->_table_id . ' = ' . (int)$id1;
                 $res = $this->dataPoint->Query($sql, ['type' => DataAccessPoint::QueryTypeNonInfo]);
                 if ($res->affected == 0) {
                     $this->_setError(__FILE__, __CLASS__, __FUNCTION__, __LINE__, $sql, $res->error);
                     $this->dataPoint->Query('ROLLBACK', ['type' => DataAccessPoint::QueryTypeNonInfo]);
                     return false;
                 }
-                
+                    
                 $sql = 'UPDATE ' . $this->_table . ' SET '
-                    . $this->_table_parent . ' = ' . $parent1 .', '
-                    . $this->_table_left . ' = ' . $leftId1 .', '
-                    . $this->_table_right . ' = ' . $rightId1 .', '
-                    . $this->_table_level . ' = ' . $level1 .' '
-                    . 'WHERE ' . $this->_table_id . ' = ' . (int)$id2;
+                        . $this->_table_parent . ' = ' . $parent1 .', '
+                        . $this->_table_left . ' = ' . $leftId1 .', '
+                        . $this->_table_right . ' = ' . $rightId1 .', '
+                        . $this->_table_level . ' = ' . $level1 .' '
+                        . 'WHERE ' . $this->_table_id . ' = ' . (int)$id2;
                 $res = $this->dataPoint->Query($sql, ['type' => DataAccessPoint::QueryTypeNonInfo]);
                 if ($res->affected == 0) {
                     $this->_setError(__FILE__, __CLASS__, __FUNCTION__, __LINE__, $sql, $res->error);
@@ -419,7 +415,7 @@
                 $this->dataPoint->Query('COMMIT', ['type' => DataAccessPoint::QueryTypeNonInfo]);
                 return true;
             }
-            
+                
             /**
             * Swapping nodes within the same level and limits of one parent with all its children: $id1 placed before or after $id2.
             *
@@ -450,35 +446,35 @@
                 if ('before' == $position) {
                     if ($leftId1 > $leftId2) {
                         $sql = 'UPDATE ' . $this->_table . ' SET '
-                            . $this->_table_right . ' = CASE WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId1 . ' AND ' . $rightId1 . ' THEN ' . $this->_table_right . ' - ' . ($leftId1 - $leftId2) . ' '
-                            . 'WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId2 . ' AND ' . ($leftId1 - 1) . ' THEN ' . $this->_table_right . ' +  ' . ($rightId1 - $leftId1 + 1) . ' ELSE ' . $this->_table_right . ' END, '
-                            . $this->_table_left . ' = CASE WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId1 . ' AND ' . $rightId1 . ' THEN ' . $this->_table_left . ' - ' . ($leftId1 - $leftId2) . ' '
-                            . 'WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId2 . ' AND ' . ($leftId1 - 1) . ' THEN ' . $this->_table_left . ' + ' . ($rightId1 - $leftId1 + 1) . ' ELSE ' . $this->_table_left . ' END '
-                            . 'WHERE ' . $this->_table_left . ' BETWEEN ' . $leftId2 . ' AND ' . $rightId1;
+                                . $this->_table_right . ' = CASE WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId1 . ' AND ' . $rightId1 . ' THEN ' . $this->_table_right . ' - ' . ($leftId1 - $leftId2) . ' '
+                                . 'WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId2 . ' AND ' . ($leftId1 - 1) . ' THEN ' . $this->_table_right . ' +  ' . ($rightId1 - $leftId1 + 1) . ' ELSE ' . $this->_table_right . ' END, '
+                                . $this->_table_left . ' = CASE WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId1 . ' AND ' . $rightId1 . ' THEN ' . $this->_table_left . ' - ' . ($leftId1 - $leftId2) . ' '
+                                . 'WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId2 . ' AND ' . ($leftId1 - 1) . ' THEN ' . $this->_table_left . ' + ' . ($rightId1 - $leftId1 + 1) . ' ELSE ' . $this->_table_left . ' END '
+                                . 'WHERE ' . $this->_table_left . ' BETWEEN ' . $leftId2 . ' AND ' . $rightId1;
                     } else {
                         $sql = 'UPDATE ' . $this->_table . ' SET '
-                            . $this->_table_right . ' = CASE WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId1 . ' AND ' . $rightId1 . ' THEN ' . $this->_table_right . ' + ' . (($leftId2 - $leftId1) - ($rightId1 - $leftId1 + 1)) . ' '
-                            . 'WHEN ' . $this->_table_left . ' BETWEEN ' . ($rightId1 + 1) . ' AND ' . ($leftId2 - 1) . ' THEN ' . $this->_table_right . ' - ' . ($rightId1 - $leftId1 + 1) . ' ELSE ' . $this->_table_right . ' END, '
-                            . $this->_table_left . ' = CASE WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId1 . ' AND ' . $rightId1 . ' THEN ' . $this->_table_left . ' + ' . (($leftId2 - $leftId1) - ($rightId1 - $leftId1 + 1)) . ' '
-                            . 'WHEN ' . $this->_table_left . ' BETWEEN ' . ($rightId1 + 1) . ' AND ' . ($leftId2 - 1) . ' THEN ' . $this->_table_left . ' - ' . ($rightId1 - $leftId1 + 1) . ' ELSE ' . $this->_table_left . ' END '
-                            . 'WHERE ' . $this->_table_left . ' BETWEEN ' . $leftId1 . ' AND ' . ($leftId2 - 1);
+                                . $this->_table_right . ' = CASE WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId1 . ' AND ' . $rightId1 . ' THEN ' . $this->_table_right . ' + ' . (($leftId2 - $leftId1) - ($rightId1 - $leftId1 + 1)) . ' '
+                                . 'WHEN ' . $this->_table_left . ' BETWEEN ' . ($rightId1 + 1) . ' AND ' . ($leftId2 - 1) . ' THEN ' . $this->_table_right . ' - ' . ($rightId1 - $leftId1 + 1) . ' ELSE ' . $this->_table_right . ' END, '
+                                . $this->_table_left . ' = CASE WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId1 . ' AND ' . $rightId1 . ' THEN ' . $this->_table_left . ' + ' . (($leftId2 - $leftId1) - ($rightId1 - $leftId1 + 1)) . ' '
+                                . 'WHEN ' . $this->_table_left . ' BETWEEN ' . ($rightId1 + 1) . ' AND ' . ($leftId2 - 1) . ' THEN ' . $this->_table_left . ' - ' . ($rightId1 - $leftId1 + 1) . ' ELSE ' . $this->_table_left . ' END '
+                                . 'WHERE ' . $this->_table_left . ' BETWEEN ' . $leftId1 . ' AND ' . ($leftId2 - 1);
                     }
                 }
                 if ('after' == $position) {
                     if ($leftId1 > $leftId2) {
                         $sql = 'UPDATE ' . $this->_table . ' SET '
-                            . $this->_table_right . ' = CASE WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId1 . ' AND ' . $rightId1 . ' THEN ' . $this->_table_right . ' - ' . ($leftId1 - $leftId2 - ($rightId2 - $leftId2 + 1)) . ' '
-                            . 'WHEN ' . $this->_table_left . ' BETWEEN ' . ($rightId2 + 1) . ' AND ' . ($leftId1 - 1) . ' THEN ' . $this->_table_right . ' +  ' . ($rightId1 - $leftId1 + 1) . ' ELSE ' . $this->_table_right . ' END, '
-                            . $this->_table_left . ' = CASE WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId1 . ' AND ' . $rightId1 . ' THEN ' . $this->_table_left . ' - ' . ($leftId1 - $leftId2 - ($rightId2 - $leftId2 + 1)) . ' '
-                            . 'WHEN ' . $this->_table_left . ' BETWEEN ' . ($rightId2 + 1) . ' AND ' . ($leftId1 - 1) . ' THEN ' . $this->_table_left . ' + ' . ($rightId1 - $leftId1 + 1) . ' ELSE ' . $this->_table_left . ' END '
-                            . 'WHERE ' . $this->_table_left . ' BETWEEN ' . ($rightId2 + 1) . ' AND ' . $rightId1;
+                                . $this->_table_right . ' = CASE WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId1 . ' AND ' . $rightId1 . ' THEN ' . $this->_table_right . ' - ' . ($leftId1 - $leftId2 - ($rightId2 - $leftId2 + 1)) . ' '
+                                . 'WHEN ' . $this->_table_left . ' BETWEEN ' . ($rightId2 + 1) . ' AND ' . ($leftId1 - 1) . ' THEN ' . $this->_table_right . ' +  ' . ($rightId1 - $leftId1 + 1) . ' ELSE ' . $this->_table_right . ' END, '
+                                . $this->_table_left . ' = CASE WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId1 . ' AND ' . $rightId1 . ' THEN ' . $this->_table_left . ' - ' . ($leftId1 - $leftId2 - ($rightId2 - $leftId2 + 1)) . ' '
+                                . 'WHEN ' . $this->_table_left . ' BETWEEN ' . ($rightId2 + 1) . ' AND ' . ($leftId1 - 1) . ' THEN ' . $this->_table_left . ' + ' . ($rightId1 - $leftId1 + 1) . ' ELSE ' . $this->_table_left . ' END '
+                                . 'WHERE ' . $this->_table_left . ' BETWEEN ' . ($rightId2 + 1) . ' AND ' . $rightId1;
                     } else {
                         $sql = 'UPDATE ' . $this->_table . ' SET '
-                            . $this->_table_right . ' = CASE WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId1 . ' AND ' . $rightId1 . ' THEN ' . $this->_table_right . ' + ' . ($rightId2 - $rightId1) . ' '
-                            . 'WHEN ' . $this->_table_left . ' BETWEEN ' . ($rightId1 + 1) . ' AND ' . $rightId2 . ' THEN ' . $this->_table_right . ' - ' . ($rightId1 - $leftId1 + 1) . ' ELSE ' . $this->_table_right . ' END, '
-                            . $this->_table_left . ' = CASE WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId1 . ' AND ' . $rightId1 . ' THEN ' . $this->_table_left . ' + ' . ($rightId2 - $rightId1) . ' '
-                            . 'WHEN ' . $this->_table_left . ' BETWEEN ' . ($rightId1 + 1) . ' AND ' . $rightId2 . ' THEN ' . $this->_table_left . ' - ' . ($rightId1 - $leftId1 + 1) . ' ELSE ' . $this->_table_left . ' END '
-                            . 'WHERE ' . $this->_table_left . ' BETWEEN ' . $leftId1 . ' AND ' . $rightId2;
+                                . $this->_table_right . ' = CASE WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId1 . ' AND ' . $rightId1 . ' THEN ' . $this->_table_right . ' + ' . ($rightId2 - $rightId1) . ' '
+                                . 'WHEN ' . $this->_table_left . ' BETWEEN ' . ($rightId1 + 1) . ' AND ' . $rightId2 . ' THEN ' . $this->_table_right . ' - ' . ($rightId1 - $leftId1 + 1) . ' ELSE ' . $this->_table_right . ' END, '
+                                . $this->_table_left . ' = CASE WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId1 . ' AND ' . $rightId1 . ' THEN ' . $this->_table_left . ' + ' . ($rightId2 - $rightId1) . ' '
+                                . 'WHEN ' . $this->_table_left . ' BETWEEN ' . ($rightId1 + 1) . ' AND ' . $rightId2 . ' THEN ' . $this->_table_left . ' - ' . ($rightId1 - $leftId1 + 1) . ' ELSE ' . $this->_table_left . ' END '
+                                . 'WHERE ' . $this->_table_left . ' BETWEEN ' . $leftId1 . ' AND ' . $rightId2;
                     }
                 }
                 if (!Variable::IsEmpty($condition)) {
@@ -496,7 +492,7 @@
                 $this->dataPoint->Query('COMMIT', ['type' => DataAccessPoint::QueryTypeNonInfo]);
                 return true;
             }
-            
+                
             /**
             * Delete element with number $id from the tree wihtout deleting it's children.
             *
@@ -510,12 +506,12 @@
                 if (!$node_info) {
                     return false;
                 }
-                
+                    
                 list($leftId, $rightId) = $node_info;
                 if (!Variable::IsEmpty($condition)) {
                     $condition = $this->_PrepareCondition($condition);
                 }
-                
+                    
                 $this->dataPoint->Query('BEGIN', ['type' => DataAccessPoint::QueryTypeNonInfo]);
 
                 $sql = 'DELETE FROM ' . $this->_table . ' WHERE ' . $this->_table_id . ' = ' . (int)$id;
@@ -525,14 +521,14 @@
                     $this->dataPoint->Query('ROLLBACK', ['type' => DataAccessPoint::QueryTypeNonInfo]);
                     return false;
                 }
-                
+                    
                 $sql = 'UPDATE ' . $this->_table . ' SET '
-                    . $this->_table_level . ' = CASE WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId . ' AND ' . $rightId . ' THEN ' . $this->_table_level . ' - 1 ELSE ' . $this->_table_level . ' END, '
-                    . $this->_table_right . ' = CASE WHEN ' . $this->_table_right . ' BETWEEN ' . $leftId . ' AND ' . $rightId . ' THEN ' . $this->_table_right . ' - 1 '
-                    . 'WHEN ' . $this->_table_right . ' > ' . $rightId . ' THEN ' . $this->_table_right . ' - 2 ELSE ' . $this->_table_right . ' END, '
-                    . $this->_table_left . ' = CASE WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId . ' AND ' . $rightId . ' THEN ' . $this->_table_left . ' - 1 '
-                    . 'WHEN ' . $this->_table_left . ' > ' . $rightId . ' THEN ' . $this->_table_left . ' - 2 ELSE ' . $this->_table_left . ' END '
-                    . 'WHERE ' . $this->_table_right . ' > ' . $leftId;
+                        . $this->_table_level . ' = CASE WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId . ' AND ' . $rightId . ' THEN ' . $this->_table_level . ' - 1 ELSE ' . $this->_table_level . ' END, '
+                        . $this->_table_right . ' = CASE WHEN ' . $this->_table_right . ' BETWEEN ' . $leftId . ' AND ' . $rightId . ' THEN ' . $this->_table_right . ' - 1 '
+                        . 'WHEN ' . $this->_table_right . ' > ' . $rightId . ' THEN ' . $this->_table_right . ' - 2 ELSE ' . $this->_table_right . ' END, '
+                        . $this->_table_left . ' = CASE WHEN ' . $this->_table_left . ' BETWEEN ' . $leftId . ' AND ' . $rightId . ' THEN ' . $this->_table_left . ' - 1 '
+                        . 'WHEN ' . $this->_table_left . ' > ' . $rightId . ' THEN ' . $this->_table_left . ' - 2 ELSE ' . $this->_table_left . ' END '
+                        . 'WHERE ' . $this->_table_right . ' > ' . $leftId;
                 $sql .= $condition;
                 $res = $this->dataPoint->Query($sql, ['type' => DataAccessPoint::QueryTypeNonInfo]);
                 if ($res->affected == 0) {
@@ -543,7 +539,7 @@
                 $this->dataPoint->Query('COMMIT', ['type' => DataAccessPoint::QueryTypeNonInfo]);
                 return true;
             }
-            
+                
             /**
             * Delete element with number $id from the tree and all it childret.
             *
@@ -557,12 +553,12 @@
                 if (!$node_info) {
                     return false;
                 }
-                
+                    
                 list($leftId, $rightId) = $node_info;
                 if (!Variable::IsEmpty($condition)) {
                     $condition = $this->_PrepareCondition($condition);
                 }
-                
+                    
                 $this->dataPoint->Query('BEGIN', ['type' => DataAccessPoint::QueryTypeNonInfo]);
 
                 $sql = 'DELETE FROM ' . $this->_table . ' WHERE ' . $this->_table_left . ' BETWEEN ' . $leftId . ' AND ' . $rightId;
@@ -574,9 +570,9 @@
                 }
                 $deltaId = (($rightId - $leftId) + 1);
                 $sql = 'UPDATE ' . $this->_table . ' SET '
-                    . $this->_table_left . ' = CASE WHEN ' . $this->_table_left . ' > ' . $leftId.' THEN ' . $this->_table_left . ' - ' . $deltaId . ' ELSE ' . $this->_table_left . ' END, '
-                    . $this->_table_right . ' = CASE WHEN ' . $this->_table_right . ' > ' . $leftId . ' THEN ' . $this->_table_right . ' - ' . $deltaId . ' ELSE ' . $this->_table_right . ' END '
-                    . 'WHERE ' . $this->_table_right . ' > ' . $rightId;
+                        . $this->_table_left . ' = CASE WHEN ' . $this->_table_left . ' > ' . $leftId.' THEN ' . $this->_table_left . ' - ' . $deltaId . ' ELSE ' . $this->_table_left . ' END, '
+                        . $this->_table_right . ' = CASE WHEN ' . $this->_table_right . ' > ' . $leftId . ' THEN ' . $this->_table_right . ' - ' . $deltaId . ' ELSE ' . $this->_table_right . ' END '
+                        . 'WHERE ' . $this->_table_right . ' > ' . $rightId;
                 $sql .= $condition;
                 $res = $this->dataPoint->Query($sql, ['type' => DataAccessPoint::QueryTypeNonInfo]);
                 if ($res->affected == 0) {
@@ -587,7 +583,7 @@
                 $this->dataPoint->Query('COMMIT', ['type' => DataAccessPoint::QueryTypeNonInfo]);
                 return true;
             }
-            
+                
             /**
             * Counts element with number $id from the tree and all it childret.
             *
@@ -601,12 +597,12 @@
                 if (!$node_info) {
                     return false;
                 }
-                
+                    
                 list($leftId, $rightId) = $node_info;
                 if (!Variable::IsEmpty($condition)) {
                     $condition = $this->_PrepareCondition($condition);
                 }
-                
+                    
                 $sql = 'SELECT count(*) as c FROM ' . $this->_table . ' WHERE ' . $this->_table_left . ' BETWEEN ' . $leftId . ' AND ' . $rightId;
                 try {
                     $res = $this->dataPoint->Query($sql);
@@ -618,7 +614,7 @@
                 $r = $res->Read();
                 return $r->c;
             }
-            
+                
             /**
             * Returns all elements of the tree sortet by left.
             *
@@ -632,21 +628,21 @@
                 if (!Variable::IsEmpty($condition)) {
                     $condition = $this->_PrepareCondition($condition, true);
                 }
-                
+                    
                 if (!Variable::IsEmpty($joinWith)) {
                     $joinWith = $this->_PrepareJoin($joinWith);
                 }
-                
+                    
                 if (Variable::IsArray($fields)) {
                     $fields = implode(', ', $fields);
                 } else {
                     $fields = '*';
                 }
-                
+                    
                 $sql = 'SELECT ' . $fields . ' FROM ' . $this->_table.' '.$joinWith;
                 $sql .= $condition;
                 $sql .= ' ORDER BY ' . $this->_table_left;
-                
+                    
                 try {
                     $res = $this->dataPoint->Query($sql, $page, $pagesize);
                 } catch (DataModelException $e) {
@@ -656,20 +652,20 @@
 
                 return $res;
             }
-            
+                
             public function GetPositionNumber($id, $condition = '')
             {
                 $node = $this->GetNodeInfo($id);
                 if (!Variable::IsEmpty($condition)) {
                     $condition = $this->_PrepareCondition($condition, false);
                 }
-                
+                    
                 $sql = 'select count(*) as c from '.$this->_table.' where '.$this->_table_left.' < '.$node[0].$condition.' order by '.$this->_table_left;
                 $r = $this->dataPoint->Query($sql);
                 $rr = $r->Read();
                 return $rr->c;
             }
-            
+                
             /**
             * Returns all elements of a branch starting from an element with number $id.
             *
@@ -685,7 +681,7 @@
                 if (Variable::IsArray($fields)) {
                     $fields[] = "*";
                     $fields = 'A.' . implode(', A.', $fields);
-                    
+                        
                     $fields = str_replace('A.(', '(', $fields);
                     $fields = str_replace('A.exists(', 'exists(', $fields);
                     $fields = str_replace('A.count(', 'count(', $fields);
@@ -695,25 +691,25 @@
                 } else {
                     $fields = 'A.*';
                 }
-                
-                
+                    
+                    
                 if (!Variable::IsEmpty($condition)) {
                     $condition = $this->_PrepareCondition($condition, false, 'A.');
                 }
-                
-                
+                    
+                    
                 // removes a 0 leveled row
                 $condition .= ' and A.'.$this->_table_level.' > 0';
-                    
+                        
                 if (!Variable::IsEmpty($joinWith)) {
                     $joinWith = $this->_PrepareJoin($joinWith, 'A.');
                 }
-                
-                
+                    
+                    
                 $sql = 'SELECT ' . $fields . ', CASE WHEN A.' . $this->_table_left . ' + 1 < A.' . $this->_table_right . ' THEN 1 ELSE 0 END AS nflag FROM ' . $this->_table . ' A '.$joinWith.', ' . $this->_table . ' B WHERE B.' . $this->_table_id . ' = ' . (int)$id . ' AND A.' . $this->_table_left . ' >= B.' . $this->_table_left . ' AND A.' . $this->_table_right . ' <= B.' . $this->_table_right;
                 $sql .= $condition;
                 $sql .= ' ORDER BY A.' . $this->_table_left;
-                                                
+                                                    
                 try {
                     $res = $this->dataPoint->Query($sql, ['page' => $page, 'pagesize' => $pagesize]);
                 } catch (DataModelException $e) {
@@ -723,7 +719,7 @@
 
                 return $res;
             }
-            
+                
             /**
             * Returns all parents of element with number $id.
             *
@@ -737,7 +733,7 @@
             {
                 if (Variable::IsArray($fields)) {
                     $fields = 'A.' . implode(', A.', $fields);
-                    
+                        
                     $fields = str_replace('A.(', '(', $fields);
                     $fields = str_replace('A.exists(', 'exists(', $fields);
                     $fields = str_replace('A.count(', 'count(', $fields);
@@ -747,7 +743,7 @@
                 } else {
                     $fields = 'A.*';
                 }
-                
+                    
                 if (!Variable::IsEmpty($condition)) {
                     $condition = $this->_PrepareCondition($condition, false, 'A.');
                 }
@@ -758,7 +754,7 @@
                 $sql = 'SELECT ' . $fields . ', CASE WHEN A.' . $this->_table_left . ' + 1 < A.' . $this->_table_right . ' THEN 1 ELSE 0 END AS nflag FROM ' . $this->_table . ' A '.$joinWith.', ' . $this->_table . ' B WHERE B.' . $this->_table_id . ' = ' . (int)$id . ' AND B.' . $this->_table_left . ' BETWEEN A.' . $this->_table_left . ' AND A.' . $this->_table_right;
                 $sql .= $condition;
                 $sql .= ' ORDER BY A.' . $this->_table_left;
-                
+                    
                 try {
                     $res = $this->dataPoint->Query($sql);
                 } catch (DataModelException $e) {
@@ -768,7 +764,7 @@
 
                 return $res;
             }
-            
+                
             /**
             * Returns a slightly opened tree from an element with number $id.
             *
@@ -782,7 +778,7 @@
             {
                 if (Variable::IsArray($fields)) {
                     $fields = 'A.' . implode(', A.', $fields);
-                    
+                        
                     $fields = str_replace('A.(', '(', $fields);
                     $fields = str_replace('A.exists(', 'exists(', $fields);
                     $fields = str_replace('A.count(', 'count(', $fields);
@@ -792,29 +788,29 @@
                 } else {
                     $fields = 'A.*';
                 }
-                
+                    
                 $condition1 = '';
                 if (!Variable::IsEmpty($condition)) {
                     $condition1 = $this->_PrepareCondition($condition, false, 'B.');
                 }
-                
+                    
                 $sql = 'SELECT A.' . $this->_table_left . ', A.' . $this->_table_right . ', A.' . $this->_table_level . ' FROM ' . $this->_table . ' A, ' . $this->_table . ' B '
-                    . 'WHERE B.' . $this->_table_id . ' = ' . (int)$id . ' AND B.' . $this->_table_left . ' BETWEEN A.' . $this->_table_left . ' AND A.' . $this->_table_right;
+                        . 'WHERE B.' . $this->_table_id . ' = ' . (int)$id . ' AND B.' . $this->_table_left . ' BETWEEN A.' . $this->_table_left . ' AND A.' . $this->_table_right;
                 $sql .= $condition1;
                 $sql .= ' ORDER BY A.' . $this->_table_left;
-                
+                    
                 try {
                     $res = $this->dataPoint->Query($sql);
                 } catch (DataModelException $e) {
                     $this->_setError($e->getFile(), __CLASS__, __FUNCTION__, $e->getLine(), $sql, $e->getMessage());
                     return false;
                 }
-                
+                    
                 if ($res->Count() == 0) {
                     $this->_setError(__FILE__, __CLASS__, __FUNCTION__, __LINE__, $sql, 'no_element_in_tree');
                     return false;
                 }
-                
+                    
                 $alen = $res->Count();
                 $i = 0;
                 if (Variable::IsArray($fields)) {
@@ -822,24 +818,24 @@
                 } else {
                     $fields = '*';
                 }
-                
+                    
                 if (!Variable::IsEmpty($condition)) {
                     $condition1 = $this->_PrepareCondition($condition, false);
                 }
-                
+                    
                 $sql = 'SELECT ' . $fields . ' FROM ' . $this->_table . ' A WHERE (' . $this->_table_level . ' = 1';
                 while ($row = $res->Read()) {
                     if ((++$i == $alen) && ($row->{$this->_table_left} + 1) == $row->{$this->_table_right}) {
                         break;
                     }
                     $sql .= ' OR (' . $this->_table_level . ' = ' . ($row->{$this->_table_level} + 1)
-                        . ' AND ' . $this->_table_left . ' > ' . $row->{$this->_table_left}
-                        . ' AND ' . $this->_table_right . ' < ' . $row->{$this->_table_right} . ')';
+                            . ' AND ' . $this->_table_left . ' > ' . $row->{$this->_table_left}
+                            . ' AND ' . $this->_table_right . ' < ' . $row->{$this->_table_right} . ')';
                 }
                 $sql .= ') ' . $condition1;
                 $sql .= ' ORDER BY ' . $this->_table_left;
-                
-                
+                    
+                    
                 try {
                     $res = $this->dataPoint->Query($sql, ['page' => $page, 'pagesize' => $pagesize]);
                 } catch (DataModelException $e) {
@@ -849,7 +845,7 @@
 
                 return $res;
             }
-            
+                
             /**
             * Transform array with conditions to SQL query
             * Array structure:
@@ -885,7 +881,7 @@
                 $sql = str_replace('A. concat(', 'concat(', $sql);
                 return str_replace('A. (', '(', $sql);
             }
-            
+                
             /**
             * Transform array with conditions to SQL query
             * Array structure:

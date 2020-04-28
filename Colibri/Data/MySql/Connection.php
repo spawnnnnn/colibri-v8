@@ -1,13 +1,10 @@
 <?php
-
     /**
-     * Драйвер для MySql
+     * MySql
      *
      * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
      * @copyright 2019 Colibri
-     * @package Colibri\Utils\Config
-     * 
-     *
+     * @package Colibri\Data\MySql
      */
     namespace Colibri\Data\MySql {
 
@@ -16,12 +13,12 @@
 
         /**
          * Класс подключения к базе данных MySql
-         * 
+         *
          * @property-read resource $resource
          * @property-read resource $raw
          * @property-read resource $connection
          * @property-read bool $isAlive
-         * 
+         *
          */
         final class Connection implements IConnection
         {
@@ -40,10 +37,10 @@
             public function __construct($host, $port, $user, $password, $database = null)
             {
                 $this->_connectioninfo = (object)[
-                    'host' => $host, 
-                    'port' => $port, 
-                    'user' => $user, 
-                    'password' => $password, 
+                    'host' => $host,
+                    'port' => $port,
+                    'user' => $user,
+                    'password' => $password,
                     'database' => $database
                 ];
             }
@@ -55,7 +52,6 @@
              */
             public function Open()
             {
-                
                 if (is_null($this->_connectioninfo)) {
                     throw new MySqlException('You must provide a connection info object while creating a connection.');
                 }
@@ -117,5 +113,3 @@
             }
         }
     }
-
-?>
