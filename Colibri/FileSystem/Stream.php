@@ -1,11 +1,18 @@
 <?php
-
+    /**
+     * FileSystem
+     *
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2019 Colibri
+     * @package Colibri\FileSystem
+     */
     namespace Colibri\FileSystem {
 
         /**
          * Абстрактный класс Стриминга
          */
-        abstract class Stream {
+        abstract class Stream
+        {
 
             /**
              * Длина стрима
@@ -23,19 +30,23 @@
             /**
              * Конструктор
              */
-            function __construct(){  }
+            public function __construct()
+            {
+            }
 
             /**
              * Деструктор
              */
-            function __destruct(){
-                if($this->_stream) {
+            public function __destruct()
+            {
+                if ($this->_stream) {
                     $this->close();
                 }
                 unset($this->_stream);
             }
 
-            function __get(/*string*/ $property){
+            public function __get(/*string*/ $property)
+            {
                 if ($property == 'length') {
                     return $this->_length;
                 }
@@ -48,6 +59,7 @@
              * @return void
              */
             abstract public function seek($offset = 0);
+            
             /**
              * Считать из стрима
              *
@@ -56,6 +68,7 @@
              * @return void
              */
             abstract public function read($offset = null, $count = null);
+            
             /**
              * Записать в стрим
              *
@@ -63,19 +76,21 @@
              * @param int $offset
              * @return void
              */
-            abstract public function write($content, $offset = null); //$count = 0
+            abstract public function write($content, $offset = null); 
+
             /**
              * Сохранить изменения
              *
              * @return void
              */
             abstract public function flush();
+
             /**
              * Закрыть стрим
              *
              * @return void
              */
-            abstract public function close(); //?
+            abstract public function close(); 
         }
 
     }

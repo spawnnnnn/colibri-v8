@@ -1,5 +1,11 @@
 <?php
-
+    /**
+     * FileSystem
+     * 
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2019 Colibri
+     * @package Colibri\FileSystem
+     */
     namespace Colibri\FileSystem {
 
         use Colibri\Collections\ArrayList;

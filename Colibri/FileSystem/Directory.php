@@ -1,12 +1,18 @@
 <?php
-
+    /**
+     * FileSystem
+     *
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2019 Colibri
+     * @package Colibri\FileSystem
+     */
     namespace Colibri\FileSystem {
 
         use Colibri\AppException;
 
         /**
          * Класс для работы с директориями
-         * 
+         *
          * @property-read Attributes $attributes
          * @property-read string $name
          * @property-read string $path
@@ -17,46 +23,48 @@
          * @property-write boolean $created
          * @property-write boolean $midified
          * @property-write boolean $readonly
-         * @property-write boolean $hidden     
-         * 
+         * @property-write boolean $hidden
+         *
          */
-        class Directory {
-
-            private $attributes,
-                    $path,
-                    $parent,
-                    $access,
-                    $pathArray;
+        class Directory
+        {
+            private $attributes;
+            private $path;
+            private $parent;
+            private $access;
+            private $pathArray;
 
             /**
              * Конструктор
              *
              * @param string $path
              */
-            function __construct($path){
+            public function __construct($path)
+            {
                 $this->path = dirname($path[strlen($path) - 1] == '/' ? $path . '#' : $path);
             }
 
-            public function __get($property) {
+            public function __get($property)
+            {
                 $return = null;
-                switch (strtolower($property)){
+                switch (strtolower($property)) {
                     case 'current':
                     case 'size': {
                         $return = null;
                         break;
                     }
-                    case 'attributes' :{
+                    case 'attributes':{
                         $return = $this->getAttributesObject();
                         break;
                     }
-                    case 'name' :{
-                        if(!$this->pathArray) {
+                    case 'name':{
+                        if (!$this->pathArray) {
                             $this->pathArray = explode('/', $this->path);
                         }
                         $return = $this->pathArray[count($this->pathArray) - 1];
                         break;
                     }
-                    case 'path' :{
+                    case 'path':{
                         $return = $this->path.'/';
                         break;
                     }
@@ -64,14 +72,14 @@
                         $return = substr($this->name, 0, 1) == '.';
                         break;
                     }
-                    case 'parent' :{
+                    case 'parent':{
                         if ($this->parent == null) {
                             $this->parent = new Directory('');
                         }
                         $return = $this->parent;
                         break;
                     }
-                    case 'access' :
+                    case 'access':
                         return $this->getSecurityObject();
                     default: {
                         break;
@@ -80,18 +88,19 @@
                 return $return;
             }
 
-            function __set($property, $value) {
-                switch ($property){
-                    case 'created' :
+            public function __set($property, $value)
+            {
+                switch ($property) {
+                    case 'created':
                         $this->getAttributesObject()->created = $value;
                         break;
-                    case 'modified' :
+                    case 'modified':
                         $this->getAttributesObject()->modified = $value;
                         break;
-                    case 'readonly' :
+                    case 'readonly':
                         $this->getAttributesObject()->readonly = $value;
                         break;
-                    case 'hidden' :
+                    case 'hidden':
                         $this->getAttributesObject()->hidden = $value;
                         break;
                     default: {
@@ -100,14 +109,16 @@
                 }
             }
 
-            protected function getAttributesObject(){
+            protected function getAttributesObject()
+            {
                 if ($this->attributes === null) {
                     $this->attributes = new Attributes($this);
                 }
                 return $this->attributes;
             }
 
-            protected function getSecurityObject(){
+            protected function getSecurityObject()
+            {
                 if ($this->access === null) {
                     $this->access = new Security($this);
                 }
@@ -120,7 +131,8 @@
              * @param string $path
              * @return void
              */
-            public function CopyTo($path){
+            public function CopyTo($path)
+            {
                 Directory::copy($this->path, $path);
             }
 
@@ -130,7 +142,8 @@
              * @param string $path
              * @return void
              */
-            public function MoveTo($path){
+            public function MoveTo($path)
+            {
                 Directory::move($this->path, $path);
             }
 
@@ -139,7 +152,8 @@
              *
              * @return string
              */
-            public function ToString(){
+            public function ToString()
+            {
                 return $this->path;
             }
 
@@ -149,11 +163,11 @@
              * @param string $path
              * @return boolean
              */
-            static function IsDir($path) {
+            public static function IsDir($path)
+            {
                 try {
                     return substr($path, strlen($path) - 1, 1) == '/';
-                }
-                catch(\Exception $e) {
+                } catch (\Exception $e) {
                     return false;
                 }
             }
@@ -164,7 +178,8 @@
              * @param string $path
              * @return boolean
              */
-            static function Exists($path){
+            public static function Exists($path)
+            {
                 return File::Exists(dirname($path[strlen($path) - 1] == '/' ? $path . '#' : $path));
             }
 
@@ -176,15 +191,14 @@
              * @param integer $mode
              * @return Directory
              */
-            static function Create($path, $recursive = true, $mode = 0777) {
-                if(!Directory::Exists($path)) {
+            public static function Create($path, $recursive = true, $mode = 0777)
+            {
+                if (!Directory::Exists($path)) {
                     $path2 = dirname($path[strlen($path) - 1] == '/' ? $path . '#' : $path);
                     mkdir($path2, $mode, $recursive);
                     try {
                         chmod($path2, $mode);
-                    }
-                    catch(\Exception $e) {
-                        
+                    } catch (\Exception $e) {
                     }
                 }
 
@@ -197,8 +211,8 @@
              * @param string $path
              * @return void
              */
-            static function Delete($path){
-
+            public static function Delete($path)
+            {
                 if (!Directory::exists($path)) {
                     throw new AppException('directory not exists');
                 }
@@ -209,15 +223,13 @@
                         if ($object != '.' && $object != '..') {
                             if (is_dir($path."/".$object)) {
                                 Directory::Delete($path.'/'.$object);
-                            }
-                            else {
+                            } else {
                                 unlink($path.'/'.$object);
                             }
                         }
                     }
                     rmdir($path);
                 }
-
             }
 
             /**
@@ -227,7 +239,8 @@
              * @param string $to
              * @return void
              */
-            static function Copy($from, $to){
+            public static function Copy($from, $to)
+            {
                 if (!Directory::Exists($from)) {
                     throw new AppException('source directory not exists');
                 }
@@ -237,18 +250,16 @@
                 }
 
                 $dir = opendir($from);
-                while(false !== ( $file = readdir($dir)) ) {
-                    if (( $file != '.' ) && ( $file != '..' )) {
-                        if ( is_dir($from . '/' . $file) ) {
+                while (false !== ($file = readdir($dir))) {
+                    if (($file != '.') && ($file != '..')) {
+                        if (is_dir($from . '/' . $file)) {
                             Directory::Copy($from . '/' . $file . '/', $to . '/' . $file . '/');
-                        }
-                        else {
+                        } else {
                             File::Copy($from . '/' . $file, $to . '/' . $file);
                         }
                     }
                 }
                 closedir($dir);
-
             }
 
             /**
@@ -258,7 +269,8 @@
              * @param string $to
              * @return void
              */
-            static function Move($from, $to){
+            public static function Move($from, $to)
+            {
                 if (!Directory::exists($from)) {
                     throw new AppException('source directory not exists');
                 }
@@ -269,7 +281,8 @@
                 rename($from, $to);
             }
 
-            static function PathInfo($filename) {
+            public static function PathInfo($filename)
+            {
                 $pathInfo = [];
                 $pathInfo['dirname'] = dirname($filename);
                 $pathInfo['basename'] = trim(substr($filename, strlen($pathInfo['dirname']) + 1), '/');
@@ -284,7 +297,8 @@
              *
              * @return void
              */
-            public function ToArray() {
+            public function ToArray()
+            {
                 return array(
                     'name' => $this->name,
                     'path' => $this->path.'/',
@@ -294,7 +308,6 @@
                     /* get directory security */
                 );
             }
-
         }
 
     }

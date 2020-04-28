@@ -1,13 +1,18 @@
 <?php
-
+    /**
+     * FileSystem
+     *
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2019 Colibri
+     * @package Colibri\FileSystem
+     */
     namespace Colibri\FileSystem {
 
         use Colibri\AppException;
-    use Colibri\Utils\Debug;
 
-/**
+        /**
          * Класс для работы с файлами
-         * 
+         *
          * @property-read Attributes $attributes
          * @property-read string $filename
          * @property-read string $name
@@ -23,35 +28,36 @@
          * @property-write boolean $midified
          * @property-write boolean $readonly
          * @property-write boolean $hidden
-         * 
+         *
          */
-        class File {
-
-            private $attributes,
-                    $info,
-                    $_size = 0,
-                    $access;
+        class File
+        {
+            private $attributes;
+            private $info;
+            private $_size = 0;
+            private $access;
 
             /**
              * Конструктор
              *
              * @param string $path Путь к файлу
              */
-            function __construct($path) {
+            public function __construct($path)
+            {
                 $this->info = Directory::PathInfo($path);
                 if ($this->info['basename'] == '') {
                     throw new AppException('path argument is not a file path');
                 }
 
-                if ($this->info['dirname'] == '.'){
+                if ($this->info['dirname'] == '.') {
                     $this->info['dirname'] = '';
                 }
-
             }
 
-            public function __get($property){
+            public function __get($property)
+            {
                 $return = null;
-                switch (strtolower($property)){
+                switch (strtolower($property)) {
                     case 'attributes': {
                         $return = $this->getAttributesObject();
                         break;
@@ -67,8 +73,7 @@
                     case 'extension': {
                         if (array_key_exists('extension', $this->info)) {
                             $return = $this->info['extension'];
-                        }
-                        else {
+                        } else {
                             $return = '';
                         }
                         break;
@@ -92,7 +97,7 @@
                         break;
                     }
                     case 'size': {
-                        if($this->_size == 0) {
+                        if ($this->_size == 0) {
                             $this->_size = filesize($this->path);
                         }
                         $return = $this->_size;
@@ -113,7 +118,7 @@
                         break;
                     }
                     default: {
-                        if(strstr(strtolower($property), 'attr_') !== false) {
+                        if (strstr(strtolower($property), 'attr_') !== false) {
                             $p = str_replace('attr_', '', strtolower($property));
                             $return = $this->getAttributesObject()->$p;
                         }
@@ -124,18 +129,19 @@
                 return $return;
             }
 
-            function __set($property, $value){
-                switch (strtolower($property)){
-                    case 'created' :
+            public function __set($property, $value)
+            {
+                switch (strtolower($property)) {
+                    case 'created':
                         $this->getAttributesObject()->created = $value;
                         break;
-                    case 'modified' :
+                    case 'modified':
                         $this->getAttributesObject()->modified = $value;
                         break;
-                    case 'readonly' :
+                    case 'readonly':
                         $this->getAttributesObject()->readonly = $value;
                         break;
-                    case 'hidden' :
+                    case 'hidden':
                         $this->getAttributesObject()->hidden = $value;
                         break;
                     default: {
@@ -144,7 +150,8 @@
                 }
             }
 
-            protected function getAttributesObject(){
+            protected function getAttributesObject()
+            {
                 if ($this->attributes === null) {
                     $this->attributes = new Attributes($this);
                 }
@@ -152,7 +159,8 @@
                 return $this->attributes;
             }
 
-            protected function getSecurityObject(){
+            protected function getSecurityObject()
+            {
                 if ($this->access === null) {
                     $this->access = new Security($this);
                 }
@@ -166,7 +174,8 @@
              * @param string $path
              * @return void
              */
-            public function CopyTo($path){
+            public function CopyTo($path)
+            {
                 File::copy($this->path, $path);
             }
 
@@ -176,7 +185,8 @@
              * @param string $path
              * @return void
              */
-            public function MoveTo($path){
+            public function MoveTo($path)
+            {
                 File::move($this->path, $path);
             }
 
@@ -185,7 +195,8 @@
              *
              * @return string
              */
-            public function ToString(){
+            public function ToString()
+            {
                 return $this->name;
             }
 
@@ -195,7 +206,8 @@
              * @param string $path
              * @return string
              */
-            public static function Read($path) {
+            public static function Read($path)
+            {
                 if (File::Exists($path)) {
                     return file_get_contents($path);
                 }
@@ -211,14 +223,13 @@
              * @param integer $mode
              * @return void
              */
-            public static function Write($path, $content, $recursive = false, $mode = 0777) {
-
-                if(!File::Exists($path)) {
+            public static function Write($path, $content, $recursive = false, $mode = 0777)
+            {
+                if (!File::Exists($path)) {
                     File::Create($path, $recursive, $mode);
                 }
 
                 file_put_contents($path, $content);
-
             }
 
             /**
@@ -230,14 +241,13 @@
              * @param integer $mode
              * @return void
              */
-            public static function Append($path, $content, $recursive = false, $mode = 0777) {
-
-                if(!File::Exists($path)) {
+            public static function Append($path, $content, $recursive = false, $mode = 0777)
+            {
+                if (!File::Exists($path)) {
                     File::Create($path, $recursive, $mode);
                 }
 
                 file_put_contents($path, $content, FILE_APPEND);
-
             }
 
             /**
@@ -246,7 +256,8 @@
              * @param string $path
              * @return FileStream
              */
-            public static function Open($path){ //ireader
+            public static function Open($path)
+            { //ireader
                 if (File::Exists($path)) {
                     return new FileStream($path);
                 }
@@ -259,7 +270,8 @@
              * @param string $path
              * @return boolean
              */
-            public static function Exists($path){
+            public static function Exists($path)
+            {
                 return file_exists($path);
             }
             
@@ -269,11 +281,12 @@
              * @param string $path
              * @return boolean
              */
-            public static function IsEmpty($path){
+            public static function IsEmpty($path)
+            {
                 try { //use exception | file_exists ?
                     $info = stat($path);
                     return $info['size'] == 0;
-                } catch (AppException $e){
+                } catch (AppException $e) {
                     return true;
                 }
             }
@@ -286,12 +299,13 @@
              * @param integer $mode
              * @return FileStream
              */
-            public static function Create($path, $recursive = true, $mode = 0777){
-                if(!Directory::Exists($path) && $recursive) {
+            public static function Create($path, $recursive = true, $mode = 0777)
+            {
+                if (!Directory::Exists($path) && $recursive) {
                     Directory::Create($path, $recursive, $mode);
                 }
 
-                if(!File::Exists($path)) {
+                if (!File::Exists($path)) {
                     touch($path);
                 }
 
@@ -304,7 +318,8 @@
              * @param string $path
              * @return boolean
              */
-            public static function Delete($path){
+            public static function Delete($path)
+            {
                 if (!File::exists($path)) {
                     throw new AppException('file not exists');
                 }
@@ -319,7 +334,8 @@
              * @param string $to
              * @return void
              */
-            public static function Copy($from, $to){
+            public static function Copy($from, $to)
+            {
                 if (!File::exists($from)) {
                     throw new AppException('file not exists');
                 }
@@ -334,7 +350,8 @@
              * @param string $to
              * @return void
              */
-            public static function Move($from, $to){
+            public static function Move($from, $to)
+            {
                 if (!File::exists($from)) {
                     throw new AppException('source file not exists');
                 }
@@ -348,7 +365,8 @@
              * @param string $path
              * @return boolean
              */
-            public static function IsDirectory($path) {
+            public static function IsDirectory($path)
+            {
                 return is_dir($path);
             }
 
@@ -357,7 +375,8 @@
              *
              * @return array
              */
-            public function ToArray() {
+            public function ToArray()
+            {
                 return array(
                     'name' => $this->name,
                     'filename' => $this->filename,
@@ -370,8 +389,6 @@
                     'lastaccess' => $this->attr_lastaccess,
                 );
             }
-
-
         }
 
     }

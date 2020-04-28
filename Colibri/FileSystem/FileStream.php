@@ -1,11 +1,18 @@
 <?php
-
+    /**
+     * FileSystem
+     *
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2019 Colibri
+     * @package Colibri\FileSystem
+     */
     namespace Colibri\FileSystem {
 
         /**
          * Работа с стримом файла
          */
-        class FileStream extends Stream {
+        class FileStream extends Stream
+        {
 
             /**
              * Виртуальный файл
@@ -20,16 +27,15 @@
              * @param string $source
              * @param boolean $virtual
              */
-            public function __construct($source, $virtual = false){
+            public function __construct($source, $virtual = false)
+            {
                 $this->_virtual = $virtual;
                 $this->_stream = fopen($source, "rw+");
-                if(!$this->_virtual) {
+                if (!$this->_virtual) {
                     $this->_length = filesize($source);
-                }
-                else {
+                } else {
                     $this->_length = -1;
                 }
-
             }
 
             /**
@@ -38,13 +44,13 @@
              * @param integer $offset
              * @return void
              */
-            public function seek($offset = 0){
-                if($offset == 0) {
+            public function seek($offset = 0)
+            {
+                if ($offset == 0) {
                     return;
                 }
 
                 fseek($this->_stream, $offset);
-
             }
 
             /**
@@ -54,7 +60,8 @@
              * @param integer $count
              * @return string
              */
-            public function read($offset = 0, $count = 0){
+            public function read($offset = 0, $count = 0)
+            {
                 $this->seek($offset);
                 return fread($this->_stream, $count);
             }
@@ -66,7 +73,8 @@
              * @param integer $offset
              * @return void
              */
-            public function write($buffer, $offset = 0){
+            public function write($buffer, $offset = 0)
+            {
                 $this->seek($offset);
                 return fwrite($this->_stream, $buffer);
             }
@@ -76,7 +84,8 @@
              *
              * @return void
              */
-            public function flush(){
+            public function flush()
+            {
                 fflush($this->_stream);
             }
 
@@ -85,19 +94,20 @@
              *
              * @return void
              */
-            public function close(){
+            public function close()
+            {
                 $this->flush();
                 fclose($this->_stream);
                 $this->_stream = false;
             }
 
-            public function __get($property) {
-                if($property == 'stream') {
+            public function __get($property)
+            {
+                if ($property == 'stream') {
                     return $this->_stream;
                 }
                 return null;
             }
-
         }
 
     }
