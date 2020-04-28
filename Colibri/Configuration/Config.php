@@ -1,12 +1,11 @@
 <?php
 
     /**
-     * Конфигурация
+     * Configuration
      *
-     * @author Ваган Григорян <vahan.grigoryan@gmail.com>
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
      * @copyright 2019 Colibri
-     * @package Colibri\Utils\Config
-     * @version 1.0.0
+     * @package Colibri\Configuration
      *
      */
     namespace Colibri\Configuration {

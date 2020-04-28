@@ -1,14 +1,24 @@
 <?php
 
-
+    /**
+     * Configuration
+     *
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2019 Colibri
+     * @package Colibri\Configuration\Drivers
+     *
+     */
     namespace Colibri\Configuration\Drivers {
 
+        use Colibri\App;
         use Colibri\Helpers\Objects;
         use Colibri\Helpers\Variable;
         use Colibri\Configuration\ConfigException;
-        use Colibri\Configuration\IConfigDriver;
         use Colibri\FileSystem\File;
 
+        /**
+         * Драйвер для хранения конфигурации в yml
+         */
         class YmlConfigDriver implements IConfigDriver {
 
             private $_configData;

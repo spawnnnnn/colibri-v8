@@ -1,7 +1,18 @@
 <?php
 
-    namespace Colibri\Configuration {
+    /**
+     * Configuration
+     *
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2019 Colibri
+     * @package Colibri\Configuration
+     *
+     */
+    namespace Colibri\Configuration\Drivers {
 
+        /**
+         * Интерфейс для драйверов кофигурации
+         */
         interface IConfigDriver {
 
             /**

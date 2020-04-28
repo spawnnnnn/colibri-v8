@@ -1,15 +1,24 @@
 <?php
 
-
+    /**
+     * Configuration
+     *
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2019 Colibri
+     * @package Colibri\Configuration\Drivers
+     *
+     */
     namespace Colibri\Configuration\Drivers {
 
         use Colibri\App;
         use Colibri\Helpers\XmlEncoder;
         use Colibri\Configuration\ConfigException;
-        use Colibri\Configuration\IConfigDriver;
         use Colibri\FileSystem\File;
         use Colibri\Xml\XmlNode;
 
+        /**
+         * Драйвер для хранения конфигурации в xml
+         */
         class XmlConfigDriver implements IConfigDriver {
 
             /**
