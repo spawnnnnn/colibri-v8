@@ -1,18 +1,19 @@
 <?php
     /**
      * Collections
-     * 
+     *
      * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
      * @copyright 2020 ColibriLab
      * @package Colibri\Collections
-     * 
+     *
      */
     namespace Colibri\Collections {
         
         /**
          * Итератор для коллекции, чтобы можно было использовать в foreach
          */
-        class CollectionIterator implements \Iterator {
+        class CollectionIterator implements \Iterator
+        {
 
             /**
              * Обьект коллекции
@@ -32,7 +33,8 @@
              *
              * @param mixed $class - коллекция
              */
-            public function __construct($class = null) {
+            public function __construct($class = null)
+            {
                 $this->_class = $class;
             }
 
@@ -40,7 +42,8 @@
              * Перескопить на первую запись
              *
              */
-            public function rewind() {
+            public function rewind()
+            {
                 $this->_current = 0;
                 return $this->_class->Key($this->_current);
             }
@@ -49,11 +52,11 @@
              * Вернуть текущее значение
              *
              */
-            public function current() {
-                if($this->valid()) {
+            public function current()
+            {
+                if ($this->valid()) {
                     return $this->_class->ItemAt($this->_current);
-                }
-                else {
+                } else {
                     return false;
                 }
             }
@@ -62,7 +65,8 @@
              * Вернуть ключ текущего положения
              *
              */
-            public function key() {
+            public function key()
+            {
                 return $this->_class->Key($this->_current);
             }
 
@@ -70,12 +74,12 @@
              * Вернуть следующее значение
              *
              */
-            public function next() {
+            public function next()
+            {
                 $this->_current++;
-                if($this->valid()) {
+                if ($this->valid()) {
                     return $this->_class->ItemAt($this->_current);
-                }
-                else {
+                } else {
                     return false;
                 }
             }
@@ -84,10 +88,10 @@
              * Проверка валидности итератора, т.е. валидно ли текущее значение
              *
              */
-            public function valid() {
+            public function valid()
+            {
                 return $this->_current >= 0 && $this->_current < $this->_class->Count();
             }
-
         }
         
     }

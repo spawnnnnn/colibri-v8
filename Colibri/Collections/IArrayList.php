@@ -2,11 +2,11 @@
 
     /**
      * Collections
-     * 
+     *
      * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
      * @copyright 2020 ColibriLab
      * @package Colibri\Collections
-     * 
+     *
      */
     namespace Colibri\Collections {
 
@@ -31,6 +31,7 @@
              * @return mixed
              */
             public function Add($value);
+
             /**
              * Добавляет список значений в массив
              *
@@ -46,6 +47,7 @@
              * @return boolean
              */
             public function Delete($value);
+
             /**
              * Удаляет значение из ArrayList-а по индексу
              *
@@ -60,6 +62,7 @@
              * @return string
              */
             public function ToString($splitter = ',');
+
             /**
              * Возвращает массив из значений
              *

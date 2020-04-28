@@ -2,22 +2,34 @@
 
     /**
      * Collections
-     * 
+     *
      * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
      * @copyright 2020 ColibriLab
      * @package Colibri\Collections
-     * 
+     *
      */
     namespace Colibri\Collections {
+
+        use Colibri\Helpers\Variable;
 
         /**
          * Коллекция обьектов без возможности записи
          */
-        class ObjectCollection extends ReadonlyCollection {
-            
+        class ObjectCollection extends ReadonlyCollection
+        {
+            /**
+             * Возвращаемый класс
+             *
+             * @var string
+             */
             private $itemClass = '';
             
-            public function __construct($data = array(), $itemClass = '') {
+            /**
+             * @param array $data
+             * @param string $itemClass возвращаемый класс
+             */
+            public function __construct($data = array(), $itemClass = '')
+            {
                 parent::__construct($data);
                 $this->itemClass = $itemClass;
             }
@@ -28,11 +40,11 @@
              * @param string $key
              * @return mixed
              */
-            public function Item($key) {
-                if(empty($this->itemClass)) {
+            public function Item($key)
+            {
+                if (Variable::IsEmpty($this->itemClass)) {
                     return $this->data[$key];
-                }
-                else {
+                } else {
                     return new $this->itemClass($this->data[$key]);
                 }
             }
@@ -43,20 +55,19 @@
              * @param integer $index
              * @return mixed
              */
-            public function ItemAt($index) {
+            public function ItemAt($index)
+            {
                 $key = $this->Key($index);
-                if(!$key) {
+                if (!$key) {
                     return false;
                 }
                     
-                if(empty($this->itemClass)) {
+                if (Variable::IsEmpty($this->itemClass)) {
                     return $this->data[$key];
-                }
-                else {
+                } else {
                     return new $this->itemClass($this->data[$key]);
                 }
             }
-            
         }
 
     }

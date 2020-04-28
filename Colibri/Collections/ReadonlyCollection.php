@@ -1,26 +1,28 @@
 <?php
     /**
      * Collections
-     * 
+     *
      * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
      * @copyright 2020 ColibriLab
      * @package Colibri\Collections
-     * 
+     *
      */
     namespace Colibri\Collections {
 
         /**
          * Коллекция без возможности записи
          */
-        class ReadonlyCollection extends Collection {
+        class ReadonlyCollection extends Collection
+        {
 
             /**
              * Очистить
              *
              * @return void
              */
-            public function Clean() {
-                while(($index = $this->IndexOf('')) > -1) {
+            public function Clean()
+            {
+                while (($index = $this->IndexOf('')) > -1) {
                     array_splice($this->data, $index, 1);
                 }
             }
@@ -33,7 +35,11 @@
              * @return void
              * @throws CollectionException
              */
-            public function Add($key, $value) { throw new CollectionException('This is a readonly collection'); }
+            public function Add($key, $value)
+            {
+                throw new CollectionException('This is a readonly collection');
+            }
+            
             /**
              * Блокирует удаление значений в коллекцию
              *
@@ -41,9 +47,10 @@
              * @return void
              * @throws CollectionException
              */
-            public function Delete($key) { throw new CollectionException('This is a readonly collection'); }
-            
-            
+            public function Delete($key)
+            {
+                throw new CollectionException('This is a readonly collection');
+            }
         }
         
     }

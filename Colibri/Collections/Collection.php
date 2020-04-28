@@ -2,18 +2,19 @@
 
     /**
      * Collections
-     * 
+     *
      * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
      * @copyright 2020 ColibriLab
      * @package Colibri\Collections
-     * 
+     *
      */
     namespace Colibri\Collections {
 
         /**
          * Базовый класс коллекций
          */
-        class Collection implements ICollection {
+        class Collection implements ICollection
+        {
 
             /**
              * Данные коллекции
@@ -26,23 +27,22 @@
              * Конструктор, передается массив или обькет, или другая
              * коллекция для инициализации
              * Инициализация с помощью: array, stdClass, и любого другого ICollection
-             * 
+             *
              * @param mixed $data
              */
-            public function __construct($data = array()) {
-                if(is_array($data)) {
+            public function __construct($data = array())
+            {
+                if (is_array($data)) {
                     $this->data = $data;
-                }
-                else if(is_object($data)) {
+                } elseif (is_object($data)) {
                     $this->data = $data instanceof ICollection ? $data->ToArray() : (array)$data;
                 }
 
-                if(is_null($this->data)) {
+                if (is_null($this->data)) {
                     $this->data = array();
                 }
 
                 $this->data = array_change_key_case($this->data, CASE_LOWER);
-
             }
 
             /**
@@ -50,7 +50,8 @@
              *
              * @param string $key - ключ для проверки
              */
-            public function Exists($key) {
+            public function Exists($key)
+            {
                 return array_key_exists($key, $this->data);
             }
 
@@ -59,7 +60,8 @@
              *
              * @param mixed $item - значение для проверки
              */
-            public function Contains($item){
+            public function Contains($item)
+            {
                 return in_array($item, $this->data, true);
             }
 
@@ -68,9 +70,10 @@
              *
              * @param mixed $item - значение для поиска
              */
-            public function IndexOf($item) {
+            public function IndexOf($item)
+            {
                 $return = array_search($item, array_values($this->data), true);
-                if($return === false) {
+                if ($return === false) {
                     return null;
                 }
                 return $return;
@@ -81,13 +84,14 @@
              *
              * @param mixed $index
              */
-            public function Key($index) {
-                if($index >= $this->Count()) {
+            public function Key($index)
+            {
+                if ($index >= $this->Count()) {
                     return null;
                 }
 
                 $keys = array_keys($this->data);
-                if(count($keys) > 0) {
+                if (count($keys) > 0) {
                     return $keys[$index];
                 }
 
@@ -99,8 +103,9 @@
              *
              * @param mixed $key
              */
-            public function Item($key) {
-                if($this->Exists($key)) {
+            public function Item($key)
+            {
+                if ($this->Exists($key)) {
                     return $this->data[$key];
                 }
                 return null;
@@ -111,9 +116,10 @@
              *
              * @param mixed $index
              */
-            public function ItemAt($index) {
+            public function ItemAt($index)
+            {
                 $key = $this->Key($index);
-                if(!$key) {
+                if (!$key) {
                     return null;
                 }
                 return $this->data[$key];
@@ -123,7 +129,8 @@
              * Возвращает итератор
              *
              */
-            public function getIterator() {
+            public function getIterator()
+            {
                 return new CollectionIterator($this);
             }
 
@@ -134,7 +141,8 @@
              * @param string $key
              * @param mixed $value
              */
-            public function Add($key, $value) {
+            public function Add($key, $value)
+            {
                 $this->data[strtolower($key)] = $value;
                 return $value;
             }
@@ -145,12 +153,12 @@
              *
              * @param mixed $from - коллекция | массив
              */
-            public function Append($from) {
-                foreach($from as $key => $value) {
-                    if(is_null($value)) {
+            public function Append($from)
+            {
+                foreach ($from as $key => $value) {
+                    if (is_null($value)) {
                         $this->Delete($key);
-                    }
-                    else {
+                    } else {
                         $this->Add($key, $value);
                     }
                 }
@@ -163,12 +171,13 @@
              * @param mixed $key
              * @param mixed $value
              */
-            public function Insert($index, $key, $value) {
+            public function Insert($index, $key, $value)
+            {
                 $before = array_splice($this->data, 0, $index);
                 $this->data = array_merge(
-                                $before,
-                                array($key => $value),
-                                $this->data
+                    $before,
+                    array($key => $value),
+                    $this->data
                 );
                 return $value;
             }
@@ -179,9 +188,10 @@
              * @param string $key
              * @return boolean
              */
-            public function Delete($key) {
+            public function Delete($key)
+            {
                 $key = strtolower($key);
-                if(array_key_exists($key, $this->data)) {
+                if (array_key_exists($key, $this->data)) {
                     unset($this->data[$key]);
                     return true;
                 }
@@ -194,9 +204,10 @@
              * @param int $index
              * @return boolean
              */
-            public function DeleteAt($index) {
+            public function DeleteAt($index)
+            {
                 $key = $this->Key($index);
-                if($key !== null) {
+                if ($key !== null) {
                     $this->Delete($key);
                     return true;
                 }
@@ -208,7 +219,8 @@
              *
              * @return void
              */
-            public function Clear() {
+            public function Clear()
+            {
                 $this->data = array();
             }
 
@@ -219,13 +231,13 @@
              * @param mixed $mapFunction
              * @return string
              */
-            public function ToString($splitters = null, $mapFunction = false) {
+            public function ToString($splitters = null, $mapFunction = false)
+            {
                 $ret = '';
-                foreach($this->data as $k => $v) {
-                    if(!$mapFunction) {
+                foreach ($this->data as $k => $v) {
+                    if (!$mapFunction) {
                         $ret .= $splitters[1].$k.$splitters[0].$v;
-                    }
-                    else {
+                    } else {
                         $ret .= $splitters[1].$k.$splitters[0].$mapFunction($v);
                     }
                 }
@@ -239,10 +251,11 @@
              * @param string[] $splitters
              * @return Collection
              */
-            public static function FromString($string, $splitters = null) {
+            public static function FromString($string, $splitters = null)
+            {
                 $ret = array();
                 $parts = explode($splitters[1], $string);
-                foreach($parts as $part) {
+                foreach ($parts as $part) {
                     $part = explode($splitters[0], $part);
                     $ret[$part[0]] = $part[1];
                 }
@@ -254,7 +267,8 @@
              *
              * @return array
              */
-            public function ToArray() {
+            public function ToArray()
+            {
                 return $this->data;
             }
 
@@ -263,7 +277,8 @@
              *
              * @return void
              */
-            public function Count() {
+            public function Count()
+            {
                 return count($this->data);
             }
 
@@ -272,7 +287,8 @@
              *
              * @return mixed
              */
-            public function First() {
+            public function First()
+            {
                 return $this->ItemAt(0);
             }
 
@@ -281,7 +297,8 @@
              *
              * @return mixed
              */
-            public function Last() {
+            public function Last()
+            {
                 return $this->ItemAt($this->Count()-1);
             }
 
@@ -291,7 +308,8 @@
              * @param string $property
              * @return mixed
              */
-            public function __get($property) {
+            public function __get($property)
+            {
                 return $this->Item(strtolower($property));
             }
 
@@ -302,7 +320,8 @@
              * @param mixed $value
              * @return void
              */
-            public function __set($key, $value) {
+            public function __set($key, $value)
+            {
                 $this->Add($key, $value);
             }
 
@@ -311,7 +330,8 @@
              * @param mixed $value
              * @return void
              */
-            public function offsetSet($offset, $value) {
+            public function offsetSet($offset, $value)
+            {
                 $this->Add($offset, $value);
             }
         
@@ -319,11 +339,11 @@
              * @param mixed $offset
              * @return bool
              */
-            public function offsetExists($offset) {
-                if(is_numeric($offset)) {
+            public function offsetExists($offset)
+            {
+                if (is_numeric($offset)) {
                     return $this->ItemAt($offset) !== null;
-                }
-                else {
+                } else {
                     return $this->Item($offset) !== null;
                 }
             }
@@ -332,11 +352,11 @@
              * @param mixed $offset
              * @return void
              */
-            public function offsetUnset($offset) {
-                if(is_numeric($offset)) {
+            public function offsetUnset($offset)
+            {
+                if (is_numeric($offset)) {
                     $this->DeleteAt($offset);
-                }
-                else {
+                } else {
                     $this->Delete($offset);
                 }
             }
@@ -347,15 +367,14 @@
              * @param mixed $offset
              * @return mixed
              */
-            public function offsetGet($offset) {
-                if(is_numeric($offset)) {
+            public function offsetGet($offset)
+            {
+                if (is_numeric($offset)) {
                     return $this->ItemAt($offset);
-                }
-                else {
+                } else {
                     return $this->Item($offset);
                 }
             }
-
         }
         
     }
