@@ -11,26 +11,29 @@
         /**
          * Информация о DKIM
          */
-        class DKIM {
-            
+        class DKIM
+        {
             private $_selector   = 'phpmailer';
             private $_identity   = '';
             private $_domain     = '';
             private $_private    = '';
             
-            public function __construct($selector, $identity, $domain, $private) {
+            public function __construct($selector, $identity, $domain, $private)
+            {
                 $this->_selector = $selector;
                 $this->_identity = $identity;
                 $this->_domain = $domain;
                 $this->_private = $private;
             }
             
-            public function __get($property) {
+            public function __get($property)
+            {
                 $name = "_".strtolower($property);
                 return $this->$name;
             }
             
-            public function __set($property, $value) {
+            public function __set($property, $value)
+            {
                 $name = "_".strtolower($property);
                 $this->$name = $value;
             }
@@ -42,15 +45,15 @@
             * @param string $key_filename Parameter File Name
             * @param string $key_pass UserPass for private key
             */
-            private function QP($txt) {
+            private function QP($txt)
+            {
                 $line="";
-                for($i=0; $i<strlen($txt); $i++) {
+                for ($i=0; $i<strlen($txt); $i++) {
                     $ord = ord($txt[$i]);
-                    if ( ((0x21 <= $ord) && ($ord <= 0x3A)) || $ord == 0x3C || ((0x3E <= $ord) && ($ord <= 0x7E)) ) {
+                    if (((0x21 <= $ord) && ($ord <= 0x3A)) || $ord == 0x3C || ((0x3E <= $ord) && ($ord <= 0x7E))) {
                         $line.=$txt[$i];
-                    }
-                    else {
-                        $line.="=".sprintf("%02X",$ord);
+                    } else {
+                        $line.="=".sprintf("%02X", $ord);
                     }
                 }
                 return $line;
@@ -62,7 +65,8 @@
             * @access public
             * @param string $s Header
             */
-            private function Sign($s) {
+            private function Sign($s)
+            {
                 $privKeyStr = file_get_contents($this->_private);
                 if ($this->_passphrase!='') {
                     $privKey = openssl_pkey_get_private($privKeyStr, $this->_passphrase);
@@ -81,16 +85,17 @@
             * @access public
             * @param string $s Header
             */
-            private function HeaderC($s) {
-                $s = preg_replace("/\r\n\s+/"," ", $s);
+            private function HeaderC($s)
+            {
+                $s = preg_replace("/\r\n\s+/", " ", $s);
                 $lines = explode(Helper::CRLF, $s);
-                foreach($lines as $key => $line) {
+                foreach ($lines as $key => $line) {
                     list($heading, $value)=explode(":", $line, 2);
                     $heading = strtolower($heading);
-                    $value = preg_replace("/\s+/"," ",$value) ; // Compress useless spaces
+                    $value = preg_replace("/\s+/", " ", $value) ; // Compress useless spaces
                     $lines[$key] = $heading.":".trim($value) ; // Don't forget to remove WSP around the value
                 }
-                return implode("\r\n",$lines);
+                return implode("\r\n", $lines);
             }
 
             /**
@@ -99,13 +104,14 @@
             * @access public
             * @param string $body Message Body
             */
-            private function BodyC($body) {
+            private function BodyC($body)
+            {
                 if ($body == '') {
                     return Helper::CRLF;
                 }
                 $body = str_replace(Helper::CRLF, Helper::LF, $body);
                 $body = str_replace(Helper::LF, Helper::CRLF, $body);
-                while(substr($body,strlen($body)-4,4) == Helper::CRLF.Helper::CRLF){
+                while (substr($body, strlen($body)-4, 4) == Helper::CRLF.Helper::CRLF) {
                     $body = substr($body, 0, strlen($body)-2);
                 }
                 return $body;
@@ -119,8 +125,8 @@
             * @param string $subject Subject
             * @param string $body Body
             */
-            public function Add($headers, $subject, $body) {
-                
+            public function Add($headers, $subject, $body)
+            {
                 $DKIMsignatureType    = 'rsa-sha1'; // Signature & hash algorithms
                 $DKIMcanonicalization = 'relaxed/simple'; // Canonicalization of header/body
                 $DKIMquery            = 'dns/txt'; // Query method
@@ -128,18 +134,17 @@
                 $subject_header       = "Subject: $subject";
                 $headers              = explode(Helper::CRLF, $headers);
                 
-                foreach($headers as $header) {
-                    if (strpos($header,  'From:') === 0) {
+                foreach ($headers as $header) {
+                    if (strpos($header, 'From:') === 0) {
                         $from_header = $header;
-                    }
-                    else if (strpos($header, 'To:') === 0) {
+                    } elseif (strpos($header, 'To:') === 0) {
                         $to_header = $header;
                     }
                 }
                 
-                $from     = str_replace('|','=7C',$this->QP($from_header));
-                $to       = str_replace('|','=7C',$this->QP($to_header));
-                $subject  = str_replace('|','=7C',$this->QP($subject_header)) ; // Copied header fields (dkim-quoted-printable
+                $from     = str_replace('|', '=7C', $this->QP($from_header));
+                $to       = str_replace('|', '=7C', $this->QP($to_header));
+                $subject  = str_replace('|', '=7C', $this->QP($subject_header)) ; // Copied header fields (dkim-quoted-printable
                 
                 $body     = $this->BodyC($body);
                 
@@ -158,7 +163,6 @@
                 $toSign   = $this->HeaderC($from_header . "\r\n" . $to_header . "\r\n" . $subject_header . "\r\n" . $dkimhdrs);
                 $signed   = $this->Sign($toSign);
                 return "X-PHPMAILER-DKIM: phpmailer.worxware.com\r\n".$dkimhdrs.$signed."\r\n";
-            }        
-
+            }
         }
     }

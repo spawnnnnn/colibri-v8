@@ -13,8 +13,8 @@
         /**
          * Прикрепление
          */
-        class Attachment {
-            
+        class Attachment
+        {
             public $path; // file path or string (if attachment is string type)
             public $filename; // file name
             public $charset; // file encoding
@@ -25,17 +25,20 @@
             public $isString; // is attachemtn is string
             public $isInline; // is inline image
             
-            public function __construct() { }
+            public function __construct()
+            {
+            }
             
-            public static function Create($path, $name = '', $encoding = 'base64', $type = 'application/octet-stream', $charset = '') {
+            public static function Create($path, $name = '', $encoding = 'base64', $type = 'application/octet-stream', $charset = '')
+            {
                 $ma = new Attachment();
 
-                if(!File::Exists($path)) {
+                if (!File::Exists($path)) {
                     throw new Exception(ErrorMessages::FileAccess.$path);
                 }
                 
                 $filename = basename($path);
-                if($name == '') {
+                if ($name == '') {
                     $name = $filename;
                 }
 
@@ -52,7 +55,8 @@
                 return $ma;
             }
             
-            public static function CreateString($string, $filename, $encoding = 'base64', $type = 'application/octet-stream', $charset = '') {
+            public static function CreateString($string, $filename, $encoding = 'base64', $type = 'application/octet-stream', $charset = '')
+            {
                 $ma = new Attachment();
                 
                 $ma->path = $string;
@@ -60,24 +64,24 @@
                 $ma->charset = $charset;
                 $ma->name = basename($filename);
                 $ma->encoding = $encoding;
-                $ma->type = $type;          
+                $ma->type = $type;
                 $ma->cid = 0;
                 $ma->isString = true;
                 $ma->isInline = false;
                 
                 return $ma;
-            }        
+            }
             
-            public function CreateEmbeded($path, $cid, $name = '', $encoding = 'base64', $type = 'application/octet-stream', $charset = '') {
-
+            public function CreateEmbeded($path, $cid, $name = '', $encoding = 'base64', $type = 'application/octet-stream', $charset = '')
+            {
                 $ma = new Attachment();
                 
-                if(!File::Exists($path)){
+                if (!File::Exists($path)) {
                     throw new Exception(ErrorMessages::FileAccess.$path);
                 }
 
                 $_filename = basename($path);
-                if($name == ''){
+                if ($name == '') {
                     $name = $_filename;
                 }
 
@@ -92,7 +96,6 @@
                 $ma->isInline = true;
 
                 return $ma;
-            }        
-            
+            }
         }
     }

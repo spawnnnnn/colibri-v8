@@ -14,8 +14,8 @@
         /**
          * Письмо
          */
-        class Message {
-            
+        class Message
+        {
             public $id;
             public $priority           = 3;
             public $charset            = 'iso-8859-1';
@@ -40,31 +40,28 @@
             
             public $customheader       = array();
             
-            public function __construct($from = null, $to = null, $subject = '') {
-                
+            public function __construct($from = null, $to = null, $subject = '')
+            {
                 $this->to = new AddressList();
                 $this->cc = new AddressList();
                 $this->bcc = new AddressList();
                 $this->replyto = new AddressList();
                 
-                if(!Variable::IsNull($from)) {
-                    if($from instanceOf Address) {
+                if (!Variable::IsNull($from)) {
+                    if ($from instanceof Address) {
                         $this->from = $from;
-                    }
-                    else {
+                    } else {
                         // распарсить строку, если нужно
                         $this->from = new Address($from);
                     }
                 }
                 
-                if(!Variable::IsNull($to)) {
-                    if($to instanceOf Address) {
+                if (!Variable::IsNull($to)) {
+                    if ($to instanceof Address) {
                         $this->to->Add($to);
-                    }
-                    elseif(Variable::IsArray($to)) {
+                    } elseif (Variable::IsArray($to)) {
                         $this->to->AddRange($to);
-                    }
-                    elseif(Variable::IsString($to)) {
+                    } elseif (Variable::IsString($to)) {
                         $emails = explode(';', $to);
                         foreach ($emails as $v) {
                             $this->to->Add(new Address($v));
@@ -72,47 +69,45 @@
                     }
                 }
                 
-                if(!Variable::IsEmpty($subject)) {
+                if (!Variable::IsEmpty($subject)) {
                     $this->subject = $subject;
                 }
                 
                 $this->attachments = new AttachmentList();
-                
             }
             
-            public function __get($property) {
-
+            public function __get($property)
+            {
                 $property = strtolower($property);
-                if($property != 'type') {
+                if ($property != 'type') {
                     return $this->$property;
                 }
 
                 $return = null;
-                if($this->attachments->count < 1 && strlen($this->altbody) < 1) {
+                if ($this->attachments->count < 1 && strlen($this->altbody) < 1) {
                     $return = 'plain';
-                }
-                else {
-                    if($this->attachments->count > 0) {
+                } else {
+                    if ($this->attachments->count > 0) {
                         $return = 'attachments';
                     }
-                    if(strlen($this->altbody) > 0 && $this->attachments->count < 1) {
+                    if (strlen($this->altbody) > 0 && $this->attachments->count < 1) {
                         $return = 'alt';
                     }
-                    if(strlen($this->altbody) > 0 && $this->attachments->count > 0) {
+                    if (strlen($this->altbody) > 0 && $this->attachments->count > 0) {
                         $return = 'alt_attachments';
                     }
-                }     
+                }
                 
                 return $return;
             }
             
-            public function __set($property, $value) {
-                if(strtolower($property) == 'altbody') {
+            public function __set($property, $value)
+            {
+                if (strtolower($property) == 'altbody') {
                     // Set whether the message is multipart/alternative
-                    if(!Variable::IsEmpty($value)){
+                    if (!Variable::IsEmpty($value)) {
                         $this->contenttype = 'multipart/alternative';
-                    }
-                    else{
+                    } else {
                         $this->contenttype = "text/plain";
                     }
                 }
@@ -120,22 +115,22 @@
                 $this->$property = $value;
             }
             
-            public function IncludeEmbededImages($message, $basedir = '') {
-                
+            public function IncludeEmbededImages($message, $basedir = '')
+            {
                 preg_match_all("/(src|background)=\"(.*)\"/Ui", $message, $images);
 
                 $imagesList = isset($images[2]) ? $images[2] : [];
-                foreach($imagesList as $i => $url) {
+                foreach ($imagesList as $i => $url) {
                     
                     // do not change urls for absolute images (thanks to corvuscorax)
-                    if(preg_match('#^[A-z]+://#', $url)) {
+                    if (preg_match('#^[A-z]+://#', $url)) {
                         continue;
                     }
 
                     $filename = basename($url);
                     
                     $directory = dirname($url);
-                    if($directory == '.') {
+                    if ($directory == '.') {
                         $directory = '';
                     }
                         
@@ -143,30 +138,27 @@
                     $ext = pathinfo($filename, PATHINFO_EXTENSION);
                     $mimeType  = MimeType::Create($ext)->type;
                     
-                    if ( strlen($basedir) > 1 && substr($basedir,-1) != '/') {
-                        $basedir .= '/'; 
+                    if (strlen($basedir) > 1 && substr($basedir, -1) != '/') {
+                        $basedir .= '/';
                     }
                     
-                    if ( strlen($directory) > 1 && substr($directory,-1) != '/') {
-                        $directory .= '/'; 
+                    if (strlen($directory) > 1 && substr($directory, -1) != '/') {
+                        $directory .= '/';
                     }
                     
                     try {
-                        $ma = Attachment::CreateEmbeded($basedir.$directory.$filename, md5($filename), $filename, 'base64',$mimeType);
+                        $ma = Attachment::CreateEmbeded($basedir.$directory.$filename, md5($filename), $filename, 'base64', $mimeType);
                         $message = preg_replace("/".$images[1][$i]."=\"".preg_quote($url, '/')."\"/Ui", $images[1][$i]."=\"".$cid."\"", $message);
                         $this->attachments->Add($ma);
-                    }
-                    catch(Exception $e) {
+                    } catch (Exception $e) {
                         $message = '';
                         $ma = null;
                     }
-
-                    
                 }
                 
                 $this->contenttype = 'text/html';
                 $this->body = $message;
-                $textMsg = trim(strip_tags(preg_replace('/<(head|title|style|script)[^>]*>.*?<\/\\1>/s','',$message)));
+                $textMsg = trim(strip_tags(preg_replace('/<(head|title|style|script)[^>]*>.*?<\/\\1>/s', '', $message)));
                 if (!Variable::IsEmpty($textMsg) && Variable::IsEmpty($this->altbody)) {
                     $this->altbody = html_entity_decode($textMsg);
                 }
@@ -174,11 +166,7 @@
                 if (Variable::IsEmpty($this->altbody)) {
                     $this->altbody = 'To view this email message, open it in a program that understands HTML!' . "\n\n";
                 }
-
-            }        
-            
-            
-            
+            }
         }
         
     }

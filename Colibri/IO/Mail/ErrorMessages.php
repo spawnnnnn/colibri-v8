@@ -11,7 +11,8 @@
         /**
          * Сообщения об ошибках
          */
-        class ErrorMessages {
+        class ErrorMessages
+        {
             const ProvideAddress = 'You must provide at least one recipient email address.';
             const MailerNotSupported = ' mailer is not supported.';
             const Execute = 'Could not execute: ';

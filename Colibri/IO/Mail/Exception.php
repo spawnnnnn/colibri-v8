@@ -13,12 +13,12 @@
         /**
          * Исключение
          */
-        class Exception extends AppException {
-            
-            public function ToString() {
+        class Exception extends AppException
+        {
+            public function ToString()
+            {
                 return '<strong>' . $this->message . "</strong><br />\n";
             }
-            
         }
 
     }

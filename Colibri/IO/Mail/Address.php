@@ -14,25 +14,26 @@
         /**
          * Электронный адрес
          */
-        class Address {
-            
+        class Address
+        {
             private $_address;
             private $_displayName;
             private $_charset;
             
-            public function __construct($address, $displayName = '', $charset = 'utf-8') {
-                
+            public function __construct($address, $displayName = '', $charset = 'utf-8')
+            {
                 $address = trim($address);
                 $displayName = trim(preg_replace('/[\r\n]+/', '', $displayName)); //Strip breaks and trim
                 
-                $this->_address = $address;    
+                $this->_address = $address;
                 $this->_displayName = $displayName;
                 $this->_charset = $charset;
             }
             
-            public function __get($property) {
-                $return = null; 
-                switch(strtolower($property)) {
+            public function __get($property)
+            {
+                $return = null;
+                switch (strtolower($property)) {
                     case 'address':{
                         $return =  $this->_address;
                         break;
@@ -56,8 +57,9 @@
                 return $return;
             }
 
-            public function __set($property, $value) {
-                switch(strtolower($property)) {
+            public function __set($property, $value)
+            {
+                switch (strtolower($property)) {
                     case 'address':{
                         $this->_address = trim($value);
                         break;
@@ -76,15 +78,14 @@
                 }
             }
             
-            private function _formatAddress() {
+            private function _formatAddress()
+            {
                 if (Variable::IsEmpty($this->_displayName)) {
                     return Helper::StripNewLines($this->_address);
-                }
-                else {
+                } else {
                     return Helper::EncodeHeader(Helper::StripNewLines($this->_displayName), 'phrase', $this->_charset) . ' <' . Helper::StripNewLines($this->_address) . '>';
                 }
-            }        
-            
+            }
         }
 
     }

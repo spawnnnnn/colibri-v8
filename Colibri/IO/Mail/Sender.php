@@ -15,8 +15,8 @@
         /**
          * Отправитель
          */
-        class Sender {
-
+        class Sender
+        {
             const Version           = '5.1';
             
             public $DOMAIN          = '';
@@ -54,14 +54,14 @@
             *   string  $body          the email body
             * @var string
             */
-            public $callback        = ''; 
+            public $callback        = '';
 
             /////////////////////////////////////////////////
             // PROPERTIES, PRIVATE AND PROTECTED
             /////////////////////////////////////////////////
 
-            private   $smtp         = NULL;
-            private   $boundary     = array();
+            private $smtp         = null;
+            private $boundary     = array();
             
             /////////////////////////////////////////////////
             // METHODS, VARIABLES
@@ -71,28 +71,27 @@
             * Constructor
             * @param boolean $exceptions Should we throw external exceptions?
             */
-            public function __construct($mailer) {
+            public function __construct($mailer)
+            {
                 $this->Mailer = $mailer;
             }
             
-            public static function Create($mailer, $domain = '') {
-
+            public static function Create($mailer, $domain = '')
+            {
                 $config = App::$config->Query('mailer.'.$mailer)->AsObject();
                 
                 $sender = new Sender($mailer);
-                if($mailer == MailerTypes::Smtp) {
-                    
+                if ($mailer == MailerTypes::Smtp) {
                     $sender->Host = $config->host;
                     $sender->Port = $config->port;
                     $sender->SMTPAuth = $config->auth != 'false';
-                    if($config->secure == 'false') {
+                    if ($config->secure == 'false') {
                         $sender->SMTPSecure = false;
-                    }
-                    else {
+                    } else {
                         $sender->SMTPSecure = $config->secure;
                     }
 
-                    $sender->SMTPOptions = array (
+                    $sender->SMTPOptions = array(
                         'ssl' => array(
                             'verify_peer' => false,
                             'verify_peer_name' => false,
@@ -100,17 +99,15 @@
                         )
                     );
                     $sender->Timeout = $config->timeout;
-                    if($sender->SMTPAuth) {
+                    if ($sender->SMTPAuth) {
                         $sender->Username = $config->usr;
                         $sender->UserPass = $config->pwd;
                     }
-                }
-                else if ($mailer == MailerTypes::Mail) {
+                } elseif ($mailer == MailerTypes::Mail) {
                     $sender->Username = $config->from;
                     $sender->Sender = $config->from;
                     $sender->IsMail();
-                }
-                else if ($mailer == MailerTypes::SendMail) {
+                } elseif ($mailer == MailerTypes::SendMail) {
                     $sender->Username = $config->from;
                     $sender->Sender = $config->from;
                     $sender->IsSendmail();
@@ -125,7 +122,8 @@
             * Sets Mailer to send message using SMTP.
             * @return void
             */
-            public function IsSMTP() {
+            public function IsSMTP()
+            {
                 $this->Mailer = 'smtp';
             }
 
@@ -133,7 +131,8 @@
             * Sets Mailer to send message using PHP mail() function.
             * @return void
             */
-            public function IsMail() {
+            public function IsMail()
+            {
                 $this->Mailer = 'mail';
             }
 
@@ -141,7 +140,8 @@
             * Sets Mailer to send message using the $Sendmail program.
             * @return void
             */
-            public function IsSendmail() {
+            public function IsSendmail()
+            {
                 if (!stristr(ini_get('sendmail_path'), 'sendmail')) {
                     $this->Sendmail = '/var/qmail/bin/sendmail';
                 }
@@ -152,7 +152,8 @@
             * Sets Mailer to send message using the qmail MTA.
             * @return void
             */
-            public function IsQmail() {
+            public function IsQmail()
+            {
                 if (stristr(ini_get('sendmail_path'), 'qmail')) {
                     $this->Sendmail = '/var/qmail/bin/sendmail';
                 }
@@ -165,9 +166,9 @@
             * variable to view description of the error.
             * @return bool
             */
-            public function Send(Message $m) {
-                
-                if($m->to->count + $m->cc->count + $m->bcc->count < 1){
+            public function Send(Message $m)
+            {
+                if ($m->to->count + $m->cc->count + $m->bcc->count < 1) {
                     throw new Exception(ErrorMessages::ProvideAddress);
                 }
                 
@@ -175,7 +176,7 @@
                 $body = $this->_createBody($m);
 
                 
-                switch($this->Mailer) {
+                switch ($this->Mailer) {
                     case 'sendmail':
                     // не тестировалось
                         return $this->SendmailSend($m, $header, $body);
@@ -185,22 +186,19 @@
                     // не тестировалось
                         return $this->MailSend($m, $header, $body);
                 }
-
             }
 
-            private function SendmailSend(Message $m, $header, $body) {
-                
-                if ($this->Sender != ''){
+            private function SendmailSend(Message $m, $header, $body)
+            {
+                if ($this->Sender != '') {
                     $sendmail = sprintf("%s -oi -f %s -t", escapeshellcmd($this->Sendmail), escapeshellarg($this->Sender));
-                }
-                else{
+                } else {
                     $sendmail = sprintf("%s -oi -t", escapeshellcmd($this->Sendmail));
                 }
                     
-                // исправить - из Address-а только адрес используется 
+                // исправить - из Address-а только адрес используется
                 foreach ($m->to as $val) {
-                    
-                    if(!@$mail = popen($sendmail, 'w')){
+                    if (!@$mail = popen($sendmail, 'w')) {
                         throw new Exception(ErrorMessages::Execute.$this->Sendmail);
                     }
                     
@@ -212,7 +210,7 @@
                     // implement call back function if it exists
                     $this->doCallback(($result == 0) ? 1 : 0, $val, $m->cc, $m->bcc, $m->subject, $body);
                     
-                    if($result != 0){
+                    if ($result != 0) {
                         throw new Exception(ErrorMessages::Execute.$this->Sendmail);
                     }
                 }
@@ -221,10 +219,11 @@
                 return true;
             }
 
-            private function MailSend(Message $m, $header, $body) {
+            private function MailSend(Message $m, $header, $body)
+            {
                 $toArr = array();
                 
-                foreach($m->to as $t) {
+                foreach ($m->to as $t) {
                     $toArr[] = $t->formated;
                 }
                 
@@ -242,40 +241,40 @@
                 
                 @ini_set('sendmail_from', $old_from);
                 
-                if(!$rt){
+                if (!$rt) {
                     throw new Exception(ErrorMessages::Instantiate);
                 }
                 
                 return true;
             }
 
-            private function SmtpSend(Message $m, $header, $body) {
-                
+            private function SmtpSend(Message $m, $header, $body)
+            {
                 $bad_rcpt = array();
                 
-                if(!$this->SmtpConnect()){
+                if (!$this->SmtpConnect()) {
                     throw new Exception(ErrorMessages::SmtpConnectFailed);
                 }
                 
                 
                 $smtp_from = ($this->Sender == '') ? $m->from->address : $this->Sender;
-                if(!$this->smtp->Mail($smtp_from)){
+                if (!$this->smtp->Mail($smtp_from)) {
                     throw new Exception(ErrorMessages::FromFailed . $smtp_from);
                 }
 
                 // Attempt to send attach all recipients
-                foreach($m->to as $to) {
+                foreach ($m->to as $to) {
                     if (!$this->smtp->Recipient($to->address)) {
                         $bad_rcpt[] = $to->address;
                         // implement call back function if it exists
                         $this->doCallback(0, $to->address, '', '', $m->subject, $body);
                     } else {
                         // implement call back function if it exists
-                        $this->doCallback(1, $to->address, '', '', $m->subject, $body);   
+                        $this->doCallback(1, $to->address, '', '', $m->subject, $body);
                     }
                 }
                 
-                foreach($m->cc as $cc) {
+                foreach ($m->cc as $cc) {
                     if (!$this->smtp->Recipient($cc->address)) {
                         $bad_rcpt[] = $cc->formated;
                         // implement call back function if it exists
@@ -286,7 +285,7 @@
                     }
                 }
                 
-                foreach($m->bcc as $bcc) {
+                foreach ($m->bcc as $bcc) {
                     if (!$this->smtp->Recipient($bcc->address)) {
                         $bad_rcpt[] = $bcc->formated;
                         // implement call back function if it exists
@@ -298,24 +297,24 @@
                 }
 
 
-                if (count($bad_rcpt) > 0 ){
+                if (count($bad_rcpt) > 0) {
                     throw new Exception(ErrorMessages::RecipientsFailed . implode(', ', $bad_rcpt));
                 }
                 
-                if(!$this->smtp->Data($header . $body)){
+                if (!$this->smtp->Data($header . $body)) {
                     throw new Exception(ErrorMessages::DataNotAccepted);
                 }
 
-                if($this->SMTPKeepAlive) {
+                if ($this->SMTPKeepAlive) {
                     $this->smtp->Reset();
                 }
 
                 return true;
             }
 
-            private function SmtpConnect() {
-                
-                if(Variable::IsNull($this->smtp)){
+            private function SmtpConnect()
+            {
+                if (Variable::IsNull($this->smtp)) {
                     $this->smtp = new SMTP();
                 }
 
@@ -326,9 +325,7 @@
 
                 // Retry while there is no connection
                 try {
-                    
-                    while($index < count($hosts) && !$connection) {
-                        
+                    while ($index < count($hosts) && !$connection) {
                         $hostinfo = array();
                         
                         if (preg_match('/^(.+):([0-9]+)$/', $hosts[$index], $hostinfo)) {
@@ -343,12 +340,11 @@
                         $ssl = ($this->SMTPSecure == 'ssl');
 
                         if ($this->smtp->Connect(($ssl ? 'ssl://':'').$host, $port, $this->Timeout)) {
-
                             $hello = ($this->Helo != '' ? $this->Helo : $this->_hostName());
                             $this->smtp->Hello($hello);
 
                             if ($tls) {
-                                if (!$this->smtp->StartTLS()){
+                                if (!$this->smtp->StartTLS()) {
                                     throw new Exception(ErrorMessages::TLS);
                                 }
 
@@ -357,32 +353,27 @@
                             }
 
                             $connection = true;
-                            if ($this->SMTPAuth && !$this->smtp->Authenticate($this->Username, $this->UserPass)){
+                            if ($this->SMTPAuth && !$this->smtp->Authenticate($this->Username, $this->UserPass)) {
                                 throw new Exception(ErrorMessages::Authenticate);
                             }
                         }
                         
                         $index++;
-                        if (!$connection){
+                        if (!$connection) {
                             throw new Exception(ErrorMessages::ConnectHost);
                         }
-                            
                     }
-                    
-                } 
-                catch (Exception $e) {
-                    
+                } catch (Exception $e) {
                     $this->smtp->Reset();
                     throw $e;
-                    
                 }
                 
                 return true;
-                
             }
 
-            private function SmtpClose() {
-                if(!is_null($this->smtp) && $this->smtp->Connected()) {
+            private function SmtpClose()
+            {
+                if (!is_null($this->smtp) && $this->smtp->Connected()) {
                     $this->smtp->Quit();
                     $this->smtp->Close();
                 }
@@ -393,14 +384,13 @@
             * @access public
             * @return string
             */
-            private function _appendToHeader($type, $addr) {
-                if($addr instanceOf Address){
+            private function _appendToHeader($type, $addr)
+            {
+                if ($addr instanceof Address) {
                     return Helper::HeaderLine($type, $addr->formated);
-                }
-                elseif($addr instanceOf AddressList){
+                } elseif ($addr instanceof AddressList) {
                     return Helper::HeaderLine($type, $addr->Join());
-                }
-                else{
+                } else {
                     return Helper::HeaderLine($type, '');
                 }
             }
@@ -412,12 +402,13 @@
             * @access public
             * @return void
             */
-            private function _setWordWrap($m) {
-                if($m->wordwrap < 1){
+            private function _setWordWrap($m)
+            {
+                if ($m->wordwrap < 1) {
                     return;
                 }
 
-                switch($m->type) {
+                switch ($m->type) {
                     case 'alt':
                     case 'alt_attachments':
                         $m->altbody = Helper::WrapText($m->altbody, $m->wordwrap, $m->charset);
@@ -433,7 +424,8 @@
             * @access public
             * @return string The assembled header
             */
-            private function _createHeader(Message $m) {
+            private function _createHeader(Message $m)
+            {
                 $result = '';
                 
                 // Set the boundaries
@@ -442,66 +434,62 @@
                 $this->boundary[2] = 'b2_' . $uniq_id;
                 
                 $result .= Helper::HeaderLine('Date', Date::RFC());
-                if($m->returnpath != '') {
+                if ($m->returnpath != '') {
                     $result .= Helper::HeaderLine('Return-Path', '<' . trim($m->returnpath) . '>');
-                }
-                else {
-                    if(Variable::IsNull($this->Sender)) {
+                } else {
+                    if (Variable::IsNull($this->Sender)) {
                         $result .= Helper::HeaderLine('Return-Path', trim($m->from->formated));
-                    }
-                    else if(Variable::IsObject($this->Sender)) {
+                    } elseif (Variable::IsObject($this->Sender)) {
                         $result .= Helper::HeaderLine('Return-Path', trim($this->Sender->formated));
-                    }
-                    else if(Variable::IsString($this->Sender)) {
+                    } elseif (Variable::IsString($this->Sender)) {
                         $result .= Helper::HeaderLine('Return-Path', trim($this->Sender));
                     }
                 }
                 $result .= $this->_appendToHeader('From', $m->from);
 
                 // To be created automatically by mail()
-                if($this->Mailer != MailerTypes::Mail) {
-                    if($m->to->count > 0) {
+                if ($this->Mailer != MailerTypes::Mail) {
+                    if ($m->to->count > 0) {
                         $result .= $this->_appendToHeader('To', $m->to);
-                    } elseif($this->cc->count == 0) {
+                    } elseif ($this->cc->count == 0) {
                         $result .= $this->_appendToHeader('To', 'undisclosed-recipients:;');
                     }
                 }
                 
                 // sendmail and mail() extract Cc from the header before sending
-                if($m->cc->count > 0){
+                if ($m->cc->count > 0) {
                     $result .= $this->_appendToHeader('Cc', $m->cc);
                 }
 
                 // sendmail and mail() extract Bcc from the header before sending
-                if((($this->Mailer == MailerTypes::SendMail) || 
-                    ($this->Mailer == MailerTypes::Mail)) && 
-                    ($m->bcc->count > 0)){
+                if ((($this->Mailer == MailerTypes::SendMail) ||
+                    ($this->Mailer == MailerTypes::Mail)) &&
+                    ($m->bcc->count > 0)) {
                     $result .= $this->_appendToHeader('Bcc', $m->bcc);
                 }
 
-                if($m->replyto->count > 0){
+                if ($m->replyto->count > 0) {
                     $result .= $this->_appendToHeader('Reply-to', $m->replyto);
                 }
                 // mail() sets the subject itself
-                if($this->Mailer != MailerTypes::Mail){
-                $result .= Helper::HeaderLine('Subject', Helper::EncodeHeader(Helper::StripNewLines($m->subject), 'text', $m->charset));
+                if ($this->Mailer != MailerTypes::Mail) {
+                    $result .= Helper::HeaderLine('Subject', Helper::EncodeHeader(Helper::StripNewLines($m->subject), 'text', $m->charset));
                 }
 
-                if($m->id != ''){
+                if ($m->id != '') {
                     $result .= Helper::HeaderLine('Message-ID', '<'.$m->id.'@'.$this->_hostName().'>');
-                }
-                else{
+                } else {
                     $result .= sprintf("Message-ID: <%s@%s>%s", $uniq_id, $this->_hostName(), Helper::LE);
                 }
 
-                if($m->confirmreadingto != '') {
+                if ($m->confirmreadingto != '') {
                     $result .= Helper::HeaderLine('Disposition-Notification-To', '<' . trim($m->confirmreadingto) . '>');
                     $result .= Helper::HeaderLine('X-Confirm-Reading-To', '<' . trim($m->confirmreadingto) . '>');
                     $result .= Helper::HeaderLine('Return-Receipt-To', '<' . trim($m->confirmreadingto) . '>');
                 }
 
                 // Add custom headers
-                for($index = 0; $index < count($m->customheader); $index++){
+                for ($index = 0; $index < count($m->customheader); $index++) {
                     $result .= Helper::HeaderLine(trim($m->customheader[$index][0]), Helper::EncodeHeader(trim($m->customheader[$index][1]), 'text', $m->charset));
                 }
                     
@@ -518,20 +506,19 @@
             * @access public
             * @return string
             */
-            private function _getMailMIME($m) {
-                
+            private function _getMailMIME($m)
+            {
                 $result = '';
-                switch($m->type) {
+                switch ($m->type) {
                     case 'plain':
                         $result .= Helper::HeaderLine('Content-Transfer-Encoding', $m->encoding);
                         $result .= sprintf("Content-Type: %s; charset=\"%s\"", $m->contenttype, $m->charset);
                         break;
                     case 'attachments':
                     case 'alt_attachments':
-                        if($m->attachments->HasInline()){
+                        if ($m->attachments->HasInline()) {
                             $result .= sprintf("Content-Type: %s;%s\ttype=\"text/html\";%s\tboundary=\"%s\"%s", 'multipart/related', Helper::LE, Helper::LE, $this->boundary[1], Helper::LE);
-                        }
-                        else {
+                        } else {
                             $result .= Helper::HeaderLine('Content-Type', 'multipart/mixed;');
                             $result .= Helper::TextLine("\tboundary=\"" . $this->boundary[1] . '"');
                         }
@@ -545,7 +532,7 @@
                     }
                 }
 
-                if($this->Mailer != MailerTypes::Mail){
+                if ($this->Mailer != MailerTypes::Mail) {
                     $result .= Helper::LE.Helper::LE;
                 }
                 return $result;
@@ -556,17 +543,18 @@
             * @access public
             * @return string The assembled message body
             */
-            private function _createBody(Message $m) {
+            private function _createBody(Message $m)
+            {
                 $body = '';
 
-                if ($this->certificate){
+                if ($this->certificate) {
                     $body .= $this->_getMailMIME($m);
                 }
 
                 $this->_setWordWrap($m);
 
                 try {
-                    switch($m->type) {
+                    switch ($m->type) {
                         case 'alt':{
                             $body .= Helper::GetBoundaryBegin($this->boundary[1], '', 'text/plain', '');
                             $body .= Helper::EncodeString($m->altbody, $m->encoding);
@@ -605,12 +593,11 @@
                             break;
                         }
                     }
-                }
-                catch(Exception $e) {
+                } catch (Exception $e) {
                     $body = '';
                 }
                 
-                if($body != '' && $this->certificate) {
+                if ($body != '' && $this->certificate) {
                     try {
                         $file = tempnam('', 'mail');
                         file_put_contents($file, $body);
@@ -639,7 +626,8 @@
             * @access private
             * @return string
             */
-            private function AttachAll(Message $m) {
+            private function AttachAll(Message $m)
+            {
                 // Return text of body
                 $mime = array();
                 $cidUniq = array();
@@ -649,16 +637,15 @@
                 foreach ($m->attachments as $attachment) {
                                     
                     // Check for string attachment
-                    if ($attachment->isString){
+                    if ($attachment->isString) {
                         $string = $attachment->path;
-                    }
-                    else{
+                    } else {
                         $path = $attachment->path;
                     }
                     
 
                     if (in_array($attachment->path, $incl)) {
-                        continue; 
+                        continue;
                     }
                     
                     $name        = $attachment->name;
@@ -668,24 +655,24 @@
                     $cid         = $attachment->cid;
                     $incl[]      = $attachment->path;
                     
-                    if ( $disposition == 'inline' && isset($cidUniq[$cid]) ) {
+                    if ($disposition == 'inline' && isset($cidUniq[$cid])) {
                         continue;
                     }
                         
                     $cidUniq[$cid] = true;
 
                     $mime[] = sprintf("--%s%s", $this->boundary[1], Helper::LE);
-                    $mime[] = sprintf("Content-Type: %s; name=\"%s\"%s%s", $type, Helper::EncodeHeader(Helper::StripNewLines($name), 'text', $m->charset), ($attachment->charset ? '; charset='.$attachment->charset : '') ,Helper::LE);
+                    $mime[] = sprintf("Content-Type: %s; name=\"%s\"%s%s", $type, Helper::EncodeHeader(Helper::StripNewLines($name), 'text', $m->charset), ($attachment->charset ? '; charset='.$attachment->charset : ''), Helper::LE);
                     $mime[] = sprintf("Content-Transfer-Encoding: %s%s", $encoding, Helper::LE);
                     
-                    if($disposition == 'inline'){
+                    if ($disposition == 'inline') {
                         $mime[] = sprintf("Content-ID: <%s>%s", $cid, Helper::LE);
                     }
 
                     $mime[] = sprintf("Content-Disposition: %s; filename=\"%s\"%s", $disposition, Helper::EncodeHeader(Helper::StripNewLines($name), 'text', $m->charset), Helper::LE.Helper::LE);
 
                     // Encode as string attachment
-                    if($attachment->isString) {
+                    if ($attachment->isString) {
                         $mime[] = Helper::EncodeString($string, $encoding);
                         $mime[] = Helper::LE.Helper::LE;
                     } else {
@@ -704,16 +691,14 @@
             * @access private
             * @return string
             */
-            private function _hostName() {
-                
-                if($this->DOMAIN != ''){
+            private function _hostName()
+            {
+                if ($this->DOMAIN != '') {
                     $result = $this->DOMAIN;
-                }
-                else {
-                    if (isset($_SERVER['SERVER_NAME'])){
+                } else {
+                    if (isset($_SERVER['SERVER_NAME'])) {
                         $result = $_SERVER['SERVER_NAME'];
-                    }
-                    else{
+                    } else {
                         $result = 'localhost.localdomain';
                     }
                 }
@@ -721,10 +706,11 @@
             }
 
             
-            protected function doCallback($isSent,$to,$cc,$bcc,$subject,$body) {
+            protected function doCallback($isSent, $to, $cc, $bcc, $subject, $body)
+            {
                 if (!empty($this->callback) && function_exists($this->callbackcallback)) {
-                $params = array($isSent,$to,$cc,$bcc,$subject,$body);
-                call_user_func_array($this->callback,$params);
+                    $params = array($isSent,$to,$cc,$bcc,$subject,$body);
+                    call_user_func_array($this->callback, $params);
                 }
             }
         }

@@ -11,7 +11,8 @@
         /**
          * Типы отправителей
          */
-        class MailerTypes {
+        class MailerTypes
+        {
             const Mail      = "mail";
             const SendMail  = "sendmail";
             const Smtp      = "smtp";
