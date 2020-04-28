@@ -1,5 +1,12 @@
 <?php
 
+    /**
+     * Graphics
+     *
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2019 Colibri
+     * @package Colibri\Graphics
+     */
     namespace Colibri\Graphics {
 
         use Colibri\FileSystem\File;
@@ -8,17 +15,17 @@
 
         /**
          * Работа с изображениями
-         * 
+         *
          * @property-read bool $isvalid
          * @property-read Size $size
          * @property string $type
          * @property-read string $data
          * @property-read int $transparency
          * @property-read string $name
-         * 
+         *
          */
-        class Graphics {
-            
+        class Graphics
+        {
             private $_img;
             private $_size;
             private $_type;
@@ -26,21 +33,24 @@
             
             private $_history = array();
             
-            public function __construct() {
+            public function __construct()
+            {
                 $this->_img = null;
                 $this->_size = new Size(0, 0);
                 $this->_type = 'unknown';
             }
             
-            public function __destruct() {
-                if(is_resource($this->_img)) {
+            public function __destruct()
+            {
+                if (is_resource($this->_img)) {
                     @imagedestroy($this->_img);
                 }
             }
             
-            public function __get($property) {
+            public function __get($property)
+            {
                 $return = null;
-                switch(strtolower($property)) {
+                switch (strtolower($property)) {
                     case 'isvalid':{
                         $return = !is_null($this->_img);
                         break;
@@ -58,7 +68,7 @@
                         break;
                     }
                     case 'transparency':{
-                        if(!is_null($this->_img)) {
+                        if (!is_null($this->_img)) {
                             $return = @imagecolortransparent($this->_img);
                         }
                         break;
@@ -74,8 +84,9 @@
                 return $return;
             }
             
-            public function __set($property, $value) {
-                if(strtolower($property) == 'type') {
+            public function __set($property, $value)
+            {
+                if (strtolower($property) == 'type') {
                     $this->_type = $value;
                 }
             }
@@ -86,7 +97,8 @@
              * @param string $data
              * @return void
              */
-            public function LoadFromData($data) {
+            public function LoadFromData($data)
+            {
                 $this->_file = basename(Randomization::Mixed(20));
                 $this->_img = @imagecreatefromstring($data);
                 $this->_size = new Size(imagesx($this->_img), imagesy($this->_img));
@@ -100,12 +112,13 @@
              * @param string $file
              * @return void
              */
-            public function LoadFromFile($file) {
+            public function LoadFromFile($file)
+            {
                 $this->_file = basename($file);
                 $pp = explode('.', $file);
                 $this->_type = strtolower($pp[count($pp) - 1]);
                 
-                switch($this->_type) {
+                switch ($this->_type) {
                     case 'png':
                         $this->_img = imagecreatefrompng($file);
                         break;
@@ -132,7 +145,8 @@
              * @param Size $size
              * @return void
              */
-            public function LoadEmptyImage($size) {
+            public function LoadEmptyImage($size)
+            {
                 $this->_type = "unknown";
                 $this->_img = imagecreatetruecolor($size->width, $size->height);
                 $this->_size = $size;
@@ -146,8 +160,9 @@
              * @param Size $size
              * @return void
              */
-            public function Resize($size) {
-                if($this->isValid) {
+            public function Resize($size)
+            {
+                if ($this->isValid) {
                     $newImage = imagecreatetruecolor($size->width, $size->height);
                     imagealphablending($newImage, false);
                     imagesavealpha($newImage, true);
@@ -165,10 +180,11 @@
              * @param integer $degree
              * @return void
              */
-            public function Rotate($degree = 90) {
-                $this->_img = imagerotate($this->_img, $degree, -1); 
-                imagealphablending($this->_img, true); 
-                imagesavealpha($this->_img, true);             
+            public function Rotate($degree = 90)
+            {
+                $this->_img = imagerotate($this->_img, $degree, -1);
+                imagealphablending($this->_img, true);
+                imagesavealpha($this->_img, true);
             }
             
             /**
@@ -178,14 +194,25 @@
              * @param Point $start
              * @return void
              */
-            public function Crop($size, $start = null) {
-                if($this->isValid) {
-                    if(is_null($start)) {
+            public function Crop($size, $start = null)
+            {
+                if ($this->isValid) {
+                    if (is_null($start)) {
                         $start = new Point(0, 0);
                     }
                     $newImage = ImageCreateTrueColor($size->width, $size->height);
-                    ImageCopyResampled($newImage, $this->_img, 0, 0, $start->x, $start->y,
-                                    $size->width, $size->height, $size->width, $size->height);
+                    ImageCopyResampled(
+                        $newImage,
+                        $this->_img,
+                        0,
+                        0,
+                        $start->x,
+                        $start->y,
+                        $size->width,
+                        $size->height,
+                        $size->width,
+                        $size->height
+                    );
                     ImageDestroy($this->_img);
                     $this->_img = $newImage;
                     $this->size = $size;
@@ -203,9 +230,10 @@
              * @param integer $arg3
              * @return void
              */
-            public function ApplyFilter($filter, $arg1 = 0, $arg2 = 0, $arg3 = 0) {
+            public function ApplyFilter($filter, $arg1 = 0, $arg2 = 0, $arg3 = 0)
+            {
                 $return = null;
-                switch($filter) {
+                switch ($filter) {
                     case IMG_FILTER_NEGATE:{
                         $this->_history[] = array('operation' => 'filter', 'postfix' => 'negate');
                         $return = imagefilter($this->_img, $filter);
@@ -266,7 +294,7 @@
                     }
                 }
                 return $return;
-            }        
+            }
             
             /**
              * Сохраняет в файл
@@ -274,8 +302,9 @@
              * @param string $file
              * @return void
              */
-            public function Save($file) {
-                switch($this->_type) {
+            public function Save($file)
+            {
+                switch ($this->_type) {
                     case 'png':
                         imagepng($this->_img, $file);
                         break;
@@ -289,18 +318,20 @@
                     default:
                         imagegd2($this->_img, $file);
                         break;
-                }            
+                }
             }
             
-            private function _safeAlpha() {
+            private function _safeAlpha()
+            {
                 // save alpha
                 imagealphablending($this->_img, 1);
                 imagesavealpha($this->_img, 1);
             }
             
-            private function _getImageData() {
+            private function _getImageData()
+            {
                 $tempFile = tempnam(null, null);
-                switch($this->_type) {
+                switch ($this->_type) {
                     case 'png':
                         imagepng($this->_img, $tempFile);
                         break;
@@ -314,7 +345,7 @@
                     default:
                         imagegd2($this->_img, $tempFile);
                         break;
-                }            
+                }
                 
                 $c = file_get_contents($tempFile);
                 unlink($tempFile);
@@ -327,7 +358,8 @@
              * @param string $path
              * @return void
              */
-            public static function Info($path) {
+            public static function Info($path)
+            {
                 list($width, $height, $type, $attr) = getimagesize($path);
                 $o = new ObjectEx();
                 $o->size = new Size($width, $height);
@@ -342,22 +374,20 @@
              * @param string $data
              * @return Graphics
              */
-            public static function Create($data) {
+            public static function Create($data)
+            {
                 $g = new Graphics();
                 
-                if($data instanceOf Size) {
+                if ($data instanceof Size) {
                     $g->LoadEmptyImage($data);
-                }
-                else if(File::Exists($data)) {
+                } elseif (File::Exists($data)) {
                     $g->LoadFromFile($data);
-                }
-                else {
+                } else {
                     $g->LoadFromData($data);
                 }
                 
                 return $g;
             }
-            
         }
 
     }

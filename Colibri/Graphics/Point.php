@@ -1,5 +1,12 @@
 <?php
 
+    /**
+     * Graphics
+     *
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2019 Colibri
+     * @package Colibri\Graphics
+     */
     namespace Colibri\Graphics {
             
         /**

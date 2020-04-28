@@ -1,9 +1,16 @@
 <?php
 
+    /**
+     * Graphics
+     *
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2019 Colibri
+     * @package Colibri\Graphics
+     */
     namespace Colibri\Graphics {
 
         /**
-         * Класс предсталвляющий размер
+         * Класс представляющий размер
          * 
          * @property-read string $style вернуть текст для аттрибута style
          * @property-read string $attributes вернуть текст в виде аттрибутов
