@@ -10,7 +10,7 @@
      */
     namespace Colibri\Security {
 
-        use Colibri\Encryption\Rc4Crypt;
+        use Colibri\Encryption\Crypt;
         use Colibri\Utils\ObjectEx;
         use Colibri\Xml\XmlNode;
 
@@ -43,7 +43,7 @@
                 } else {
                     $this->permissions = array();
                 }
-                $this->password = Rc4Crypt::Decrypt($this->name, $this->password);
+                $this->password = Crypt::Decrypt($this->name, $this->password);
             }
 
             /**
@@ -131,7 +131,7 @@
                 $userData['name'] = $this->name;
                 $userData['fio'] = $this->fio;
                 $userData['avatar'] = $this->avatar;
-                $userData['password'] = Rc4Crypt::Encrypt($this->name, $this->password);
+                $userData['password'] = Crypt::Encrypt($this->name, $this->password);
                 $userData['role'] = $this->role->id;
                 $userData['permissions'] = $permissions;
 

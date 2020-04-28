@@ -1,12 +1,11 @@
 <?php
 
     /**
-     * Шифрование
+     * Encryption
      * 
      * @author Ваган Григорян <vahan.grigoryan@gmail.com>
      * @copyright 2019 Colibri
-     * @package Colibri\Helpers
-     * @version 1.0.0
+     * @package Colibri\Encryption
      * 
      */
     namespace Colibri\Encryption {
