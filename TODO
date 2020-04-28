@@ -1,0 +1,1 @@
+sonar-scanner.bat -D"sonar.projectKey=colibriv8" -D"sonar.sources=." -D"sonar.exclusions=**/*.xml,vendor/**/*" -D"sonar.host.url=http://sq01.bsft.loc" -D"sonar.login=cf0f9cb8170431f8e4b8a94b67fa34091aa5acd1"

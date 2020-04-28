@@ -137,7 +137,7 @@
             public function Get($name)
             {
                 if (isset($this->_accessPointsPool[$name])) {
-                    $return = $this->_accessPointsPool[$name];
+                    return $this->_accessPointsPool[$name];
                 }
 
                 if (isset($this->_accessPoints->points) && isset($this->_accessPoints->points->$name)) {
@@ -167,12 +167,11 @@
                         'driver' => $this->_accessPoints->drivers->$accessPointType
                     ];
 
-                    $return = new DataAccessPoint($accessPointInit);
+                    return new DataAccessPoint($accessPointInit);
                 } else {
                     throw new DataAccessPointsException('Unknown access point type');
                 }
 
-                return $return;
             }
 
             /**

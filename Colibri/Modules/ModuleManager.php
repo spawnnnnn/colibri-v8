@@ -140,9 +140,7 @@
              */
             public function GetPermissions()
             {
-                $permissions = [];
-
-                return $permissions;
+                return [];
             }
         }
     }

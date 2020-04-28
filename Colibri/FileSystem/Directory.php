@@ -8,8 +8,6 @@
      */
     namespace Colibri\FileSystem {
 
-        use Colibri\AppException;
-
         /**
          * Класс для работы с директориями
          *
@@ -26,12 +24,10 @@
          * @property-write boolean $hidden
          *
          */
-        class Directory
+        class Directory extends Node
         {
-            private $attributes;
             private $path;
             private $parent;
-            private $access;
             private $pathArray;
 
             /**
@@ -88,43 +84,6 @@
                 return $return;
             }
 
-            public function __set($property, $value)
-            {
-                switch ($property) {
-                    case 'created':
-                        $this->getAttributesObject()->created = $value;
-                        break;
-                    case 'modified':
-                        $this->getAttributesObject()->modified = $value;
-                        break;
-                    case 'readonly':
-                        $this->getAttributesObject()->readonly = $value;
-                        break;
-                    case 'hidden':
-                        $this->getAttributesObject()->hidden = $value;
-                        break;
-                    default: {
-                        break;
-                    }
-                }
-            }
-
-            protected function getAttributesObject()
-            {
-                if ($this->attributes === null) {
-                    $this->attributes = new Attributes($this);
-                }
-                return $this->attributes;
-            }
-
-            protected function getSecurityObject()
-            {
-                if ($this->access === null) {
-                    $this->access = new Security($this);
-                }
-                return $this->attributes;
-            }
-
             /**
              * Копирует директорию
              *
@@ -133,7 +92,7 @@
              */
             public function CopyTo($path)
             {
-                Directory::copy($this->path, $path);
+                self::Copy($this->path, $path);
             }
 
             /**
@@ -144,7 +103,7 @@
              */
             public function MoveTo($path)
             {
-                Directory::move($this->path, $path);
+                self::Move($this->path, $path);
             }
 
             /**
@@ -167,7 +126,7 @@
             {
                 try {
                     return substr($path, strlen($path) - 1, 1) == '/';
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     return false;
                 }
             }
@@ -193,16 +152,16 @@
              */
             public static function Create($path, $recursive = true, $mode = 0777)
             {
-                if (!Directory::Exists($path)) {
+                if (!self::Exists($path)) {
                     $path2 = dirname($path[strlen($path) - 1] == '/' ? $path . '#' : $path);
                     mkdir($path2, $mode, $recursive);
                     try {
                         chmod($path2, $mode);
-                    } catch (\Exception $e) {
+                    } catch (Exception $e) {
                     }
                 }
 
-                return new Directory($path);
+                return new self($path);
             }
 
             /**
@@ -213,8 +172,8 @@
              */
             public static function Delete($path)
             {
-                if (!Directory::exists($path)) {
-                    throw new AppException('directory not exists');
+                if (!self::Exists($path)) {
+                    throw new Exception('directory not exists');
                 }
 
                 if (is_dir($path)) {
@@ -222,7 +181,7 @@
                     foreach ($objects as $object) {
                         if ($object != '.' && $object != '..') {
                             if (is_dir($path."/".$object)) {
-                                Directory::Delete($path.'/'.$object);
+                                self::Delete($path.'/'.$object);
                             } else {
                                 unlink($path.'/'.$object);
                             }
@@ -241,19 +200,19 @@
              */
             public static function Copy($from, $to)
             {
-                if (!Directory::Exists($from)) {
-                    throw new AppException('source directory not exists');
+                if (!self::Exists($from)) {
+                    throw new Exception('source directory not exists');
                 }
 
-                if (!Directory::Exists($to)) {
-                    Directory::Create($to, true, 0766);
+                if (!self::Exists($to)) {
+                    self::Create($to, true, 0766);
                 }
 
                 $dir = opendir($from);
                 while (false !== ($file = readdir($dir))) {
                     if (($file != '.') && ($file != '..')) {
                         if (is_dir($from . '/' . $file)) {
-                            Directory::Copy($from . '/' . $file . '/', $to . '/' . $file . '/');
+                            self::Copy($from . '/' . $file . '/', $to . '/' . $file . '/');
                         } else {
                             File::Copy($from . '/' . $file, $to . '/' . $file);
                         }
@@ -271,11 +230,11 @@
              */
             public static function Move($from, $to)
             {
-                if (!Directory::exists($from)) {
-                    throw new AppException('source directory not exists');
+                if (!self::exists($from)) {
+                    throw new Exception('source directory not exists');
                 }
-                if (Directory::exists($to)) {
-                    throw new AppException('target directory exists');
+                if (self::exists($to)) {
+                    throw new Exception('target directory exists');
                 }
 
                 rename($from, $to);

@@ -8,8 +8,6 @@
      */
     namespace Colibri\FileSystem {
 
-        use Colibri\AppException;
-
         /**
          * Класс для работы с файлами
          *
@@ -30,12 +28,10 @@
          * @property-write boolean $hidden
          *
          */
-        class File
+        class File extends Node
         {
-            private $attributes;
             private $info;
             private $_size = 0;
-            private $access;
 
             /**
              * Конструктор
@@ -46,7 +42,7 @@
             {
                 $this->info = Directory::PathInfo($path);
                 if ($this->info['basename'] == '') {
-                    throw new AppException('path argument is not a file path');
+                    throw new Exception('path argument is not a file path');
                 }
 
                 if ($this->info['dirname'] == '.') {
@@ -104,7 +100,7 @@
                         break;
                     }
                     case 'exists': {
-                        $return = File::exists($this->path);
+                        $return = self::exists($this->path);
                         break;
                     }
                     case 'access': {
@@ -112,7 +108,7 @@
                         break;
                     }
                     case 'content': {
-                        if (File::exists($this->path)) {
+                        if (self::exists($this->path)) {
                             $return = file_get_contents($this->path);
                         }
                         break;
@@ -129,45 +125,6 @@
                 return $return;
             }
 
-            public function __set($property, $value)
-            {
-                switch (strtolower($property)) {
-                    case 'created':
-                        $this->getAttributesObject()->created = $value;
-                        break;
-                    case 'modified':
-                        $this->getAttributesObject()->modified = $value;
-                        break;
-                    case 'readonly':
-                        $this->getAttributesObject()->readonly = $value;
-                        break;
-                    case 'hidden':
-                        $this->getAttributesObject()->hidden = $value;
-                        break;
-                    default: {
-                        break;
-                    }
-                }
-            }
-
-            protected function getAttributesObject()
-            {
-                if ($this->attributes === null) {
-                    $this->attributes = new Attributes($this);
-                }
-
-                return $this->attributes;
-            }
-
-            protected function getSecurityObject()
-            {
-                if ($this->access === null) {
-                    $this->access = new Security($this);
-                }
-
-                return $this->access;
-            }
-
             /**
              * Копирует файл
              *
@@ -176,7 +133,7 @@
              */
             public function CopyTo($path)
             {
-                File::copy($this->path, $path);
+                self::Copy($this->path, $path);
             }
 
             /**
@@ -187,7 +144,7 @@
              */
             public function MoveTo($path)
             {
-                File::move($this->path, $path);
+                self::Move($this->path, $path);
             }
 
             /**
@@ -208,7 +165,7 @@
              */
             public static function Read($path)
             {
-                if (File::Exists($path)) {
+                if (self::Exists($path)) {
                     return file_get_contents($path);
                 }
                 return false;
@@ -225,8 +182,8 @@
              */
             public static function Write($path, $content, $recursive = false, $mode = 0777)
             {
-                if (!File::Exists($path)) {
-                    File::Create($path, $recursive, $mode);
+                if (!self::Exists($path)) {
+                    self::Create($path, $recursive, $mode);
                 }
 
                 file_put_contents($path, $content);
@@ -243,8 +200,8 @@
              */
             public static function Append($path, $content, $recursive = false, $mode = 0777)
             {
-                if (!File::Exists($path)) {
-                    File::Create($path, $recursive, $mode);
+                if (!self::Exists($path)) {
+                    self::Create($path, $recursive, $mode);
                 }
 
                 file_put_contents($path, $content, FILE_APPEND);
@@ -258,7 +215,7 @@
              */
             public static function Open($path)
             { //ireader
-                if (File::Exists($path)) {
+                if (self::Exists($path)) {
                     return new FileStream($path);
                 }
                 return false;
@@ -283,10 +240,10 @@
              */
             public static function IsEmpty($path)
             {
-                try { //use exception | file_exists ?
+                try { 
                     $info = stat($path);
                     return $info['size'] == 0;
-                } catch (AppException $e) {
+                } catch (Exception $e) {
                     return true;
                 }
             }
@@ -305,7 +262,7 @@
                     Directory::Create($path, $recursive, $mode);
                 }
 
-                if (!File::Exists($path)) {
+                if (!self::Exists($path)) {
                     touch($path);
                 }
 
@@ -320,8 +277,8 @@
              */
             public static function Delete($path)
             {
-                if (!File::exists($path)) {
-                    throw new AppException('file not exists');
+                if (!self::Exists($path)) {
+                    throw new Exception('file not exists');
                 }
 
                 return unlink($path);
@@ -336,8 +293,8 @@
              */
             public static function Copy($from, $to)
             {
-                if (!File::exists($from)) {
-                    throw new AppException('file not exists');
+                if (!self::Exists($from)) {
+                    throw new Exception('file not exists');
                 }
 
                 copy($from, $to);
@@ -352,8 +309,8 @@
              */
             public static function Move($from, $to)
             {
-                if (!File::exists($from)) {
-                    throw new AppException('source file not exists');
+                if (!self::Exists($from)) {
+                    throw new Exception('source file not exists');
                 }
 
                 rename($from, $to);
