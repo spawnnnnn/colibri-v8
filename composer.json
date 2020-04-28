@@ -1,0 +1,22 @@
+{
+    "name": "colibri/corev8",
+    "description": "Colibri v8 Core",
+    "type": "library",
+    "license": "MIT",
+    "keywords": ["core","php","engine","free"],
+    "homepage": "http://colibrilab.ru/",
+    "authors": [
+        {
+            "name": "Vahan P. Grigoryan",
+            "email": "vahan.grigoryan@gmail.com",
+            "homepage": "http://colibrilab.ru",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Colibri\\": "Colibri/",
+            "App\\": "App/"
+        }
+    }
+}
