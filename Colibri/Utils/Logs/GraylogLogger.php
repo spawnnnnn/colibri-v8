@@ -1,6 +1,13 @@
 <?php
     
-    
+    /**
+     * Logger classes
+     * 
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2020 ColibriLab
+     * @package Colibri\Utils\Logs
+     * 
+     */
     namespace Colibri\Utils\Logs {
         
         /**

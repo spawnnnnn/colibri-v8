@@ -1,5 +1,13 @@
 <?php
 
+    /**
+     * Utilities
+     * 
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2020 ColibriLab
+     * @package Colibri\Utils
+     * 
+     */
     namespace Colibri\Utils {
 
         use Colibri\Events\TEventDispatcher;

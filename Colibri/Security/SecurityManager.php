@@ -1,27 +1,75 @@
 <?php
 
+    /**
+     * Security classes
+     * 
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2020 ColibriLab
+     * @package Colibri\Security
+     * 
+     */
     namespace Colibri\Security {
 
         use Colibri\App;
         use Colibri\Events\TEventDispatcher;
         use Colibri\Events\EventsContainer;
-    use Colibri\Utils\Debug;
 
-class SecurityManager
+        /**
+         * Класс управления правами и пользователями
+         * 
+         * @property-read IDataAdapter $dataAdapter
+         */
+        class SecurityManager
         {
             use TEventDispatcher;
 
+            /**
+             * Синглтон
+             *
+             * @var SecurityManager
+             */
             public static $instance;
 
+            /**
+             * Список прав
+             *
+             * @var array
+             */
             private $_permissions;
+
+            /**
+             * Дерево прав
+             *
+             * @var array
+             */
             private $_permissionsTree;
+
+            /**
+             * Адаптер данных
+             *
+             * @var IDataAdapter
+             */
+            private $_dataAdapter;
 
             public function __construct()
             {
                 $this->_permissions = [];
                 $this->_permissionsTree = [];
+
+                $dataAdapterClass = 'Colibri\\Security\\Adapters\\'.App::$config->Query('security.data-adapter')->GetValue();
+                $this->_dataAdapter = new $dataAdapterClass(
+                    App::$config->Query('security.access-point')->GetValue(), 
+                    App::$config->Query('security.users-source')->GetValue(), 
+                    App::$config->Query('security.roles-source')->GetValue()
+                );
+
             }
 
+            /**
+             * Статичесий конструктор
+             *
+             * @return SecurityManager
+             */
             public static function Create()
             {
                 if (!self::$instance) {
@@ -31,6 +79,11 @@ class SecurityManager
                 return self::$instance;
             }
 
+            /**
+             * Возвращает список прав для SecurityManager
+             *
+             * @return array
+             */
             public function GetPermissions() {
                 $permissions = [];
 
@@ -47,10 +100,16 @@ class SecurityManager
                 return $permissions;
             }
 
+            /**
+             * Инициализация модуля
+             *
+             * @return void
+             */
             public function Initialize()
             {
                 
-
+                $this->Install();
+                
                 // подключение прав приложения
                 if(method_exists(App::$instance, 'GetPermissions')) {
                     $this->_permissions = array_merge($this->_permissions, App::$instance->GetPermissions());
@@ -77,6 +136,11 @@ class SecurityManager
                 $this->DispatchEvent(EventsContainer::SecurityManagerReady);
             }
 
+            /**
+             * Создает дерево прав для управления
+             *
+             * @return array
+             */
             public function CreatePermissionsTree() {
 
                 $tree = [];
@@ -93,6 +157,35 @@ class SecurityManager
                 }
                 return $tree;
     
+            }
+
+            /**
+             * Установка модуля
+             *
+             * @return void
+             */
+            public function Install()
+            {
+                return $this->_dataAdapter->Create();
+            }
+
+            /**
+             * Удаление модуля
+             *
+             * @return void
+             */
+            public function Uninstall()
+            {
+                // nothing to do
+                return $this->_dataAdapter->Dispose();
+            }
+
+            public function __get($name)
+            {
+                if(strtolower($name) == 'dataadapter') {
+                    return $this->_dataAdapter;
+                }
+                return null;
             }
 
         }

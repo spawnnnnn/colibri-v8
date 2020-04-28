@@ -1,10 +1,21 @@
 <?php
 
+    /**
+     * Utilities
+     * 
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2020 ColibriLab
+     * @package Colibri\Utils
+     * 
+     */
     namespace Colibri\Utils {
 
         use Colibri\App;
         use Colibri\Utils\Logs\Logger;
 
+        /**
+         * Методы для вывода отладочной информации
+         */
         class Debug {
 
             /**
