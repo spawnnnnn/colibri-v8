@@ -1,18 +1,16 @@
 <?php
     /**
-     * Mime типы и преобразования
-     * 
+     * Helpers
+     *
      * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
      * @copyright 2019 Colibri
      * @package Colibri\Helpers
-     * 
-     * 
      */
     namespace Colibri\Helpers {
 
         /**
          * Mime типы
-         * 
+         *
          * @property-read string $data
          * @property-read bool $isCapable
          * @property-read bool $isValid
@@ -315,7 +313,6 @@
                 }
                 return false;
             }
-        
         }
 
     }

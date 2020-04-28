@@ -1,11 +1,18 @@
 <?php
-
+    /**
+     * Helpers
+     *
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2019 Colibri
+     * @package Colibri\Helpers
+     */
     namespace Colibri\Helpers {
 
         /**
          * Обертки на всякие разные функции PHP
          */
-        class Variable {
+        class Variable
+        {
             
             /**
              * Проверить пустое ли значение в переменной
@@ -13,8 +20,9 @@
              * @param mixed $var
              * @return boolean
              */
-            static function IsEmpty($var) {
-                if(is_object($var)){
+            public static function IsEmpty($var)
+            {
+                if (is_object($var)) {
                     return is_null($var);
                 }
                 return ($var === null || $var === "");
@@ -26,7 +34,8 @@
              * @param mixed $var
              * @return boolean
              */
-            static function IsNull($var) {
+            public static function IsNull($var)
+            {
                 return is_null($var);
             }
             
@@ -36,7 +45,8 @@
              * @param mixed $var
              * @return boolean
              */
-            static function IsObject($var) {
+            public static function IsObject($var)
+            {
                 return is_object($var);
             }
             
@@ -46,7 +56,8 @@
              * @param mixed $var
              * @return boolean
              */
-            static function IsArray($var) {
+            public static function IsArray($var)
+            {
                 return is_array($var);
             }
             
@@ -56,7 +67,8 @@
              * @param mixed $var
              * @return boolean
              */
-            static function IsBool($var) {
+            public static function IsBool($var)
+            {
                 return is_bool($var);
             }
             
@@ -66,7 +78,8 @@
              * @param mixed $var
              * @return boolean
              */
-            static function IsString($var) {
+            public static function IsString($var)
+            {
                 return is_string($var);
             }
             
@@ -76,9 +89,10 @@
              * @param mixed $var
              * @return boolean
              */
-            static function IsNumeric($var) {
+            public static function IsNumeric($var)
+            {
                 return is_numeric($var);
-            }    
+            }
             
             /**
              * Проверить не дата ли в переменной
@@ -86,22 +100,18 @@
              * @param mixed $var
              * @return boolean
              */
-            static function IsDate($var) {
-                
-                if(!$var) {
+            public static function IsDate($var)
+            {
+                if (!$var || is_null($var)) {
                     return false;
                 }
 
-                if(is_null($var)) {
-                    return false;
-                }
-
-                if(is_string($var)) {
+                if (is_string($var)) {
                     return strtotime($var) !== false;
-                }            
-                else {
-                    return true;
-                }
+                } 
+                
+                return true;
+
             }
             
             /**
@@ -110,12 +120,13 @@
              * @param mixed $value
              * @return boolean
              */
-            function IsTime($value) {
-                if(preg_match('/\d{2}:\d{2}/', $value, $matches) > 0){
+            public function IsTime($value)
+            {
+                if (preg_match('/\d{2}:\d{2}/', $value, $matches) > 0) {
                     return true;
                 }
                 return false;
-            }    
+            }
 
             /**
              * Изменить регистр значений
@@ -124,8 +135,9 @@
              * @param int $case
              * @return array
              */
-            static function ChangeArrayValueCase($array, $case = CASE_LOWER) {
-                for($i=0; $i<count($array); $i++) {
+            public static function ChangeArrayValueCase($array, $case = CASE_LOWER)
+            {
+                for ($i=0; $i<count($array); $i++) {
                     $array[$i] = $case == CASE_LOWER ? Strings::ToLower($array[$i]) : Strings::ToUpper($array[$i]);
                 }
                 return $array;
@@ -138,7 +150,8 @@
              * @param int $case
              * @return array
              */
-            static function ChangeArrayKeyCase($array, $case = CASE_LOWER) {
+            public static function ChangeArrayKeyCase($array, $case = CASE_LOWER)
+            {
                 return array_change_key_case($array, $case);
             }
             
@@ -148,7 +161,8 @@
              * @param stdClass $object
              * @return array
              */
-            static function ObjectToArray($object) {
+            public static function ObjectToArray($object)
+            {
                 if (Variable::IsObject($object)) {
                     $object = get_object_vars($object);
                     
@@ -166,7 +180,8 @@
              * @param array $array
              * @return stdClass
              */
-            static function ArrayToObject($array) {
+            public static function ArrayToObject($array)
+            {
                 if (Variable::IsObject($array)) {
                     $array = get_object_vars($array);
                 }
@@ -177,23 +192,23 @@
                     $array = (object) $array;
                 }
                 return $array;
-                
             }
 
             /**
-             * Проверяет ассоциативный ли массив 
+             * Проверяет ассоциативный ли массив
              *
              * @param array $array
              * @return boolean
              */
-            public static function IsAssociativeArray($array) {
-                if(!is_array($array)) {
+            public static function IsAssociativeArray($array)
+            {
+                if (!is_array($array)) {
                     return false;
                 }
 
                 $keys = array_keys($array);
-                foreach($keys as $key) {
-                    if(!is_numeric($key)) {
+                foreach ($keys as $key) {
+                    if (!is_numeric($key)) {
                         return true;
                     }
                 }
@@ -206,7 +221,8 @@
              * @param string $data
              * @return string
              */
-            static function Bin2Hex($data) {
+            public static function Bin2Hex($data)
+            {
                 return bin2hex($data);
             }
             
@@ -216,12 +232,12 @@
              * @param string $data
              * @return string
              */
-            static function Hex2Bin($data) {
+            public static function Hex2Bin($data)
+            {
                 $len = strlen($data);
                 try {
                     return pack("H" . $len, $data);
-                }
-                catch(\Exception $e) {
+                } catch (\Exception $e) {
                     return '';
                 }
             }
@@ -232,9 +248,10 @@
              * @param string $v
              * @return boolean
              */
-            static function isSerialized($v) {
+            public static function isSerialized($v)
+            {
                 $vv = @unserialize($v);
-                if(is_array($vv) || is_object($vv)){
+                if (is_array($vv) || is_object($vv)) {
                     return true;
                 }
                 return false;
@@ -246,7 +263,8 @@
              * @param mixed $obj
              * @return string
              */
-            static function Serialize($obj) {
+            public static function Serialize($obj)
+            {
                 return '0x'.Variable::Bin2Hex(serialize($obj));
             }
 
@@ -256,26 +274,27 @@
              * @param string $string
              * @return mixed
              */
-            static function Unserialize($string) {
-                if(substr($string, 0, 2) == '0x'){
+            public static function Unserialize($string)
+            {
+                if (substr($string, 0, 2) == '0x') {
                     $string = Variable::Hex2Bin(substr($string, 2));
                 }
                 return @unserialize($string);
             }
             
             /**
-             * Создает ключ массива строк 
+             * Создает ключ массива строк
              * md5([md5(value1).md5(value2)...])
              *
              * @param array $array
              * @return string
              */
-            static function CreateHash($array) {
-                
+            public static function CreateHash($array)
+            {
                 $a = Variable::FillArray($array);
                 
                 $rret = '';
-                foreach($a as $b) {
+                foreach ($a as $b) {
                     $rret = $rret == '' ? md5($b) : $rret & md5($b);
                 }
                 
@@ -283,13 +302,14 @@
             }
             
             /**
-             * Шифрование   
+             * Шифрование
              *
              * @param array $items
              * @param array $perms
              * @return string
              */
-            static function FillArray($items, $perms = array()) {
+            public static function FillArray($items, $perms = array())
+            {
                 static $retperms = array();
                 if (!empty($items)) {
                     for ($i = count($items) - 1; $i >= 0; --$i) {
@@ -299,18 +319,16 @@
                         array_unshift($newperms, $foo);
                         Variable::FillArray($newitems, $newperms);
                     }
-                }
-                else {
+                } else {
                     $retperms[] = $perms;
                 }
                 
                 $a = array();
-                foreach($retperms as $b) {
+                foreach ($retperms as $b) {
                     $a[] = join('', $b);
                 }
                 
                 return $a;
-                
             }
 
             /**
@@ -321,25 +339,24 @@
              * @param mixed $o2
              * @return mixed
              */
-            public static function Extend($o1, $o2) {
-                
+            public static function Extend($o1, $o2)
+            {
                 $o1 = (array)$o1;
                 $o2 = (array)$o2;
                 
-                foreach($o1 as $k => $v) {
-                    if(isset($o2[$k])) {
+                foreach ($o1 as $k => $v) {
+                    if (isset($o2[$k])) {
                         $o1[$k] = $o2[$k];
                     }
                 }
                 
-                foreach($o2 as $k => $v) {
-                    if(!isset($o1[$k])) {
+                foreach ($o2 as $k => $v) {
+                    if (!isset($o1[$k])) {
                         $o1[$k] = $v;
                     }
                 }
                 
                 return $o1;
-                
             }
             
             /**
@@ -349,8 +366,9 @@
              * @param mixed $def
              * @return mixed
              */
-            public static function Coalesce($d, $def) {
-                if(is_null($d)){
+            public static function Coalesce($d, $def)
+            {
+                if (is_null($d)) {
                     return $def;
                 }
                 return $d;
@@ -366,10 +384,11 @@
              * @param string $keyPrefix
              * @return string
              */
-            public static function ToString($object, $spl1 = ' ', $spl2 = '=', $quote = true, $keyPrefix = '') {
+            public static function ToString($object, $spl1 = ' ', $spl2 = '=', $quote = true, $keyPrefix = '')
+            {
                 $ret = array();
                 $object = (array)$object;
-                foreach($object as $k => $v) {
+                foreach ($object as $k => $v) {
                     $ret[] = $keyPrefix.$k.$spl2.($quote ? '"' : '').Strings::PrepareAttribute($v).($quote ? '"' : '');
                 }
                 return implode($spl1, $ret);
@@ -379,15 +398,16 @@
              * Возвращает обьект из вывода var_dump
              * @param string $string
              */
-            public static function FromPhpArrayOutput($string) {
+            public static function FromPhpArrayOutput($string)
+            {
                 $ret = array();
                 $lines = explode("\n", $string);
-                foreach($lines as $line) {
-                    if(trim($line, "\r\t\n ") === ''){
+                foreach ($lines as $line) {
+                    if (trim($line, "\r\t\n ") === '') {
                         continue;
                     }
                     
-                    $parts = explode("=>", trim($line, "\r\t\n ")); 
+                    $parts = explode("=>", trim($line, "\r\t\n "));
 
                     $value = end($parts);
                     $key = reset($parts);
@@ -396,9 +416,7 @@
                 }
                 
                 return $ret;
-                
             }
-            
         }
 
     }

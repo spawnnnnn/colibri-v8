@@ -1,5 +1,11 @@
 <?php
-
+    /**
+     * Modules
+     *
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2019 Colibri
+     * @package Colibri\Modules
+     */
     namespace Colibri\Modules {
 
         use Colibri\App;
@@ -67,11 +73,10 @@
              */
             public function Initialize()
             {
-
                 $this->_settings = App::$config->Query('modules');
                 $entities = $this->_settings->Query('module');
                 foreach ($entities as $moduleConfig) {
-                    if(!$moduleConfig->Query('enabled', true)->GetValue()) {
+                    if (!$moduleConfig->Query('enabled', true)->GetValue()) {
                         continue;
                     }
                     $module = $this->InitModule($moduleConfig);
@@ -139,6 +144,5 @@
 
                 return $permissions;
             }
-
         }
     }

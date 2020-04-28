@@ -1,12 +1,10 @@
-<?php    
+<?php
     /**
-     * Обьект в html и обратно
-     * 
+     * Helpers
+     *
      * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
      * @copyright 2019 Colibri
      * @package Colibri\Helpers
-     * 
-     * 
      */
     namespace Colibri\Helpers {
 
@@ -15,26 +13,27 @@
         /**
          * Обьект в html и обратно
          */
-        class HtmlEncoder {
+        class HtmlEncoder
+        {
 
             /**
              * Обькет в xml
              *
-             * @param mixed $object
-             * @param string $tag
+             * @param mixed $object объект для кодирования
+             * @param string $tag тэг, который нужно вернуть
              * @return string
              */
-            public static function Encode($object, $tag = 'object') {
-                if(is_string($object)) {
+            public static function Encode($object, $tag = 'object')
+            {
+                if (is_string($object)) {
                     return $object;
                 }
                 
                 $ret = ['<div class="'.$tag.'">'];
-                foreach($object as $key => $value) {
-                    if(is_object($value) || is_array($value)) {
+                foreach ($object as $key => $value) {
+                    if (is_object($value) || is_array($value)) {
                         $ret[] = HtmlEncoder::Encode($value, $key);
-                    }
-                    else {
+                    } else {
                         $ret[] = '<div class="'.$key.'">'.$value.'</div>';
                     }
                 }
@@ -43,25 +42,24 @@
             }
 
             /**
-             * Строка в xml
+             * XML/XML строку в обьект
              *
-             * @param string $xmlString
-             * @return SimpleXMLElement
+             * @param mixed $xmlString
+             * @return stdClass
              */
-            public static function Decode($xmlString) {
-                // нужно выбрать что мы используем simplexml или dom и вернуть обьект
+            public static function Decode($xmlString)
+            {
                 $xml = $xmlString instanceof XmlNode ? $xmlString : XmlNode::LoadHtmlNode($xmlString);
-                if($xml->children->Count() == 0) {
+                if ($xml->children->Count() == 0) {
                     return $xml->value;
                 }
 
                 $ret = [];
-                foreach($xml->children as $child) {
+                foreach ($xml->children as $child) {
                     $ret[$child->name] = HtmlEncoder::Decode($child);
                 }
-                return (object)$ret; 
+                return (object)$ret;
             }
-
         }
 
     }

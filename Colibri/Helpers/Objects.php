@@ -1,12 +1,10 @@
 <?php
     /**
-     * Обьект в html и обратно
-     * 
+     * Helpers
+     *
      * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
      * @copyright 2019 Colibri
      * @package Colibri\Helpers
-     * 
-     * 
      */
     namespace Colibri\Helpers {
 
@@ -15,27 +13,27 @@
          */
         class Objects
         {
-
-            public static function IsAssociativeArray($array) {
+            public static function IsAssociativeArray($array)
+            {
                 $keys = array_keys($array);
-                foreach($keys as $key) {
-                    if(!is_numeric($key)) {
+                foreach ($keys as $key) {
+                    if (!is_numeric($key)) {
                         return true;
                     }
                 }
                 return false;
             }
 
-            public static function ArrayToObject($array) {
+            public static function ArrayToObject($array)
+            {
                 if (is_object($array)) {
                     $array = get_object_vars($array);
                 }
                 if (is_array($array)) {
                     foreach ($array as $k=>$v) {
-                        if(is_array($v) && self::IsAssociativeArray($v)) {
+                        if (is_array($v) && self::IsAssociativeArray($v)) {
                             $array[$k] = self::ArrayToObject($v);
-                        }
-                        else {
+                        } else {
                             $array[$k] = $v;
                         }
                     }
@@ -43,8 +41,5 @@
                 }
                 return $array;
             }
-
         }
     }
-
-?>

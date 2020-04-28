@@ -1,30 +1,37 @@
 <?php
-
+    /**
+     * Helpers
+     *
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2019 Colibri
+     * @package Colibri\Helpers
+     */
     namespace Colibri\Helpers {
 
         /**
          * Класс инкапсулятор функций мемкэш
          */
-        class Mem {
+        class Mem
+        {
 
             /**
              * Статисчекая переменная для обеспечения синглтон механизма
              *
              * @var Memcache
              */
-            static $instance;
+            public static $instance;
 
             /**
              * Создает синглтон обьект мемкэш
              *
              */
-            public static function Create($host, $port) {
-
-                if(!\class_exists('Memcache')) {
+            public static function Create($host, $port)
+            {
+                if (!\class_exists('Memcache')) {
                     return null;
                 }
 
-                if(!Mem::$instance) {
+                if (!Mem::$instance) {
                     Mem::$instance = new \Memcache();
                     Mem::$instance->connect($host, $port);
                 }
@@ -35,11 +42,12 @@
              * Закрывает соединение с мемкэш
              *
              */
-            public static function Dispose() {
-                if(!Mem::$instance) {
+            public static function Dispose()
+            {
+                if (!Mem::$instance) {
                     return false;
                 }
-                if(Mem::$instance) {
+                if (Mem::$instance) {
                     Mem::$instance->close();
                     Mem::$instance = null;
                 }
@@ -51,12 +59,13 @@
              * @param string $name - название переменной
              * @return boolean
              */
-            public static function Exists($name) {
-                if(!Mem::$instance) {
+            public static function Exists($name)
+            {
+                if (!Mem::$instance) {
                     return false;
                 }
                 $cacheData = Mem::$instance->get($name);
-                if(!$cacheData) {
+                if (!$cacheData) {
                     return false;
                 }
                 return true;
@@ -70,8 +79,9 @@
              * @param int $livetime - время жизни
              * @return boolean
              */
-            static function Write($name, $value, $livetime = 600) {
-                if(!Mem::$instance) {
+            public static function Write($name, $value, $livetime = 600)
+            {
+                if (!Mem::$instance) {
                     return false;
                 }
                 return Mem::$instance->add($name, $value, false, $livetime);
@@ -85,11 +95,12 @@
              * @param int $livetime - время жизни
              * @return boolean
              */
-            static function ZWrite($name, $value, $livetime = 600) {
-                if(!Mem::$instance) {
+            public static function ZWrite($name, $value, $livetime = 600)
+            {
+                if (!Mem::$instance) {
                     return false;
                 }
-                return Mem::$instance->add($name, $value, MEMCACHE_COMPRESSED, $livetime);
+                return Mem::$instance->add($name, $value, \MEMCACHE_COMPRESSED, $livetime);
             }
 
             /**
@@ -98,8 +109,9 @@
              * @param string $name - название переменной
              * @return mixed | boolean
              */
-            static function Delete($name) {
-                if(!Mem::$instance) {
+            public static function Delete($name)
+            {
+                if (!Mem::$instance) {
                     return false;
                 }
                 return Mem::$instance->delete($name);
@@ -111,19 +123,16 @@
              * @param string $name
              * @return mixed | boolean
              */
-            static function Read($name) {
-                if(!Mem::$instance) {
+            public static function Read($name)
+            {
+                if (!Mem::$instance) {
                     return false;
                 }
-                if(!Mem::Exists($name)) {
+                if (!Mem::Exists($name)) {
                     return false;
                 }
                 return Mem::$instance->get($name);
             }
-
         }
 
     }
-
-
-?>

@@ -1,53 +1,55 @@
-<?php    
+<?php
     /**
-     * Обьект в xml и обратно
-     * 
+     * Helpers
+     *
      * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
      * @copyright 2019 Colibri
      * @package Colibri\Helpers
-     * 
-     * 
      */
     namespace Colibri\Helpers {
 
-        use Colibri\Utils\Debug;
         use Colibri\Xml\XmlNode;
 
         /**
          * Обьект в xml и обратно
          */
-        class XmlEncoder {
-
-            private static function _getContent($v, $cdata) {
+        class XmlEncoder
+        {
+            private static function _getContent($v, $cdata)
+            {
                 $ret = '';
-                if(Variable::IsObject($v) || Variable::IsArray($v)){
+                if (Variable::IsObject($v) || Variable::IsArray($v)) {
                     $ret = XmlEncoder::Encode($v);
-                }
-                else if(Variable::IsBool($v) || ($v == 't' || $v == 'f')){
+                } elseif (Variable::IsBool($v) || ($v == 't' || $v == 'f')) {
                     $ret =  ($v || $v == 't' ? 'true' : 'false');
-                }
-                else if(!Variable::IsNull($v) && !Variable::IsEmpty($v)) {
+                } elseif (!Variable::IsNull($v) && !Variable::IsEmpty($v)) {
                     $ret =  $cdata ? '<![CDATA['.$v.']]>' : $v;
                 }
                 return $ret;
             }
     
-            public static function Encode($object, $tagName = null, $cdata = true) {
-                           
+            /**
+             * Обьект в xml строку
+             *
+             * @param mixed $object обьект для кодирования
+             * @param string $tagName тэг в который нужно запаковать данные
+             * @param boolean $cdata использовать CDATA для хранения данных
+             * @return string строка XML
+             */
+            public static function Encode($object, $tagName = null, $cdata = true)
+            {
                 $ret = '';
-                if($tagName){
+                if ($tagName) {
                     $ret .= '<'.$tagName.'>';
                 }
                 
-                foreach($object as $k => $v) {
-                    
+                foreach ($object as $k => $v) {
                     $ret .= Variable::IsNumeric($k) ? '<object index="'.$k.'">' : '<'.$k.'>';
                     $ret .= self::_getContent($v, $cdata);
                     $ret .= Variable::IsNumeric($k) ? '</object>' : '</'.$k.'>';
-                    
                 }
                             
-                if($tagName){
+                if ($tagName) {
                     $ret .= '</'.$tagName.'>';
                 }
                 
@@ -55,36 +57,35 @@
             }
 
             /**
-             * Строка в xml
+             * XML/XML строка в обьект
              *
-             * @param string $xmlString
-             * @return SimpleXMLElement
+             * @param mixed $xmlString строка для кодирования
+             * @return stdClass результирующий обьект
              */
-            public static function Decode($xmlString) {
-                // нужно выбрать что мы используем simplexml или dom и вернуть обьект
+            public static function Decode($xmlString)
+            {
                 $xml = $xmlString instanceof XmlNode ? $xmlString : XmlNode::LoadNode($xmlString);
-                if($xml->children->Count() == 0) {
+                if ($xml->children->Count() == 0) {
                     return $xml->attributes->value ? $xml->attributes->value->value : $xml->value;
                 }
 
                 $ret = [];
-                foreach($xml->children as $child) {
+                foreach ($xml->children as $child) {
                     $key = $child->attributes->name ? $child->attributes->name->value : $child->name;
-                    if(!isset($ret[$key])) {
+                    if (!isset($ret[$key])) {
                         $ret[$key] = [];
                     }
                     $ret[$key][] = XmlEncoder::Decode($child);
                 }
 
-                foreach($ret as $k => $v) {
-                    if(count($v) == 1) {
+                foreach ($ret as $k => $v) {
+                    if (count($v) == 1) {
                         $ret[$k] = reset($v);
                     }
                 }
 
-                return (object)$ret; 
+                return (object)$ret;
             }
-
         }
 
     }

@@ -1,11 +1,19 @@
 <?php
 
+    /**
+     * Helpers
+     *
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2019 Colibri
+     * @package Colibri\Helpers
+     */
     namespace Colibri\Helpers {
 
         /**
          * Класс обертка над датой
          */
-        class Date {
+        class Date
+        {
 
             /** Количество секунд в году */
             const YEAR  = 31556926;
@@ -26,7 +34,8 @@
              * @param integer $time
              * @return string
              */
-            static function RFC($time = null) {
+            public static function RFC($time = null)
+            {
                 $tz = date('Z');
                 $tzs = ($tz < 0) ? '-' : '+';
                 $tz = abs($tz);
@@ -41,25 +50,26 @@
              * @param boolean $milliseconds
              * @return string
              */
-            static function ToDbString($time = null, $format = '%Y-%m-%d %H:%M:%S') {
-                if(Variable::IsNull($time)){
+            public static function ToDbString($time = null, $format = '%Y-%m-%d %H:%M:%S')
+            {
+                if (Variable::IsNull($time)) {
                     $time = time();
-                }
-                else {
+                } else {
                     $time = (Variable::IsNumeric($time) ? $time : strtotime($time));
                 }
                 return TimeZone::FTimeU($format, $time);
             }
 
             /**
-             * Вернуть дату в читабельном виде 
+             * Вернуть дату в читабельном виде
              *
              * @param int $time
              * @param boolean $showTime
              * @return string
              */
-            static function ToHumanDate($time = null, $showTime = false) {
-                if(is_null($time)) {
+            public static function ToHumanDate($time = null, $showTime = false)
+            {
+                if (is_null($time)) {
                     $time = time();
                 }
                 return ((int)strftime('%d', $time)).' '.TimeZone::Month2(strftime('%m', $time) - 1).' '.strftime('%Y', $time).($showTime ? ' '.strftime('%H', $time).':'.strftime('%M', $time) : '');
@@ -71,7 +81,8 @@
              * @param string $datestring
              * @return integer
              */
-            static function ToUnixTime($datestring) {
+            public static function ToUnixTime($datestring)
+            {
                 return strtotime($datestring);
             }
 
@@ -81,11 +92,11 @@
              * @param integer $time
              * @return integer
              */
-            static function Age($time) {
-
+            public static function Age($time)
+            {
                 $time = time() - $time; // to get the time since that moment
 
-                $tokens = array (
+                $tokens = array(
                     31536000 => array('год', 'года', 'лет'),
                     2592000 => array('месяц', 'месяца', 'месяцев'),
                     604800 => array('неделю', 'недели', 'недель'),
@@ -101,14 +112,13 @@
                     }
                     $numberOfUnits = floor($time / $unit);
                     $ret = ($numberOfUnits > 1 ? $numberOfUnits.' ' : '').Strings::FormatSequence($numberOfUnits, $labels).' назад';
-                    if($ret == 'день назад') {
+                    if ($ret == 'день назад') {
                         $ret = 'вчера';
                     }
                     return $ret;
                 }
 
                 return 'только что';
-
             }
 
             /**
@@ -117,7 +127,8 @@
              * @param integer $time
              * @return integer
              */
-            static function AgeYears($time) {
+            public static function AgeYears($time)
+            {
                 $day = date('j', $time);
                 $month = date('n', $time);
                 $year = date('Y', $time);
@@ -133,31 +144,31 @@
 
             /**
              * Количество секунд в время HH:MM:SS
-             * 
+             *
              * @param integer $number
              */
-            static function TimeToString($number) {
-
+            public static function TimeToString($number)
+            {
                 $hours = 0;
                 $mins = 0;
                 $secs = 0;
 
-                if($number >= 60) {
-                    $secs = $number % 60; $number = (int)($number / 60);
-                    if($number >= 60) {
-                        $mins = $number % 60; $number = (int)($number / 60);
-                        if($number >= 60) {
-                            $hours = $number % 60; $number = (int)($number / 60);
-                        }
-                        else {
+                if ($number >= 60) {
+                    $secs = $number % 60;
+                    $number = (int)($number / 60);
+                    if ($number >= 60) {
+                        $mins = $number % 60;
+                        $number = (int)($number / 60);
+                        if ($number >= 60) {
+                            $hours = $number % 60;
+                            $number = (int)($number / 60);
+                        } else {
                             $hours = $number;
                         }
-                    }
-                    else {
+                    } else {
                         $mins = $number;
                     }
-                }
-                else {
+                } else {
                     $secs = $number;
                 }
 
@@ -171,7 +182,6 @@
 
                 return substr($txt, 0, strlen($txt)-1);
             }
-
         }
 
     }

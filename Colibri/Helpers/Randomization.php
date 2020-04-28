@@ -1,18 +1,26 @@
 <?php
-
+    /**
+     * Helpers
+     *
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2019 Colibri
+     * @package Colibri\Helpers
+     */
     namespace Colibri\Helpers {
 
         /**
          * Всякие разные виды рандомизации
          */
-        class Randomization {
+        class Randomization
+        {
             
             /**
              * Вернуть новый SEED
              *
              * @return integer
              */
-            static function Seed() {
+            public static function Seed()
+            {
                 list($usec, $sec) = explode(' ', microtime());
                 return (float) $sec + ((float) $usec * 100000);
             }
@@ -24,7 +32,8 @@
              * @param integer $max
              * @return integer
              */
-            static function Integer($min, $max) {
+            public static function Integer($min, $max)
+            {
                 return rand($min, $max);
             }
 
@@ -34,13 +43,14 @@
              * @param integer $l
              * @return string
              */
-            static function Mixed($l) {
+            public static function Mixed($l)
+            {
                 $j = 0;
                 $tmp = "";
                 $c = array();
                 $i = 0;
                 
-                for($j = 1; $j < $l; $j++) {
+                for ($j = 1; $j < $l; $j++) {
                     $i = (int) Randomization::Integer(0, 2.999999);
                     $c[0] = chr((int) Randomization::Integer(ord("A"), ord("Z")));
                     $c[1] = chr((int) Randomization::Integer(ord("a"), ord("z")));
@@ -57,13 +67,14 @@
              * @param integer $l
              * @return string
              */
-            static function Numeric($l) {
+            public static function Numeric($l)
+            {
                 $j = 0;
                 $tmp = "";
                 $c = array();
                 $i = 0;
                 
-                for($j = 1; $j <= $l; $j++) {
+                for ($j = 1; $j <= $l; $j++) {
                     $i = (int) Randomization::Integer(0, 2.999999);
                     $c[0] = chr((int) Randomization::Integer(ord("0"), ord("9")));
                     $c[1] = chr((int) Randomization::Integer(ord("0"), ord("9")));
@@ -80,11 +91,12 @@
              * @param integer $l
              * @return string
              */
-            static function Character($l) {
+            public static function Character($l)
+            {
                 $tmp = "";
                 $c = array();
                 
-                for($i = 0; $i < $l; $i++) {
+                for ($i = 0; $i < $l; $i++) {
                     $j = (int) rand(0, 1);
                     $c[0] = chr((int) Randomization::Integer(ord("A"), ord("Z")));
                     $c[1] = chr((int) Randomization::Integer(ord("a"), ord("z")));
@@ -92,8 +104,7 @@
                 }
 
                 return $tmp;
-            }        
-            
+            }
         }
 
     }

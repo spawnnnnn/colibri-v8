@@ -1,7 +1,7 @@
 <?php
 
     /**
-     * Utilities
+     * Utils
      * 
      * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
      * @copyright 2020 ColibriLab

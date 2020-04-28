@@ -1,14 +1,19 @@
 <?php
-
+    /**
+     * Modules
+     *
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2019 Colibri
+     * @package Colibri\Modules
+     */
     namespace Colibri\Modules {
 
         use Colibri\Events\TEventDispatcher;
         use Colibri\Configuration\Config;
         use Colibri\FileSystem\File;
-        use Colibri\Utils\Debug;
         use ReflectionClass;
 
-/**
+        /**
          * Модуль
          * базовый класс
          *
@@ -50,7 +55,7 @@
                 $this->_config = null;
                 if (File::Exists($this->_modulePath.'Config/Module.xml')) {
                     $this->_config = Config::Create($this->_modulePath.'Config/Module.xml');
-                }   
+                }
             }
 
             /**
@@ -97,7 +102,6 @@
              */
             public function GetPermissions()
             {
-
                 $permissions = [];
 
                 $className = static::class;
@@ -108,9 +112,7 @@
                 $permissions[ $permissionsName . '.uninstall' ] = 'Деинсталляция модуля';
 
                 return $permissions;
-
             }
-
         }
 
     }
