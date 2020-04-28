@@ -50,7 +50,7 @@
              */
             public static function IOut($what){
 
-                $mode = App::$config->Query('mode')->GetValue();
+                $mode = App::$config ? App::$config->Query('mode')->GetValue() : 'development';
                 if($mode === App::ModeTest) {
                     App::$log->WriteLine(Logger::Error, func_get_args());
                 }
