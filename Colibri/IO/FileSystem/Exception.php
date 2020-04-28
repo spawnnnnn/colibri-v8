@@ -1,6 +1,6 @@
 <?php
 
-    namespace Colibri\FileSystem {
+    namespace Colibri\IO\FileSystem {
 
         use Colibri\AppException;
 

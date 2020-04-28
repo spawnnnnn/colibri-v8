@@ -11,9 +11,9 @@
     namespace Colibri\Security\Adapters {
 
         use Colibri\App;
-        use Colibri\FileSystem\File;
+        use Colibri\IO\FileSystem\File;
         use Colibri\Security\SecurityException;
-        use Colibri\FileSystem\Directory;
+        use Colibri\IO\FileSystem\Directory;
         use Colibri\Security\Role;
         use Colibri\Security\User;
         use Colibri\Xml\XmlNode;

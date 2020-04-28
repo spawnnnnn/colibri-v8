@@ -13,7 +13,7 @@
         use Colibri\App;
         use Colibri\Helpers\Objects;
         use Colibri\Helpers\Variable;
-        use Colibri\FileSystem\File;
+        use Colibri\IO\FileSystem\File;
 
         /**
          * Класс для работы с конфиг файлами в yaml

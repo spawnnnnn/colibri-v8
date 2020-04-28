@@ -3,7 +3,7 @@
     namespace Colibri\Xml {
 
         use Colibri\AppException;
-        use Colibri\FileSystem\File;
+        use Colibri\IO\FileSystem\File;
         use Colibri\Xml\Serialization\XmlCData;
         use Colibri\Xml\Serialization\XmlSerialized;
 

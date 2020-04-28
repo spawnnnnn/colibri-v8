@@ -9,7 +9,7 @@
      */
     namespace Colibri\Graphics {
 
-        use Colibri\FileSystem\File;
+        use Colibri\IO\FileSystem\File;
         use Colibri\Helpers\Randomization;
         use Colibri\Utils\ObjectEx;
 

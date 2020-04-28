@@ -11,7 +11,7 @@
 
         use Colibri\App;
         use Colibri\Helpers\Date;
-        use Colibri\FileSystem\File;
+        use Colibri\IO\FileSystem\File;
 
         /**
          * Лог файл

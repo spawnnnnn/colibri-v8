@@ -5,9 +5,9 @@
      *
      * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
      * @copyright 2019 Colibri
-     * @package Colibri\FileSystem
+     * @package Colibri\IO\FileSystem
      */
-    namespace Colibri\FileSystem {
+    namespace Colibri\IO\FileSystem {
 
         /**
          * Базовый класс для File и Directory

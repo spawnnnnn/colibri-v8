@@ -13,7 +13,7 @@
         use Colibri\App;
         use Colibri\Helpers\XmlEncoder;
         use Colibri\Configuration\ConfigException;
-        use Colibri\FileSystem\File;
+        use Colibri\IO\FileSystem\File;
         use Colibri\Xml\XmlNode;
 
         /**

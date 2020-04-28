@@ -5,7 +5,7 @@
         use Colibri\Events\EventsContainer;
         use Colibri\AppException;
         use Colibri\Events\TEventDispatcher;
-        use Colibri\FileSystem\File;
+        use Colibri\IO\FileSystem\File;
         use Colibri\Utils\ObjectEx;
 
         /**

@@ -14,7 +14,7 @@
         use Colibri\Helpers\Objects;
         use Colibri\Helpers\Variable;
         use Colibri\Configuration\ConfigException;
-        use Colibri\FileSystem\File;
+        use Colibri\IO\FileSystem\File;
 
         /**
          * Драйвер для хранения конфигурации в yml

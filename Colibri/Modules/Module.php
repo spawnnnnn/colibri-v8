@@ -10,7 +10,7 @@
 
         use Colibri\Events\TEventDispatcher;
         use Colibri\Configuration\Config;
-        use Colibri\FileSystem\File;
+        use Colibri\IO\FileSystem\File;
         use ReflectionClass;
 
         /**
