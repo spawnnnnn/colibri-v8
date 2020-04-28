@@ -1,19 +1,20 @@
 <?php
     /**
-     * Интерфейс для именованных массивов
+     * Collections
      * 
-     * @author Ваган Григорян <vahan.grigoryan@gmail.com>
-     * @copyright 2019 Colibri
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2020 ColibriLab
      * @package Colibri\Collections
-     * @version 1.0.0
      * 
      */
     namespace Colibri\Collections {
 
+        use ArrayAccess;
+
         /**
          * Интерфейс для именованных массивов
          */
-        interface ICollection {
+        interface ICollection extends \IteratorAggregate, ArrayAccess {
 
             /**
              * Проверка существования ключа в массиве

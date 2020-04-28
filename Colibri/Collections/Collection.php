@@ -1,12 +1,11 @@
 <?php
 
     /**
-     * Коллекция
+     * Collections
      * 
-     * @author Ваган Григорян <vahan.grigoryan@gmail.com>
-     * @copyright 2019 Colibri
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2020 ColibriLab
      * @package Colibri\Collections
-     * @version 1.0.0
      * 
      */
     namespace Colibri\Collections {
@@ -14,7 +13,7 @@
         /**
          * Базовый класс коллекций
          */
-        class Collection implements ICollection, \IteratorAggregate {
+        class Collection implements ICollection {
 
             /**
              * Данные коллекции
@@ -305,6 +304,56 @@
              */
             public function __set($key, $value) {
                 $this->Add($key, $value);
+            }
+
+            /**
+             * @param string $offset
+             * @param mixed $value
+             * @return void
+             */
+            public function offsetSet($offset, $value) {
+                $this->Add($offset, $value);
+            }
+        
+            /**
+             * @param mixed $offset
+             * @return bool
+             */
+            public function offsetExists($offset) {
+                if(is_numeric($offset)) {
+                    return $this->ItemAt($offset) !== null;
+                }
+                else {
+                    return $this->Item($offset) !== null;
+                }
+            }
+        
+            /**
+             * @param mixed $offset
+             * @return void
+             */
+            public function offsetUnset($offset) {
+                if(is_numeric($offset)) {
+                    $this->DeleteAt($offset);
+                }
+                else {
+                    $this->Delete($offset);
+                }
+            }
+        
+            /**
+             * Возвращает значение по индексу
+             *
+             * @param mixed $offset
+             * @return mixed
+             */
+            public function offsetGet($offset) {
+                if(is_numeric($offset)) {
+                    return $this->ItemAt($offset);
+                }
+                else {
+                    return $this->Item($offset);
+                }
             }
 
         }

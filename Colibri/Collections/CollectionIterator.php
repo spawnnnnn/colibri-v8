@@ -1,11 +1,10 @@
 <?php
     /**
-     * Итератор для коллекции, чтобы можно было использовать в foreach
+     * Collections
      * 
-     * @author Ваган Григорян <vahan.grigoryan@gmail.com>
-     * @copyright 2019 Colibri
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2020 ColibriLab
      * @package Colibri\Collections
-     * @version 1.0.0
      * 
      */
     namespace Colibri\Collections {

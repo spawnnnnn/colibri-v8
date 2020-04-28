@@ -1,12 +1,11 @@
 <?php
 
     /**
-     * Список
+     * Collections
      * 
-     * @author Ваган Григорян <vahan.grigoryan@gmail.com>
-     * @copyright 2019 Colibri
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2020 ColibriLab
      * @package Colibri\Collections
-     * @version 1.0.0
      * 
      */
     namespace Colibri\Collections {
@@ -14,7 +13,7 @@
         /**
          * Базовый класс списка, реализует стандартный функционал
          */
-        class ArrayList implements IArrayList, \IteratorAggregate
+        class ArrayList implements IArrayList
         {
         
             /**
@@ -264,6 +263,45 @@
             public function Splice($start, $count) {
                 $part = array_splice($this->data, $start, $count);
                 return new ArrayList($part);
+            }
+
+            /**
+             * @param int $offset
+             * @param mixed $value
+             * @return void
+             */
+            public function offsetSet($offset, $value) {
+                if (is_null($offset)) {
+                    $this->Add($value);
+                } else {
+                    $this->Set($offset, $value);
+                }
+            }
+        
+            /**
+             * @param int $offset
+             * @return bool
+             */
+            public function offsetExists($offset) {
+                return $offset < $this->Count();
+            }
+        
+            /**
+             * @param int $offset
+             * @return void
+             */
+            public function offsetUnset($offset) {
+                $this->DeleteAt($offset);
+            }
+        
+            /**
+             * Возвращает значение по индексу
+             *
+             * @param int $offset
+             * @return mixed
+             */
+            public function offsetGet($offset) {
+                return $this->Item($offset);
             }
 
         }
