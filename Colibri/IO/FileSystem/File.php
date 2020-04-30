@@ -33,6 +33,11 @@
             private $info;
             private $_size = 0;
 
+            const MODE_READ = "rb9";
+            const MODE_WRITE = "wb9";
+            const MODE_APPEND = "ab9";
+            const MODE_CREATEWRITE = "wb9";
+
             /**
              * Конструктор
              *
