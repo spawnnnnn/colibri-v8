@@ -180,7 +180,7 @@
                     $realMethodName = $method.'Controller';
                     $realViewName = $method.'View';
                 }                
-
+ 
                 if (!method_exists($transformer, $realMethodName) || ($realViewName && !method_exists($transformer, $realViewName))) {
                     $message = 'Can not find method Controller and/or View method in '.$transformer;
                     $this->DispatchEvent(EventsContainer::ServerRequestError, (object)[
