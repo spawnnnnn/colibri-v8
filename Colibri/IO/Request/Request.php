@@ -9,7 +9,7 @@
     namespace Colibri\IO\Request {
 
         use Colibri\App;
-        use Colibri\FileSystem\File;
+        use Colibri\IO\FileSystem\File;
         use Colibri\Helpers\Strings;
         use Colibri\Helpers\Variable;
 

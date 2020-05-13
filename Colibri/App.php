@@ -264,7 +264,7 @@
             }
 
             public function RegisterService($type, $webServerObject) {
-                if(!self::$services[$type]) {
+                if(!isset(self::$services[$type])) {
                     self::$services[$type] = [];
                 }
                 self::$services[$type][] = $webServerObject;
