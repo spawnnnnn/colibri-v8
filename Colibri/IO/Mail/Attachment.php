@@ -8,7 +8,7 @@
      */
     namespace Colibri\IO\Mail {
 
-        use Colibri\FileSystem\File;
+        use Colibri\IO\FileSystem\File;
 
         /**
          * Прикрепление
