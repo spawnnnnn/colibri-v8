@@ -264,11 +264,18 @@
             }
 
             public function RegisterService($type, $webServerObject) {
-                self::$services[$type] = $webServerObject;
+                if(!self::$services[$type]) {
+                    self::$services[$type] = [];
+                }
+                self::$services[$type][] = $webServerObject;
             }
 
             public function GetService($type) {
-                return isset(self::$services[$type]) ? self::$services[$type] : null; 
+                return isset(self::$services[$type]) ? reset(self::$services[$type]) : null; 
+            }
+
+            public function GetServices($type) {
+                return isset(self::$services[$type]) ? self::$services[$type] : []; 
             }
 
         }
