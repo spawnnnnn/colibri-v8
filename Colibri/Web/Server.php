@@ -11,7 +11,8 @@
     namespace Colibri\Web {
 
         use Colibri\App;
-        use Colibri\Helpers\XmlEncoder;
+    use Colibri\AppException;
+    use Colibri\Helpers\XmlEncoder;
         use Colibri\Helpers\HtmlEncoder;
         use Colibri\Events\TEventDispatcher;
         use Colibri\Events\EventsContainer;
@@ -39,6 +40,10 @@
             const HTML = 'html';
             const CSS = 'css';
             const JS = 'js';
+
+
+            private $_lastParsedData = null;
+            
 
             /**
              * Конструктор
@@ -70,27 +75,6 @@
                 }
             }
 
-            /**
-             * Отправляет ответ об ошибке
-             *
-             * @param string $message
-             * @param integer $code
-             * @return void
-             */
-            protected function _responseWithError($type, $message, $code = -1, $cmd = '', $data = null) {
-
-                $this->View($type, (object)[
-                    'code' => 404,
-                    'message' => $message,
-                    'result' => (object)[
-                        'code' => $code, 
-                        'command' => $cmd,
-                        'data' => $data
-                    ]
-                ]);
-
-            }
-
             protected function _getTransformerFullName($class) {
                 $class = Strings::UrlToNamespace($class);
                 if(strpos($class, 'Modules') === 0) {
@@ -119,14 +103,16 @@
                 if(!$class) {
                     $class = 'index';
                 }
-                
-                return (object)[
+
+                $this->_lastParsedData = (object)[
                     'cmd' => $cmd,
                     'class' => $class,
                     'transformer' => $this->_getTransformerFullName($class), 
                     'method' => Strings::ToCamelCaseAttr($method, true), 
                     'type' => $type
                 ];
+                
+                return $this->_lastParsedData;
                 
             }
 
@@ -173,15 +159,17 @@
                         'payload' => $payload,
                         'message' => $message
                     ]);
-
-                    $this->_responseWithError($type, $message, Server::IncorrectCommandObject, $cmd, [
+                    
+                    throw new AppException($message, 404, [
+                        'cmd' => $cmd,
+                        'type' => $type,
                         'message' => $message,
                         'code' => Server::IncorrectCommandObject,
                         'get' => $get,
                         'post' => $post,
                         'payload' => $payload
                     ]);
-                    return false;
+
                 }
 
                 // ищем метод $method, если есть то это просто контроллер без view
@@ -204,20 +192,16 @@
                         'message' => $message
                     ]);
 
-                    $this->_responseWithError(
-                        $type, 
-                        $message,
-                        Server::UnknownMethodInObject,
-                        $cmd,
-                        [
-                            'message' => $message,
-                            'code' => Server::UnknownMethodInObject,
-                            'get' => $get,
-                            'post' => $post,
-                            'payload' => $payload
-                        ]
-                    );
-                    return false;
+                    throw new AppException($message, 404, [
+                        'cmd' => $cmd,
+                        'type' => $type,
+                        'message' => $message,
+                        'code' => Server::UnknownMethodInObject,
+                        'get' => $get,
+                        'post' => $post,
+                        'payload' => $payload
+                    ]);
+
                 }
 
                 $transformerObject = new $transformer($this);
@@ -240,6 +224,26 @@
                     $this->View($type, $result);
                 }
                 
+            }
+
+            public function __get($property) {
+                $return = null;
+                if(strtolower($property) == 'cmd' && $this->_lastParsedData !== null) {
+                    $return = $this->_lastParsedData->cmd;
+                }
+                else if(strtolower($property) == 'class' && $this->_lastParsedData !== null) {
+                    $return = $this->_lastParsedData->class;
+                }
+                else if(strtolower($property) == 'transformer' && $this->_lastParsedData !== null) {
+                    $return = $this->_lastParsedData->transformer;
+                }
+                else if(strtolower($property) == 'method' && $this->_lastParsedData !== null) {
+                    $return = $this->_lastParsedData->method;
+                }
+                else if(strtolower($property) == 'type' && $this->_lastParsedData !== null) {
+                    $return = $this->_lastParsedData->type;
+                }
+                return $return;
             }
 
         }
