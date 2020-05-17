@@ -1,0 +1,1805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>API Documentation</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src').replace( /\\/g, '/');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">API Documentation</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown">
+                        <a href="../index.html" class="dropdown-toggle" data-toggle="dropdown">
+                            API Documentation <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                                                        <li><a href="../namespaces/Colibri.html">\Colibri</a></li>
+                                                    </ul>
+                    </li>
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">2</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                            <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1268030386"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-1268030386" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-929030845"></a>
+                                <a href="../namespaces/Colibri.html" style="margin-left: 30px; padding-left: 0">Colibri</a>
+            </div>
+            <div id="namespace-929030845" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1281696340"></a>
+                                <a href="../namespaces/Colibri.Collections.html" style="margin-left: 30px; padding-left: 0">Collections</a>
+            </div>
+            <div id="namespace-1281696340" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Colibri.Collections.IArrayList.html">IArrayList</a></li>
+                                                    <li class="interface"><a href="../classes/Colibri.Collections.ICollection.html">ICollection</a></li>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Collections.ArrayList.html">ArrayList</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Collections.ArrayListIterator.html">ArrayListIterator</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Collections.Collection.html">Collection</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Collections.CollectionException.html">CollectionException</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Collections.CollectionIterator.html">CollectionIterator</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Collections.ObjectCollection.html">ObjectCollection</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Collections.ObjectList.html">ObjectList</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Collections.ReadonlyCollection.html">ReadonlyCollection</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1591046939"></a>
+                                <a href="../namespaces/Colibri.Configuration.html" style="margin-left: 30px; padding-left: 0">Configuration</a>
+            </div>
+            <div id="namespace-1591046939" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-318628416"></a>
+                                <a href="../namespaces/Colibri.Configuration.Drivers.html" style="margin-left: 30px; padding-left: 0">Drivers</a>
+            </div>
+            <div id="namespace-318628416" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Colibri.Configuration.Drivers.IConfigDriver.html">IConfigDriver</a></li>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Configuration.Drivers.XmlConfigDriver.html">XmlConfigDriver</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Configuration.Drivers.YmlConfigDriver.html">YmlConfigDriver</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Configuration.Config.html">Config</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Configuration.ConfigException.html">ConfigException</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Configuration.ConfigItemsList.html">ConfigItemsList</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-2098881940"></a>
+                                <a href="../namespaces/Colibri.Data.html" style="margin-left: 30px; padding-left: 0">Data</a>
+            </div>
+            <div id="namespace-2098881940" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-787457429"></a>
+                                <a href="../namespaces/Colibri.Data.Models.html" style="margin-left: 30px; padding-left: 0">Models</a>
+            </div>
+            <div id="namespace-787457429" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Data.Models.DataModelException.html">DataModelException</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Data.Models.DataRow.html">DataRow</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Data.Models.DataTable.html">DataTable</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Data.Models.DataTableIterator.html">DataTableIterator</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Data.Models.NestedSet.html">NestedSet</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-119238296"></a>
+                                <a href="../namespaces/Colibri.Data.MySql.html" style="margin-left: 30px; padding-left: 0">MySql</a>
+            </div>
+            <div id="namespace-119238296" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Data.MySql.Command.html">Command</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Data.MySql.Connection.html">Connection</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Data.MySql.DataReader.html">DataReader</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Data.MySql.Exception.html">Exception</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Data.MySql.NonQueryInfo.html">NonQueryInfo</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Data.MySql.QueryBuilder.html">QueryBuilder</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-216254360"></a>
+                                <a href="../namespaces/Colibri.Data.SqlClient.html" style="margin-left: 30px; padding-left: 0">SqlClient</a>
+            </div>
+            <div id="namespace-216254360" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Colibri.Data.SqlClient.IConnection.html">IConnection</a></li>
+                                                    <li class="interface"><a href="../classes/Colibri.Data.SqlClient.IDataReader.html">IDataReader</a></li>
+                                                    <li class="interface"><a href="../classes/Colibri.Data.SqlClient.IQueryBuilder.html">IQueryBuilder</a></li>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Data.SqlClient.Command.html">Command</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Data.SqlClient.DataField.html">DataField</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Data.SqlClient.NonQueryInfo.html">NonQueryInfo</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Data.DataAccessPoint.html">DataAccessPoint</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Data.DataAccessPoints.html">DataAccessPoints</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Data.DataAccessPointsException.html">DataAccessPointsException</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-959072562"></a>
+                                <a href="../namespaces/Colibri.Encryption.html" style="margin-left: 30px; padding-left: 0">Encryption</a>
+            </div>
+            <div id="namespace-959072562" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Encryption.Crypt.html">Crypt</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Encryption.Rc4Crypt.html">Rc4Crypt</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1333577757"></a>
+                                <a href="../namespaces/Colibri.Events.html" style="margin-left: 30px; padding-left: 0">Events</a>
+            </div>
+            <div id="namespace-1333577757" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                            <li class="trait"><a href="../classes/Colibri.Events.TEventDispatcher.html">TEventDispatcher</a></li>
+                                                                            <li class="class"><a href="../classes/Colibri.Events.Event.html">Event</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Events.EventDispatcher.html">EventDispatcher</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Events.EventsContainer.html">EventsContainer</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-509234915"></a>
+                                <a href="../namespaces/Colibri.Graphics.html" style="margin-left: 30px; padding-left: 0">Graphics</a>
+            </div>
+            <div id="namespace-509234915" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Graphics.Font.html">Font</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Graphics.Graphics.html">Graphics</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Graphics.Point.html">Point</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Graphics.Quadro.html">Quadro</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Graphics.Size.html">Size</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-2050101232"></a>
+                                <a href="../namespaces/Colibri.Helpers.html" style="margin-left: 30px; padding-left: 0">Helpers</a>
+            </div>
+            <div id="namespace-2050101232" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Helpers.Date.html">Date</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Helpers.Encoding.html">Encoding</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Helpers.HtmlEncoder.html">HtmlEncoder</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Helpers.Mem.html">Mem</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Helpers.MimeType.html">MimeType</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Helpers.Objects.html">Objects</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Helpers.Randomization.html">Randomization</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Helpers.Strings.html">Strings</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Helpers.TimeZone.html">TimeZone</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Helpers.Variable.html">Variable</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Helpers.XmlEncoder.html">XmlEncoder</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-906821897"></a>
+                                <a href="../namespaces/Colibri.IO.html" style="margin-left: 30px; padding-left: 0">IO</a>
+            </div>
+            <div id="namespace-906821897" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-2113883311"></a>
+                                <a href="../namespaces/Colibri.IO.FileSystem.html" style="margin-left: 30px; padding-left: 0">FileSystem</a>
+            </div>
+            <div id="namespace-2113883311" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-876662725"></a>
+                                <a href="../namespaces/Colibri.IO.FileSystem.Archivers.html" style="margin-left: 30px; padding-left: 0">Archivers</a>
+            </div>
+            <div id="namespace-876662725" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.IO.FileSystem.Archivers.GZFile.html">GZFile</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.IO.FileSystem.Attributes.html">Attributes</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.FileSystem.Directory.html">Directory</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.FileSystem.Exception.html">Exception</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.FileSystem.File.html">File</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.FileSystem.FileStream.html">FileStream</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.FileSystem.Finder.html">Finder</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.FileSystem.Node.html">Node</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.FileSystem.Security.html">Security</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.FileSystem.Stream.html">Stream</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1259109591"></a>
+                                <a href="../namespaces/Colibri.IO.Mail.html" style="margin-left: 30px; padding-left: 0">Mail</a>
+            </div>
+            <div id="namespace-1259109591" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-413661472"></a>
+                                <a href="../namespaces/Colibri.IO.Mail.Mailbox.html" style="margin-left: 30px; padding-left: 0">Mailbox</a>
+            </div>
+            <div id="namespace-413661472" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.Mailbox.Exception.html">Exception</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.Mailbox.Mail.html">Mail</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.Mailbox.Mail.html">Mail</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.Mailbox.Mailbox.html">Mailbox</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.Address.html">Address</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.AddressList.html">AddressList</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.Attachment.html">Attachment</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.AttachmentList.html">AttachmentList</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.Certificate.html">Certificate</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.DKIM.html">DKIM</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.ErrorMessages.html">ErrorMessages</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.Exception.html">Exception</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.Helper.html">Helper</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.MailerTypes.html">MailerTypes</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.Message.html">Message</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.POP3.html">POP3</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.Sender.html">Sender</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.SMTP.html">SMTP</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.Template.html">Template</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1792114351"></a>
+                                <a href="../namespaces/Colibri.IO.Request.html" style="margin-left: 30px; padding-left: 0">Request</a>
+            </div>
+            <div id="namespace-1792114351" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.IO.Request.Credentials.html">Credentials</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Request.Data.html">Data</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Request.DataFile.html">DataFile</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Request.DataItem.html">DataItem</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Request.Encryption.html">Encryption</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Request.Exception.html">Exception</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Request.Request.html">Request</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Request.RequestResult.html">RequestResult</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Request.Type.html">Type</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-2057664341"></a>
+                                <a href="../namespaces/Colibri.Modules.html" style="margin-left: 30px; padding-left: 0">Modules</a>
+            </div>
+            <div id="namespace-2057664341" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Modules.Module.html">Module</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Modules.ModuleException.html">ModuleException</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Modules.ModuleManager.html">ModuleManager</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1835414911"></a>
+                                <a href="../namespaces/Colibri.Security.html" style="margin-left: 30px; padding-left: 0">Security</a>
+            </div>
+            <div id="namespace-1835414911" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1158948389"></a>
+                                <a href="../namespaces/Colibri.Security.Adapters.html" style="margin-left: 30px; padding-left: 0">Adapters</a>
+            </div>
+            <div id="namespace-1158948389" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Colibri.Security.Adapters.IDataAdapter.html">IDataAdapter</a></li>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Security.Adapters.DataAdapter.html">DataAdapter</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Security.Adapters.XmlDataAdapter.html">XmlDataAdapter</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Security.Role.html">Role</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Security.SecurityException.html">SecurityException</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Security.SecurityManager.html">SecurityManager</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Security.User.html">User</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1601469960"></a>
+                                <a href="../namespaces/Colibri.Threading.html" style="margin-left: 30px; padding-left: 0">Threading</a>
+            </div>
+            <div id="namespace-1601469960" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Threading.ErrorCodes.html">ErrorCodes</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Threading.Exception.html">Exception</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Threading.Manager.html">Manager</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Threading.Process.html">Process</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Threading.Worker.html">Worker</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1595783839"></a>
+                                <a href="../namespaces/Colibri.Utils.html" style="margin-left: 30px; padding-left: 0">Utils</a>
+            </div>
+            <div id="namespace-1595783839" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-472925693"></a>
+                                <a href="../namespaces/Colibri.Utils.Logs.html" style="margin-left: 30px; padding-left: 0">Logs</a>
+            </div>
+            <div id="namespace-472925693" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Utils.Logs.FileLogger.html">FileLogger</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Utils.Logs.GraylogLogger.html">GraylogLogger</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Utils.Logs.Logger.html">Logger</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Utils.Logs.LoggerException.html">LoggerException</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Utils.Logs.MemoryLogger.html">MemoryLogger</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-26130262"></a>
+                                <a href="../namespaces/Colibri.Utils.Shell.html" style="margin-left: 30px; padding-left: 0">Shell</a>
+            </div>
+            <div id="namespace-26130262" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Utils.Shell.Async.html">Async</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Utils.Shell.Execute.html">Execute</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Utils.Debug.html">Debug</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Utils.ObjectEx.html">ObjectEx</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1085561990"></a>
+                                <a href="../namespaces/Colibri.Web.html" style="margin-left: 30px; padding-left: 0">Web</a>
+            </div>
+            <div id="namespace-1085561990" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Web.Request.html">Request</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Web.RequestCollection.html">RequestCollection</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Web.RequestedFile.html">RequestedFile</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Web.RequestFileCollection.html">RequestFileCollection</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Web.Response.html">Response</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Web.Server.html">Server</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Web.Template.html">Template</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Web.Transformer.html">Transformer</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1805962148"></a>
+                                <a href="../namespaces/Colibri.Xml.html" style="margin-left: 30px; padding-left: 0">Xml</a>
+            </div>
+            <div id="namespace-1805962148" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1517335703"></a>
+                                <a href="../namespaces/Colibri.Xml.Definitions.html" style="margin-left: 30px; padding-left: 0">Definitions</a>
+            </div>
+            <div id="namespace-1517335703" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Xml.Definitions.XsdAttributeDefinition.html">XsdAttributeDefinition</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Xml.Definitions.XsdBaseTypeDefinition.html">XsdBaseTypeDefinition</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Xml.Definitions.XsdElementDefinition.html">XsdElementDefinition</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Xml.Definitions.XsdSchemaDefinition.html">XsdSchemaDefinition</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Xml.Definitions.XsdSimpleTypeDefinition.html">XsdSimpleTypeDefinition</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-753010348"></a>
+                                <a href="../namespaces/Colibri.Xml.Serialization.html" style="margin-left: 30px; padding-left: 0">Serialization</a>
+            </div>
+            <div id="namespace-753010348" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Xml.Serialization.XmlCData.html">XmlCData</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Xml.Serialization.XmlSerialized.html">XmlSerialized</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Xml.XmlAttribute.html">XmlAttribute</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Xml.XmlNamedNodeList.html">XmlNamedNodeList</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Xml.XmlNode.html">XmlNode</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Xml.XmlNodeAttributeList.html">XmlNodeAttributeList</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Xml.XmlNodeList.html">XmlNodeList</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Xml.XmlNodeListIterator.html">XmlNodeListIterator</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Xml.XmlQuery.html">XmlQuery</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.App.html">App</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.AppException.html">AppException</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/Colibri.IO.Mail.html">\Colibri\IO\Mail</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\Colibri\IO\Mail</small>Helper</h1>
+                    <p><em>Класс помощник для всяких операций с строками</em></p>
+                    
+                    
+                                        
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/Colibri.IO.Mail.Helper.html#method_FixEOL" class="">FixEOL()</a><br />
+                                                                    <a href="../classes/Colibri.IO.Mail.Helper.html#method_UTF8CharBoundary" class="">UTF8CharBoundary()</a><br />
+                                                                    <a href="../classes/Colibri.IO.Mail.Helper.html#method_WrapText" class="">WrapText()</a><br />
+                                                                    <a href="../classes/Colibri.IO.Mail.Helper.html#method_Base64EncodeWrapMB" class="">Base64EncodeWrapMB()</a><br />
+                                                                    <a href="../classes/Colibri.IO.Mail.Helper.html#method_EncodeQPphp" class="">EncodeQPphp()</a><br />
+                                                                    <a href="../classes/Colibri.IO.Mail.Helper.html#method_EncodeQP" class="">EncodeQP()</a><br />
+                                                                    <a href="../classes/Colibri.IO.Mail.Helper.html#method_EncodeQ" class="">EncodeQ()</a><br />
+                                                                    <a href="../classes/Colibri.IO.Mail.Helper.html#method_EncodeString" class="">EncodeString()</a><br />
+                                                                    <a href="../classes/Colibri.IO.Mail.Helper.html#method_EncodeHeader" class="">EncodeHeader()</a><br />
+                                                                    <a href="../classes/Colibri.IO.Mail.Helper.html#method_EncodeFile" class="">EncodeFile()</a><br />
+                                                                    <a href="../classes/Colibri.IO.Mail.Helper.html#method_GetBoundaryBegin" class="">GetBoundaryBegin()</a><br />
+                                                                    <a href="../classes/Colibri.IO.Mail.Helper.html#method_GetBoundaryEnd" class="">GetBoundaryEnd()</a><br />
+                                                                    <a href="../classes/Colibri.IO.Mail.Helper.html#method_HeaderLine" class="">HeaderLine()</a><br />
+                                                                    <a href="../classes/Colibri.IO.Mail.Helper.html#method_TextLine" class="">TextLine()</a><br />
+                                                                    <a href="../classes/Colibri.IO.Mail.Helper.html#method_CheckForMultbyte" class="">CheckForMultbyte()</a><br />
+                                                                    <a href="../classes/Colibri.IO.Mail.Helper.html#method_StripNewLines" class="">StripNewLines()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No public properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/Colibri.IO.Mail.Helper.html#constant_LE" class="">LE</a><br />
+                                                                    <a href="../classes/Colibri.IO.Mail.Helper.html#constant_LF" class="">LF</a><br />
+                                                                    <a href="../classes/Colibri.IO.Mail.Helper.html#constant_CR" class="">CR</a><br />
+                                                                    <a href="../classes/Colibri.IO.Mail.Helper.html#constant_CRLF" class="">CRLF</a><br />
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <em>No protected methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No protected properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <em>No private methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No private properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/IO.Mail.Helper.html"><div class="path-wrapper">IO\Mail\Helper.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">IO\Mail</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                    <div class="namespace-wrapper">\Colibri\IO\Mail\Helper</div>
+                            </dd>
+
+                        
+                        
+                        
+                                                
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr><td colspan="2"><em>None found</em></td></tr>
+                                        </table>
+                </aside>
+            </div>
+
+                                    <a id="constants" name="constants"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Constants</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_LE" name="constant_LE" class="anchor"></a>
+            <article id="constant_LE" class="constant">
+                <h3 class="">LE</h3>
+                <pre class="signature">LE = &quot;\n&quot;</pre>
+                <p><em>Конец</em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_LF" name="constant_LF" class="anchor"></a>
+            <article id="constant_LF" class="constant">
+                <h3 class="">LF</h3>
+                <pre class="signature">LF = &quot;\n&quot;</pre>
+                <p><em>Конец строки</em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_CR" name="constant_CR" class="anchor"></a>
+            <article id="constant_CR" class="constant">
+                <h3 class="">CR</h3>
+                <pre class="signature">CR = &quot;\r&quot;</pre>
+                <p><em>Перевод корретки</em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_CRLF" name="constant_CRLF" class="anchor"></a>
+            <article id="constant_CRLF" class="constant">
+                <h3 class="">CRLF</h3>
+                <pre class="signature">CRLF = &quot;\r\n&quot;</pre>
+                <p><em>Конец строки и перевод корретки</em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                            
+                        
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_FixEOL" name="method_FixEOL" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">FixEOL()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">FixEOL(string  <span class="argument">$line</span>, string  <span class="argument">$char = self::LE</span>) : string</pre>
+                <p><em>Исправляет конец строки</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$line </td>
+                                <td><p>строка</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$char </td>
+                                <td><p>добавить в конце</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Colibri.IO.Mail.Helper.html"><div class="path-wrapper">\Colibri\IO\Mail\Helper</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_UTF8CharBoundary" name="method_UTF8CharBoundary" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">UTF8CharBoundary()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">UTF8CharBoundary(string  <span class="argument">$encodedText</span>, integer  <span class="argument">$maxLength</span>) : integer</pre>
+                <p><em>Finds last character boundary prior to maxLength in a utf-8
+quoted (printable) encoded string.</em></p>
+                <p>Original written by Colin Brown.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$encodedText </td>
+                                <td><p>utf-8 QP text</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$maxLength </td>
+                                <td><p>find last character boundary prior to this length</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    integer
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Colibri.IO.Mail.Helper.html"><div class="path-wrapper">\Colibri\IO\Mail\Helper</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_WrapText" name="method_WrapText" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">WrapText()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">WrapText(string  <span class="argument">$message</span>, string  <span class="argument">$length</span>, string  <span class="argument">$charset</span>, boolean  <span class="argument">$qp_mode = false</span>) : string</pre>
+                <p><em>Wraps message for use with mailers that do not
+automatically perform wrapping and for quoted-printable.</em></p>
+                <p>Original written by philippe.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$message </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$length </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$charset </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$qp_mode </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Colibri.IO.Mail.Helper.html"><div class="path-wrapper">\Colibri\IO\Mail\Helper</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_Base64EncodeWrapMB" name="method_Base64EncodeWrapMB" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">Base64EncodeWrapMB()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">Base64EncodeWrapMB(string  <span class="argument">$str</span>, string  <span class="argument">$charset</span>) : string</pre>
+                <p><em>Correctly encodes and wraps long multibyte strings for mail headers
+without breaking lines within a character.</em></p>
+                <p>Adapted from a function by paravoid at <a href="http://uk.php.net/manual/en/function.mb-encode-mimeheader.php">http://uk.php.net/manual/en/function.mb-encode-mimeheader.php</a></p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$str </td>
+                                <td><p>multi-byte text to wrap encode</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$charset </td>
+                                <td><p>charset</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Colibri.IO.Mail.Helper.html"><div class="path-wrapper">\Colibri\IO\Mail\Helper</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_EncodeQPphp" name="method_EncodeQPphp" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">EncodeQPphp()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">EncodeQPphp(string  <span class="argument">$input = &#039;&#039;</span>, integer  <span class="argument">$line_max = 76</span>, boolean  <span class="argument">$space_conv = false</span>) : string</pre>
+                <p><em>Encode string to quoted-printable.</em></p>
+                <p>Only uses standard PHP, slow, but will always work</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$input </td>
+                                <td><p>the text to encode</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$line_max </td>
+                                <td><p>Number of chars allowed on a line before wrapping</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$space_conv </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Colibri.IO.Mail.Helper.html"><div class="path-wrapper">\Colibri\IO\Mail\Helper</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_EncodeQP" name="method_EncodeQP" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">EncodeQP()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">EncodeQP(string  <span class="argument">$string</span>, integer  <span class="argument">$line_max = 76</span>, boolean  <span class="argument">$space_conv = false</span>) : string</pre>
+                <p><em>Encode string to RFC2045 (6.7) quoted-printable format
+Uses a PHP5 stream filter to do the encoding about 64x faster than the old version
+Also results in same content as you started with after decoding</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$string </td>
+                                <td><p>the text to encode</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$line_max </td>
+                                <td><p>Number of chars allowed on a line before wrapping</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$space_conv </td>
+                                <td><p>Dummy param for compatibility with existing EncodeQP function</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Colibri.IO.Mail.Helper.html"><div class="path-wrapper">\Colibri\IO\Mail\Helper</div></a></dd>
+                                                                            <dt>See also</dt>
+                                                                <dd><a href="../classes/Colibri.IO.Mail.Helper.html#method_EncodeQPphp"><span class="namespace-wrapper">\Colibri\IO\Mail\Helper::EncodeQPphp()</span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            author
+                        </th>
+                        <td>
+                                                                                            <p>Marcus Bointon</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_EncodeQ" name="method_EncodeQ" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">EncodeQ()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">EncodeQ(string  <span class="argument">$str</span>, string  <span class="argument">$position = &#039;text&#039;</span>) : string</pre>
+                <p><em>Encode string to q encoding.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$str </td>
+                                <td><p>the text to encode</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$position </td>
+                                <td><p>Where the text is going to be used, see the RFC for what that means</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Colibri.IO.Mail.Helper.html"><div class="path-wrapper">\Colibri\IO\Mail\Helper</div></a></dd>
+                                                                            <dt>See also</dt>
+                                                                <dd><a href="http://tools.ietf.org/html/rfc2047"><span class="namespace-wrapper">http://tools.ietf.org/html/rfc2047</span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_EncodeString" name="method_EncodeString" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">EncodeString()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">EncodeString(string  <span class="argument">$str</span>, string  <span class="argument">$encoding = &#039;base64&#039;</span>) : string</pre>
+                <p><em>Encodes string to requested format.</em></p>
+                <p>Returns an empty string on failure.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$str </td>
+                                <td><p>The text to encode</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$encoding </td>
+                                <td><p>The encoding to use; one of 'base64', '7bit', '8bit', 'binary', 'quoted-printable'</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Colibri.IO.Mail.Helper.html"><div class="path-wrapper">\Colibri\IO\Mail\Helper</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_EncodeHeader" name="method_EncodeHeader" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">EncodeHeader()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">EncodeHeader(string  <span class="argument">$str</span>, string  <span class="argument">$position = &#039;text&#039;</span>, string  <span class="argument">$charset = &#039;utf-8&#039;</span>) : string</pre>
+                <p><em>Encode a header string to best (shortest) of Q, B, quoted or none.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$str </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$position </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$charset </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Colibri.IO.Mail.Helper.html"><div class="path-wrapper">\Colibri\IO\Mail\Helper</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_EncodeFile" name="method_EncodeFile" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">EncodeFile()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">EncodeFile(string  <span class="argument">$path</span>, string  <span class="argument">$encoding = &#039;base64&#039;</span>) : string</pre>
+                <p><em>Encodes attachment in requested format.</em></p>
+                <p>Returns an empty string on failure.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$path </td>
+                                <td><p>The full path to the file</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$encoding </td>
+                                <td><p>The encoding to use; one of 'base64', '7bit', '8bit', 'binary', 'quoted-printable'</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Colibri.IO.Mail.Helper.html"><div class="path-wrapper">\Colibri\IO\Mail\Helper</div></a></dd>
+                                                                            <dt>See also</dt>
+                                                                <dd><a href="../classes/Colibri.IO.Mail.Helper.html#method_EncodeFile"><span class="namespace-wrapper">\Colibri\IO\Mail\Helper::EncodeFile()</span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_GetBoundaryBegin" name="method_GetBoundaryBegin" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">GetBoundaryBegin()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">GetBoundaryBegin(string  <span class="argument">$boundary</span>, string  <span class="argument">$charSet</span>, string  <span class="argument">$contentType</span>, string  <span class="argument">$encoding</span>) : string</pre>
+                <p><em>Returns the start of a message boundary.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$boundary </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$charSet </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$contentType </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$encoding </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Colibri.IO.Mail.Helper.html"><div class="path-wrapper">\Colibri\IO\Mail\Helper</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_GetBoundaryEnd" name="method_GetBoundaryEnd" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">GetBoundaryEnd()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">GetBoundaryEnd(string  <span class="argument">$boundary</span>) : string</pre>
+                <p><em>Returns the end of a message boundary.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$boundary </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Colibri.IO.Mail.Helper.html"><div class="path-wrapper">\Colibri\IO\Mail\Helper</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_HeaderLine" name="method_HeaderLine" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">HeaderLine()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">HeaderLine(string  <span class="argument">$name</span>, string  <span class="argument">$value</span>) : string</pre>
+                <p><em>Returns a formatted header line.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$name </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$value </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Colibri.IO.Mail.Helper.html"><div class="path-wrapper">\Colibri\IO\Mail\Helper</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_TextLine" name="method_TextLine" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">TextLine()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">TextLine(string  <span class="argument">$value</span>) : string</pre>
+                <p><em>Returns a formatted mail line.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$value </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Colibri.IO.Mail.Helper.html"><div class="path-wrapper">\Colibri\IO\Mail\Helper</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_CheckForMultbyte" name="method_CheckForMultbyte" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">CheckForMultbyte()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">CheckForMultbyte(string  <span class="argument">$string</span>, string  <span class="argument">$encoding</span>) : boolean</pre>
+                <p><em>Checks a string gor multibyte</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$string </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$encoding </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Colibri.IO.Mail.Helper.html"><div class="path-wrapper">\Colibri\IO\Mail\Helper</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_StripNewLines" name="method_StripNewLines" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">StripNewLines()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">StripNewLines(string  <span class="argument">$string</span>) : string</pre>
+                <p><em>Strips a new lines from string</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$string </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Colibri.IO.Mail.Helper.html"><div class="path-wrapper">\Colibri\IO\Mail\Helper</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">Helper.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/IO\Mail\Helper.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                            <li><a href="../namespaces/Colibri.html">\Colibri</a></li>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on May 17th, 2020 at 13:56.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>

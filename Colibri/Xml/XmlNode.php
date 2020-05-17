@@ -1,5 +1,12 @@
-<?php
-
+<?php    
+    /**
+     * Xml
+     *
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2020 ColibriLab
+     * @package Colibri\Xml
+     *
+     */
     namespace Colibri\Xml {
 
         use Colibri\AppException;
@@ -53,8 +60,8 @@
             /**
              * Конструктор
              *
-             * @param \DOMNode $node
-             * @param \DOMDocument $dom
+             * @param \DOMNode $node Узел
+             * @param \DOMDocument $dom Документ
              */
             public function __construct(\DOMNode $node, \DOMDocument $dom = null) {
                 $this->_node = $node;
@@ -64,8 +71,8 @@
             /**
              * Создает обьект XmlNode из строки или файла
              *
-             * @param string $xmlFile
-             * @param boolean $isFile
+             * @param string $xmlFile Файл или строка xml
+             * @param boolean $isFile Файл/Строка
              * @return XmlNode
              */
             public static function Load($xmlFile, $isFile = true) {
@@ -88,8 +95,8 @@
             /**
              *  Создает XmlNode из неполного документа
              *
-             * @param string $xmlString
-             * @param string $encoding
+             * @param string $xmlString Строка xml  
+             * @param string $encoding Кодировка строки
              * @return XmlNode
              */
             public static function LoadNode($xmlString, $encoding = 'utf-8') {
@@ -101,8 +108,8 @@
             /**
              *  Создает XMLHtmlNode из неполного документа
              *
-             * @param string $xmlString
-             * @param string $encoding
+             * @param string $xmlString Строка html
+             * @param string $encoding Кодировка строки
              * @return XmlNode
              */
             public static function LoadHtmlNode($xmlString, $encoding = 'utf-8') {
@@ -114,8 +121,9 @@
             /**
              * Создает обьект XmlNode из строки или файла html
              *
-             * @param string $htmlFile
-             * @param boolean $isFile
+             * @param string $htmlFile Файл или строка html для загрузки
+             * @param boolean $isFile Файл/Не файл
+             * @param string $encoding кодировка файла или строки
              * @return XmlNode
              */
             public static function LoadHTML($htmlFile, $isFile = true, $encoding = 'utf-8') {
@@ -140,9 +148,9 @@
             /**
              * Сохраняет в файл или возвращает строку XML хранящуюся в обьекте
              *
-             * @param string $filename
-             * @return mixed
-             */
+             * @param string $filename Путь к файлу для сохранения, если не указано то вернется строка xml
+             * @return mixed 
+             */ 
             public function Save($filename = "") {
                 if(!empty($filename)) {
                     $this->_document->formatOutput = true;
@@ -156,7 +164,7 @@
             /**
              * Сохраняет в файл или возвращает строку HTML хранящуюся в обьекте
              *
-             * @param string $filename
+             * @param string $filename Путь к файлу для сохранения, если не указано то вернется строка html
              * @return mixed
              */
             public function SaveHTML($filename = "") {
@@ -171,7 +179,7 @@
             /**
              * Getter
              *
-             * @param string $property
+             * @param string $property запрашиваемое свойство
              * @return mixed
              */
             public function __get($property) {
@@ -277,8 +285,8 @@
             /**
              * Setter
              *
-             * @param string $property
-             * @param string @value
+             * @param string $property сохраняемое свойство
+             * @param string $value значение свойства
              * @return void
              */
             public function __set($property, $value) {
@@ -308,8 +316,8 @@
             /**
              * Возвращает обьект XmlNode соответстующий дочернему обьекту с именем $name
              *
-             * @param string $name
-             * @return XmlNode или null
+             * @param string $name название дочернего узла
+             * @return XmlNode|null
              */
             public function Item($name) {
                 $list = $this->Items($name);
@@ -324,7 +332,7 @@
             /**
              * Возвращает XmlNodeList с названием тэга $name
              *
-             * @param string $name
+             * @param string $name название дочерних узлов
              * @return XmlNodeList
              */
             public function Items($name) {
@@ -332,9 +340,9 @@
             }
 
             /**
-             * Проверяет является ли заданный узел дочерним к текущему
+             * Проверяет является ли текущий узел дочерним к указанному
              *
-             * @param XmlNode $node
+             * @param XmlNode $node узел для проверки
              * @return boolean
              */
             public function IsChildOf($node) {
@@ -351,7 +359,7 @@
             /**
              * Добавляет заданные узлы/узел в конец
              *
-             * @param mixed $nodes
+             * @param mixed $nodes узлы для добавки
              * @return void
              */
             public function Append($nodes) {
@@ -394,8 +402,8 @@
             /**
              * Добавляет заданные узлы/узел в перед узлом $relation
              *
-             * @param mixed $nodes
-             * @param XmlNode $relation
+             * @param mixed $nodes узлу для добавки
+             * @param XmlNode $relation перед каким узлом добавить
              * @return void
              */
             public function Insert($nodes, XmlNode $relation) {
@@ -425,8 +433,8 @@
             /**
              * Заменяет текущий узел на заданный
              *
-             * @param XmlNode $node
-             * @return void
+             * @param XmlNode $node узел для замены
+             * @return void 
              */
             public function ReplaceTo(XmlNode $node) {
                 $__node = $node->raw;
@@ -438,8 +446,8 @@
             /**
              * Возвращает элементы с атрибутом @name содержащим указанное имя
              *
-             * @param string $name
-             * @return XmlNamedNodeList
+             * @param string $name наименование атрибута
+             * @return XmlNamedNodeList список узлов
              */
             public function getElementsByName($name) {
                 return $this->Query('./child::*[@name="'.$name.'"]', true);
@@ -457,7 +465,12 @@
                 return $xq->Query($query);
             }
 
-            
+            /**
+             * Превращает текущий узел и его дочерние в обьект XmlSerialized
+             *
+             * @param array $exclude массив названий атрибутов и узлов, которые нужно исключить
+             * @return XmlSerialized
+             */
             public function ToObject($exclude = null) {
 
                 if($exclude == null) {
@@ -546,6 +559,13 @@
                 return new XmlSerialized($this->name, $attributes, $content);
             }
 
+            /**
+             * Восстанавливает узел из обьекта XmlSerialized
+             *
+             * @param XmlSerialized $xmlSerializedObject обьект для восстановления
+             * @param XsdSchemaDefinition|null $elementDefinition описание элементов, на которые нужно ориентироваться
+             * @return void
+             */
             public static function FromObject(XmlSerialized $xmlSerializedObject, $elementDefinition = null) {
                 
                 $xml = XmlNode::LoadNode('<'.$xmlSerializedObject->name.' />', 'utf-8');

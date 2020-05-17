@@ -1,5 +1,13 @@
 <?php
-
+    /**
+     * Web
+     * 
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2019 Colibri
+     * @package Colibri\Web
+     * 
+     * 
+     */
     namespace Colibri\Web {
 
         use Colibri\Events\EventsContainer;
@@ -18,13 +26,17 @@
 
             use TEventDispatcher;
 
+            /**
+             * Путь к файлу шаблона
+             *
+             * @var string
+             */
             private $_file;
 
             /**
              * Конструктор
              *
-             * @param Layout $layout
-             * @param string $file
+             * @param string $file файл шаблона
              */
             public function __construct($file) {
 
@@ -87,11 +99,11 @@
             /**
              * Замена вставок в шаблон
              *
-             * @param string $code
-             * @param ObjectEx $args
+             * @param string $code код для выполнения
+             * @param ObjectEx $args аргументы для передачи в код
              * @return void
              */
-            public static function Eval($code, ObjectEx $args) {
+            public static function Run($code, ObjectEx $args) {
                 return preg_replace_callback('/\{\?\=(.*?)\?\}/', function($match) use ($args) {
                     return eval('return '.html_entity_decode($match[1]).';');
                 }, $code);

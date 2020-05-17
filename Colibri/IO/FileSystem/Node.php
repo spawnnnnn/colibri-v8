@@ -14,9 +14,26 @@
          */
         class Node {
 
+            /**
+             * Атрибуты
+             *
+             * @var Attributes
+             */
             protected $attributes;
+
+            /**
+             * Права доступа
+             *
+             * @var Security
+             */
             protected $access;
 
+            /**
+             * Сеттер
+             *
+             * @param string $property свойство
+             * @param mixed $value значение
+             */
             public function __set($property, $value)
             {
                 switch (strtolower($property)) {
@@ -38,6 +55,11 @@
                 }
             }
             
+            /**
+             * Загружает данные об атрибутах
+             *
+             * @return void
+             */
             protected function getAttributesObject()
             {
                 if ($this->attributes === null) {
@@ -46,6 +68,11 @@
                 return $this->attributes;
             }
             
+            /**
+             * Загружает данные о правах доступа
+             *
+             * @return void
+             */
             protected function getSecurityObject()
             {
                 if ($this->access === null) {

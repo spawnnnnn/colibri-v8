@@ -37,8 +37,9 @@
             /** Режим приложения в релизе */
             const ModeRelease       = 'release';
 
-
+            /** Веб сервер */
             const ApplicationWebSerwer = 'webserver';
+            /** RPC сервер */
             const ApplicationRpcSerwer = 'rpcserver';
 
             /**
@@ -263,6 +264,13 @@
                 throw new AppException($errstr.'; file: '.$errfile.'; line: '.$errline, $errno);
             }
 
+            /**
+             * Регистрирует сервис для обработки запросов
+             *
+             * @param string $type Тип сервиса
+             * @param Server $webServerObject сервис, наследованный от \Colibri\Web\Server
+             * @return void
+             */
             public function RegisterService($type, $webServerObject) {
                 if(!isset(self::$services[$type])) {
                     self::$services[$type] = [];
@@ -270,10 +278,22 @@
                 self::$services[$type][] = $webServerObject;
             }
 
+            /**
+             * Возвращает зарегистрированный сервис по типу
+             *
+             * @param string $type
+             * @return Server
+             */
             public function GetService($type) {
                 return isset(self::$services[$type]) ? reset(self::$services[$type]) : null; 
             }
 
+            /**
+             * Возвращает список зарегистрированных сервисов
+             *
+             * @param string $type
+             * @return Server[]
+             */
             public function GetServices($type) {
                 return isset(self::$services[$type]) ? self::$services[$type] : []; 
             }

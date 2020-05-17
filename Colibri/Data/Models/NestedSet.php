@@ -12,19 +12,79 @@
         use Colibri\Data\SqlClient\IDataReader;
         use Colibri\Helpers\Variable;
 
+        /**
+         * Класс для работы с деревьями в виде Nested Sets
+         */
         class NestedSet
         {
+            /**
+             * Ошибки
+             *
+             * @var array
+             */
             public $ERRORS = array();
+            /**
+             * Сообщения об ошибках
+             *
+             * @var array
+             */
             public $ERRORS_MES = array();
 
+            /**
+             * Точка доступа
+             *
+             * @var DataAccessPoint
+             */
             private $dataPoint;
+
+            /**
+             * Таблица
+             *
+             * @var string
+             */
             private $_table;
+            /**
+             * Поле ID
+             *
+             * @var string
+             */
             private $_table_id;
+            /**
+             * Левый индекс
+             *
+             * @var string
+             */
             private $_table_left;
+            /**
+             * Правый индекс 
+             *
+             * @var string
+             */
             private $_table_right;
+            /**
+             * ПОле уровень
+             *
+             * @var string
+             */
             private $_table_level;
+            /**
+             * Поле parent
+             *
+             * @var string
+             */
             private $_table_parent;
 
+            /**
+             * Конструктор
+             *
+             * @param DataAccessPoint $dtp
+             * @param string $table
+             * @param string $id
+             * @param string $left
+             * @param string $right
+             * @param string $level
+             * @param string $parent
+             */
             public function __construct($dtp, $table, $id, $left, $right, $level, $parent)
             {
                 $this->dataPoint = $dtp;
@@ -36,17 +96,40 @@
                 $this->_table_parent = $parent;
             }
 
+            /**
+             * Ошибка
+             *
+             * @param string $file
+             * @param string $class
+             * @param string $function
+             * @param int $line
+             * @param string $sql
+             * @param int $error
+             * @return void
+             */
             private function _setError($file, $class, $function, $line, $sql, $error)
             {
                 $this->ERRORS[] = array(2, 'SQL query error.', $file . '::' . $class . '::' . $function . '::' . $line, 'SQL QUERY: ' . $sql, 'SQL ERROR: ' . $error);
                 $this->ERRORS_MES[] = extension_loaded('gettext') ? _('internal_error') : 'internal_error';
             }
                 
+            /**
+             * Геттер
+             *
+             * @param string $property
+             * @return mixed
+             */
             public function __get($property)
             {
                 return $this->{'_table_'.$property};
             }
                 
+            /**
+             * Очищает данные
+             *
+             * @param array $data
+             * @return bool
+             */
             public function Clear($data = array())
             {
                 try {
@@ -80,7 +163,14 @@
                     return false;
                 }
             }
-                
+
+            /**
+             * Обновляет данные
+             *
+             * @param int $id
+             * @param array $data
+             * @return bool
+             */
             public function Update($id, $data)
             {
                 try {
@@ -93,12 +183,12 @@
             }
                 
             /**
-            * Receives left, right and level for unit with number id.
-            *
-            * @param integer $section_id Unique section id
-            * @param integer $cache Recordset is cached for $cache microseconds
-            * @return array - left, right, level
-            */
+             * Receives left, right and level for unit with number id.
+             *
+             * @param integer $section_id Unique section id
+             * @param integer $cache Recordset is cached for $cache microseconds
+             * @return array - left, right, level
+             */
             private function GetNodeInfo($section_id)
             {
                 $sql = 'SELECT * FROM ' . $this->_table . ' WHERE ' . $this->_table_id . ' = ' . (int)$section_id;
@@ -116,7 +206,15 @@
                     return false;
                 }
             }
-                
+
+            /**
+             * Возвращает данные по ноде
+             *
+             * @param boolean $section_id
+             * @param boolean $returnAsReader
+             * @param string $criteria
+             * @return void
+             */
             public function GetNode($section_id = false, $returnAsReader = false, $criteria = '')
             {
                 if ($section_id !== false) {
@@ -138,6 +236,12 @@
                 }
             }
                 
+            /**
+             * Возвращает данные корневой ноды
+             *
+             * @param boolean $returnAsReader
+             * @return void
+             */
             public function GetRootNode($returnAsReader = false)
             {
                 try {
@@ -160,13 +264,12 @@
             }
                 
             /**
-            * Receives parent left, right and level for unit with number $id.
-            *
-            * @param integer $section_id
-            * @param integer $cache Recordset is cached for $cache microseconds
-            * @param array $condition Array structure: array('and' => array('id = 0', 'id2 >= 3'), 'or' => array('sec = \'www\'', 'sec2 <> \'erere\'')), etc where array key - condition (AND, OR, etc), value - condition string
-            * @return DataRow
-            */
+             * Receives parent left, right and level for unit with number $id.
+             *
+             * @param integer $section_id
+             * @param array $condition Array structure: array('and' => array('id = 0', 'id2 >= 3'), 'or' => array('sec = \'www\'', 'sec2 <> \'erere\'')), etc where array key - condition (AND, OR, etc), value - condition string
+             * @return DataRow
+             */
             public function GetParentInfo($section_id, $condition = '')
             {
                 $node_info = $this->GetNodeInfo($section_id);
@@ -197,13 +300,12 @@
             }
                 
             /**
-            * Add a new element in the tree to element with number $section_id.
-            *
-            * @param integer $section_id Number of a parental element
-            * @param array $condition Array structure: array('and' => array('id = 0', 'id2 >= 3'), 'or' => array('sec = \'www\'', 'sec2 <> \'erere\'')), etc where array key - condition (AND, OR, etc), value - condition string
-            * @param array $data Contains parameters for additional fields of a tree (if is): array('filed name' => 'importance', etc)
-            * @return integer Inserted element id
-            */
+             * Add a new element in the tree to element with number $section_id.
+             *
+             * @param integer $section_id Number of a parental element
+             * @param array $data Contains parameters for additional fields of a tree (if is): array('filed name' => 'importance', etc)
+             * @return integer Inserted element id
+             */
             public function Insert($section_id, $data = array())
             {
                 $node_info = $this->GetNodeInfo($section_id);
@@ -246,13 +348,13 @@
             }
                 
             /**
-            * Add a new element in the tree near element with number id.
-            *
-            * @param integer $id Number of a parental element
-            * @param array $condition Array structure: array('and' => array('id = 0', 'id2 >= 3'), 'or' => array('sec = \'www\'', 'sec2 <> \'erere\'')), etc where array key - condition (AND, OR, etc), value - condition string
-            * @param array $data Contains parameters for additional fields of a tree (if is): array('filed name' => 'importance', etc)
-            * @return integer Inserted element id
-            */
+             * Add a new element in the tree near element with number id.
+             *
+             * @param integer $id Number of a parental element
+             * @param array $condition Array structure: array('and' => array('id = 0', 'id2 >= 3'), 'or' => array('sec = \'www\'', 'sec2 <> \'erere\'')), etc where array key - condition (AND, OR, etc), value - condition string
+             * @param array $data Contains parameters for additional fields of a tree (if is): array('filed name' => 'importance', etc)
+             * @return integer Inserted element id
+             */
             public function InsertNear($id, $condition = '', $data = array())
             {
                 $node_info = $this->GetNodeInfo($id);
@@ -298,13 +400,13 @@
             }
                 
             /**
-            * Assigns a node with all its children to another parent.
-            *
-            * @param integer $id node ID
-            * @param integer $newParentId ID of new parent node
-            * @param array $condition Array structure: array('and' => array('id = 0', 'id2 >= 3'), 'or' => array('sec = \'www\'', 'sec2 <> \'erere\'')), etc where array key - condition (AND, OR, etc), value - condition string
-            * @return bool TRUE if successful, FALSE otherwise.
-            */
+             * Assigns a node with all its children to another parent.
+             *
+             * @param integer $id node ID
+             * @param integer $newParentId ID of new parent node
+             * @param array $condition Array structure: array('and' => array('id = 0', 'id2 >= 3'), 'or' => array('sec = \'www\'', 'sec2 <> \'erere\'')), etc where array key - condition (AND, OR, etc), value - condition string
+             * @return bool TRUE if successful, FALSE otherwise.
+             */
             public function MoveAll($id, $newParentId)
             {
                 $node_info = $this->GetNodeInfo($id);
@@ -366,12 +468,12 @@
             }
                 
             /**
-            * Change items position.
-            *
-            * @param integer $id1 first item ID
-            * @param integer $id2 second item ID
-            * @return bool TRUE if successful, FALSE otherwise.
-            */
+             * Change items position.
+             *
+             * @param integer $id1 first item ID
+             * @param integer $id2 second item ID
+             * @return bool TRUE if successful, FALSE otherwise.
+             */
             public function ChangePosition($id1, $id2)
             {
                 $node_info = $this->GetNodeInfo($id1);
@@ -417,14 +519,14 @@
             }
                 
             /**
-            * Swapping nodes within the same level and limits of one parent with all its children: $id1 placed before or after $id2.
-            *
-            * @param integer $id1 first item ID
-            * @param integer $id2 second item ID
-            * @param string $position 'before' or 'after' $id2
-            * @param array $condition Array structure: array('and' => array('id = 0', 'id2 >= 3'), 'or' => array('sec = \'www\'', 'sec2 <> \'erere\'')), etc where array key - condition (AND, OR, etc), value - condition string
-            * @return bool TRUE if successful, FALSE otherwise.
-            */
+             * Swapping nodes within the same level and limits of one parent with all its children: $id1 placed before or after $id2.
+             *
+             * @param integer $id1 first item ID
+             * @param integer $id2 second item ID
+             * @param string $position 'before' or 'after' $id2
+             * @param array $condition Array structure: array('and' => array('id = 0', 'id2 >= 3'), 'or' => array('sec = \'www\'', 'sec2 <> \'erere\'')), etc where array key - condition (AND, OR, etc), value - condition string
+             * @return bool TRUE if successful, FALSE otherwise.
+             */
             public function ChangePositionAll($id1, $id2, $position = 'after', $condition = '')
             {
                 $node_info = $this->GetNodeInfo($id1);
@@ -494,12 +596,12 @@
             }
                 
             /**
-            * Delete element with number $id from the tree wihtout deleting it's children.
-            *
-            * @param integer $id Number of element
-            * @param array $condition Array structure: array('and' => array('id = 0', 'id2 >= 3'), 'or' => array('sec = \'www\'', 'sec2 <> \'erere\'')), etc where array key - condition (AND, OR, etc), value - condition string
-            * @return bool TRUE if successful, FALSE otherwise.
-            */
+             * Delete element with number $id from the tree wihtout deleting it's children.
+             *
+             * @param integer $id Number of element
+             * @param array $condition Array structure: array('and' => array('id = 0', 'id2 >= 3'), 'or' => array('sec = \'www\'', 'sec2 <> \'erere\'')), etc where array key - condition (AND, OR, etc), value - condition string
+             * @return bool TRUE if successful, FALSE otherwise.
+             */
             public function Delete($id, $condition = '')
             {
                 $node_info = $this->GetNodeInfo($id);
@@ -541,12 +643,12 @@
             }
                 
             /**
-            * Delete element with number $id from the tree and all it childret.
-            *
-            * @param integer $id Number of element
-            * @param array $condition Array structure: array('and' => array('id = 0', 'id2 >= 3'), 'or' => array('sec = \'www\'', 'sec2 <> \'erere\'')), etc where array key - condition (AND, OR, etc), value - condition string
-            * @return bool TRUE if successful, FALSE otherwise.
-            */
+             * Delete element with number $id from the tree and all it childret.
+             *
+             * @param integer $id Number of element
+             * @param array $condition Array structure: array('and' => array('id = 0', 'id2 >= 3'), 'or' => array('sec = \'www\'', 'sec2 <> \'erere\'')), etc where array key - condition (AND, OR, etc), value - condition string
+             * @return bool TRUE if successful, FALSE otherwise.
+             */
             public function DeleteAll($id, $condition = '')
             {
                 $node_info = $this->GetNodeInfo($id);
@@ -585,12 +687,12 @@
             }
                 
             /**
-            * Counts element with number $id from the tree and all it childret.
-            *
-            * @param integer $id Number of element
-            * @param array $condition Array structure: array('and' => array('id = 0', 'id2 >= 3'), 'or' => array('sec = \'www\'', 'sec2 <> \'erere\'')), etc where array key - condition (AND, OR, etc), value - condition string
-            * @return bool TRUE if successful, FALSE otherwise.
-            */
+             * Counts element with number $id from the tree and all it childret.
+             *
+             * @param integer $id Number of element
+             * @param array $condition Array structure: array('and' => array('id = 0', 'id2 >= 3'), 'or' => array('sec = \'www\'', 'sec2 <> \'erere\'')), etc where array key - condition (AND, OR, etc), value - condition string
+             * @return bool TRUE if successful, FALSE otherwise.
+             */
             public function CountAll($id, $condition = '')
             {
                 $node_info = $this->GetNodeInfo($id);
@@ -616,13 +718,15 @@
             }
                 
             /**
-            * Returns all elements of the tree sortet by left.
-            *
-            * @param array $condition Array structure: array('and' => array('id = 0', 'id2 >= 3'), 'or' => array('sec = \'www\'', 'sec2 <> \'erere\'')), etc where array key - condition (AND, OR, etc), value - condition string
-            * @param array $fields needed fields (if is): array('filed1 name', 'filed2 name', etc)
-            * @param integer $cache Recordset is cached for $cache microseconds
-            * @return array needed fields
-            */
+             * Returns all elements of the tree sortet by left.
+             *
+             * @param array $fields needed fields (if is): array('filed1 name', 'filed2 name', etc)
+             * @param array $condition Array structure: array('and' => array('id = 0', 'id2 >= 3'), 'or' => array('sec = \'www\'', 'sec2 <> \'erere\'')), etc where array key - condition (AND, OR, etc), value - condition string
+             * @param string $joinWith Join string
+             * @param int $page Page
+             * @param int $pagesize Pagesize
+             * @return array needed fields
+             */
             public function Full($fields, $condition = '', $joinWith = '', $page = -1, $pagesize = 10)
             {
                 if (!Variable::IsEmpty($condition)) {
@@ -653,6 +757,13 @@
                 return $res;
             }
                 
+            /**
+             * Gets a position number
+             *
+             * @param int $id
+             * @param string $condition
+             * @return int
+             */
             public function GetPositionNumber($id, $condition = '')
             {
                 $node = $this->GetNodeInfo($id);
@@ -667,15 +778,16 @@
             }
                 
             /**
-            * Returns all elements of a branch starting from an element with number $id.
-            *
-            * @param array $condition Array structure: array('and' => array('id = 0', 'id2 >= 3'), 'or' => array('sec = \'www\'', 'sec2 <> \'erere\'')), etc where array key - condition (AND, OR, etc), value - condition string
-            * @param array $fields needed fields (if is): array('filed1 name', 'filed2 name', etc)
-            * @param integer $cache Recordset is cached for $cache microseconds
-            * @param integer $id Node unique id
-            * @param array $joinWith Array structure: array('outer' => array('table' => 'condition'), 'inner' => array('table', 'condition')), etc where array key - join type (inner, outer, cross), condition - condition string
-            * @return IDataReader
-            */
+             * Returns all elements of a branch starting from an element with number $id.
+             *
+             * @param integer $id Node unique id
+             * @param array $fields needed fields (if is): array('filed1 name', 'filed2 name', etc)
+             * @param array $condition Array structure: array('and' => array('id = 0', 'id2 >= 3'), 'or' => array('sec = \'www\'', 'sec2 <> \'erere\'')), etc where array key - condition (AND, OR, etc), value - condition string
+             * @param array $joinWith Array structure: array('outer' => array('table' => 'condition'), 'inner' => array('table', 'condition')), etc where array key - join type (inner, outer, cross), condition - condition string
+             * @param int $page Page
+             * @param int $pagesize Pagesize
+             * @return IDataReader
+             */
             public function Branch($id, $fields = '', $condition = '', $joinWith = '', $page = -1, $pagesize = 10)
             {
                 if (Variable::IsArray($fields)) {
@@ -721,14 +833,14 @@
             }
                 
             /**
-            * Returns all parents of element with number $id.
-            *
-            * @param array $condition Array structure: array('and' => array('id = 0', 'id2 >= 3'), 'or' => array('sec = \'www\'', 'sec2 <> \'erere\'')), etc where array key - condition (AND, OR, etc), value - condition string
-            * @param array $fields needed fields (if is): array('filed1 name', 'filed2 name', etc)
-            * @param integer $cache Recordset is cached for $cache microseconds
-            * @param integer $id Node unique id
-            * @return IDataReader
-            */
+             * Returns all parents of element with number $id.
+             *
+             * @param integer $id Node unique id
+             * @param array $fields needed fields (if is): array('filed1 name', 'filed2 name', etc)
+             * @param array $condition Array structure: array('and' => array('id = 0', 'id2 >= 3'), 'or' => array('sec = \'www\'', 'sec2 <> \'erere\'')), etc where array key - condition (AND, OR, etc), value - condition string
+             * @param string $joinWith Join string
+             * @return IDataReader
+             */
             public function Parents($id, $fields = '', $condition = '', $joinWith = '')
             {
                 if (Variable::IsArray($fields)) {
@@ -766,14 +878,15 @@
             }
                 
             /**
-            * Returns a slightly opened tree from an element with number $id.
-            *
-            * @param array $condition Array structure: array('and' => array('id = 0', 'id2 >= 3'), 'or' => array('sec = \'www\'', 'sec2 <> \'erere\'')), etc where array key - condition (AND, OR, etc), value - condition string
-            * @param array $fields needed fields (if is): array('filed1 name', 'filed2 name', etc)
-            * @param integer $cache Recordset is cached for $cache microseconds
-            * @param integer $id Node unique id
-            * @return IDataReader
-            */
+             * Returns a slightly opened tree from an element with number $id.
+             *
+             * @param integer $id Node unique id
+             * @param array $fields needed fields (if is): array('filed1 name', 'filed2 name', etc)
+             * @param array $condition Array structure: array('and' => array('id = 0', 'id2 >= 3'), 'or' => array('sec = \'www\'', 'sec2 <> \'erere\'')), etc where array key - condition (AND, OR, etc), value - condition string
+             * @param int $page Page
+             * @param int $pagesize Pagesize
+             * @return IDataReader
+             */
             public function Ajar($id, $fields = '', $condition = '', $page = -1, $pagesize = 10)
             {
                 if (Variable::IsArray($fields)) {
@@ -847,16 +960,16 @@
             }
                 
             /**
-            * Transform array with conditions to SQL query
-            * Array structure:
-            * array('and' => array('id = 0', 'id2 >= 3'), 'or' => array('sec = \'www\'', 'sec2 <> \'erere\'')), etc
-            * where array key - condition (AND, OR, etc), value - condition string.
-            *
-            * @param array $condition
-            * @param string $prefix
-            * @param bool $where - True - yes, flase - not
-            * @return string
-            */
+             * Transform array with conditions to SQL query
+             * Array structure:
+             * array('and' => array('id = 0', 'id2 >= 3'), 'or' => array('sec = \'www\'', 'sec2 <> \'erere\'')), etc
+             * where array key - condition (AND, OR, etc), value - condition string.
+             *
+             * @param array $condition
+             * @param bool $where - True - yes, flase - not
+             * @param string $prefix
+             * @return string
+             */
             private function _PrepareCondition($condition, $where = false, $prefix = '')
             {
                 if (!is_array($condition)) {
@@ -883,16 +996,15 @@
             }
                 
             /**
-            * Transform array with conditions to SQL query
-            * Array structure:
-            * array $joinWith Array structure: array('outer' => array('table' => array('fieldfrom', 'fieldto')), 'inner' => array('table' => array('fieldfrom', 'fieldto')), etc where array key - join type (inner, outer, cross), condition - condition string
-            * where array key - condition (AND, OR, etc), value - condition string.
-            *
-            * @param array $condition
-            * @param string $prefix
-            * @param bool $where - True - yes, flase - not
-            * @return string
-            */
+             * Transform array with conditions to SQL query
+             * Array structure:
+             * array $joinWith Array structure: array('outer' => array('table' => array('fieldfrom', 'fieldto')), 'inner' => array('table' => array('fieldfrom', 'fieldto')), etc where array key - join type (inner, outer, cross), condition - condition string
+             * where array key - condition (AND, OR, etc), value - condition string.
+             *
+             * @param string $joinWith
+             * @param string $prefix
+             * @return string
+             */
             private function _PrepareJoin($joinWith, $prefix = '')
             {
                 if (!is_array($joinWith)) {

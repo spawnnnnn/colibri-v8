@@ -1,30 +1,63 @@
 <?php
-
+    /**
+     * Definitions
+     *
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2020 ColibriLab
+     * @package Colibri\Xml\Definitions
+     *
+     */
     namespace Colibri\Xml\Definitions {
 
-    use Colibri\Xml\Serialization\XmlSerialized;
-    use Colibri\Xml\XmlNode;
+        use Colibri\Xml\Serialization\XmlSerialized;
+        use Colibri\Xml\XmlNode;
 
         /**
          * Определение элемента
          * 
-         * @property-read string $annotation
-         * @property-read string $name
-         * @property-read stdClass $occurs
-         * @property-read [XsdAttributeDefinition] $attributes
-         * @property-read [XsdElementDefinition]] $elements
-         * @property-read XsdTypeDefinition $type
+         * @property-read string $annotation аннотация элемента
+         * @property-read string $name наименование элемента
+         * @property-read stdClass $occurs обьект определяющий с какого по какое количество может быть вхождений данного элемента
+         * @property-read XsdAttributeDefinition[] $attributes список атрибутов
+         * @property-read XsdElementDefinition[] $elements список элементов
+         * @property-read XsdTypeDefinition $type тип элемента
+         * @property-read array $autocomplete список значений для интеллисенса
+         * @property-read string $generate команда для генерации элемента
+         * @property-read string $lookup команда для генерации межобьектных связей
          */
         class XsdElementDefinition implements \JsonSerializable {
 
+            /**
+             * Узел
+             *
+             * @var XmlNode
+             */
             private $_node;
+
+            /**
+             * Схема
+             *
+             * @var XmlSchemaDefinition
+             */
             private $_schema;
 
+            /**
+             * Конструктор
+             *
+             * @param XmlNode $elementNode описываемый элемент
+             * @param XsdSchemaDefinition $schema схема
+             */
             public function __construct(XmlNode $elementNode, XsdSchemaDefinition $schema) {
                 $this->_node = $elementNode;
                 $this->_schema = $schema;
             }
 
+            /**
+             * Геттер
+             *
+             * @param string $property
+             * @return mixed
+             */
             public function __get($property) {
                 if(strtolower($property) == 'annotation') {
                     return $this->_node->Item('xs:annotation') ? trim($this->_node->Item('xs:annotation')->value, "\r\t\n ") : '';
@@ -111,11 +144,21 @@
                 return new XmlSerialized($this->name, $attributes, $content);
             }
 
+            /**
+             * Возвращает данные в виде простого обьекта для упаковки в json
+             *
+             * @return stdClass
+             */
             public function jsonSerialize()
             {
                 return (object)array('name' => $this->name, 'type' => $this->type, 'annotation' => $this->annotation, 'occurs' => $this->occurs, 'attributes' => $this->attributes, 'elements' => $this->elements, 'autocomplete' => $this->autocomplete, 'generate' => $this->generate, 'lookup' => $this->lookup);
             }
 
+            /**
+             * Возвращает данные в виде простого обьекта
+             *
+             * @return stdClass
+             */
             public function ToObject() {
 
                 $attributes = [];

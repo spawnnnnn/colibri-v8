@@ -284,6 +284,7 @@
             }
 
             /**
+             * Устанавливает значение по индексу
              * @param int $offset
              * @param mixed $value
              * @return void
@@ -298,6 +299,7 @@
             }
         
             /**
+             * Проверяет наличие значения по индексу
              * @param int $offset
              * @return bool
              */
@@ -307,6 +309,7 @@
             }
         
             /**
+             * Удаляет значение по индексу
              * @param int $offset
              * @return void
              */

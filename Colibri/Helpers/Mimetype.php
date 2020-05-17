@@ -24,6 +24,11 @@
          */
         class MimeType
         {
+            /**
+             * Список MIME типов
+             *
+             * @var array
+             */
             protected static $mime_types = array(
                 "acx" =>  "application/internet-property-stream",
                 "ai" =>  "application/postscript",
@@ -217,6 +222,11 @@
                 "svg" => "image/svg+xml",
             );
             
+            /**
+             * Список типов, совместимых с браузерами
+             *
+             * @var array
+             */
             protected static $browserCapableTypes = array(
                 "jpg", "png", "gif",
                 "swf",
@@ -232,11 +242,22 @@
              */
             private $_type;
             
+            /**
+             * Конструктор
+             *
+             * @param string $type тип файла
+             */
             public function __construct($type)
             {
                 $this->_type = $type;
             }
             
+            /**
+             * Геттер
+             *
+             * @param string $field
+             * @return mixed
+             */
             public function __get($field)
             {
                 $return = null;

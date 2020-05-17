@@ -15,6 +15,12 @@
          */
         class AddressList extends ArrayList
         {
+            /**
+             * Добавляет адрес в список
+             *
+             * @param Address $a
+             * @return void
+             */
             public function Add($a)
             {
                 if (!($a instanceof Address)) {
@@ -23,6 +29,12 @@
                 parent::Add($a);
             }
             
+            /**
+             * Добавляет адреса в список
+             *
+             * @param Address[] $values
+             * @return void
+             */
             public function AddRange($values)
             {
                 foreach ($values as $v) {
@@ -33,6 +45,11 @@
                 parent::Append($values);
             }
             
+            /**
+             * Собирает все адреса в один список, разделенный запятой
+             *
+             * @return string
+             */
             public function Join()
             {
                 $ret = '';

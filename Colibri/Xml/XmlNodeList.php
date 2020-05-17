@@ -1,5 +1,12 @@
 <?php
-
+    /**
+     * Xml
+     *
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2020 ColibriLab
+     * @package Colibri\Xml
+     *
+     */
     namespace Colibri\Xml {
 
         /**
@@ -23,15 +30,32 @@
              */
             private $_document;
 
+            /**
+             * Конструктор
+             *
+             * @param \DOMNodeList $nodelist список узлов   
+             * @param \DOMDocument $dom документ
+             */
             public function __construct(\DOMNodeList $nodelist, \DOMDocument $dom) {
                 $this->_data = $nodelist;
                 $this->_document = $dom;
             }
 
+            /**
+             * Возвращает итератор для обхода методом foreach
+             *
+             * @return XmlNodeListIterator
+             */
             public function getIterator() {
                 return new XmlNodeListIterator($this);
             }
 
+            /**
+             * Возвращает узел по индексу
+             *
+             * @param int $index
+             * @return XmlNode|null
+             */
             public function Item($index) {
                 if($this->_data->item($index)){
                     return new XmlNode($this->_data->item($index), $this->_document);
@@ -39,6 +63,12 @@
                 return null;
             }
 
+            /**
+             * Геттер
+             *
+             * @param string $property
+             * @return mixed
+             */
             public function __get($property) {
                 if (strtolower($property) == 'document') {
                     return $this->_document;
@@ -46,24 +76,50 @@
                 return null;
             }
 
+            /**
+             * Возвращает количество узлов
+             *
+             * @return int
+             */
             public function Count() {
                 return $this->_data->length;
             }
 
+            /**
+             * Возвращает первый узел
+             *
+             * @return XmlNode
+             */
             public function First() {
                 return $this->Item(0);
             }
 
+            /**
+             * Возвращает последний узел
+             *
+             * @return XmlNode
+             */
             public function Last() {
                 return $this->Item($this->Count()-1);
             }
 
+            /**
+             * Удаляет все узлы в коллекции
+             *
+             * @return void
+             */
             public function Remove() {
                 foreach($this as $d) {
                     $d->Remove();
                 }
             }
 
+            /**
+             * Возвращает все узлы в коллекции в виде обьекта
+             *
+             * @param array $exclude список названий атрибутов и узлов, которые нужно исключить
+             * @return array|null
+             */
             public function ToObject($exclude = array()) {
                 $ret = array();
 

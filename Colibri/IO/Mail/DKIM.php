@@ -13,11 +13,42 @@
          */
         class DKIM
         {
+            /**
+             * Секетор
+             *
+             * @var string
+             */
             private $_selector   = 'phpmailer';
+
+            /**
+             * Идентификатор
+             *
+             * @var string
+             */
             private $_identity   = '';
+
+            /**
+             * Домен
+             *
+             * @var string
+             */
             private $_domain     = '';
+
+            /**
+             * Приватный ключс
+             *
+             * @var string
+             */
             private $_private    = '';
             
+            /**
+             * Конструктор
+             *
+             * @param string $selector селектор
+             * @param string $identity идентификатор
+             * @param string $domain домен
+             * @param string $private приватный ключ
+             */
             public function __construct($selector, $identity, $domain, $private)
             {
                 $this->_selector = $selector;
@@ -26,12 +57,24 @@
                 $this->_private = $private;
             }
             
+            /**
+             * Геттер
+             *
+             * @param string $property свойство
+             * @return string
+             */
             public function __get($property)
             {
                 $name = "_".strtolower($property);
                 return $this->$name;
             }
             
+            /**
+             * Сеттер
+             *
+             * @param string $property свойство
+             * @param string $value значение
+             */
             public function __set($property, $value)
             {
                 $name = "_".strtolower($property);
@@ -39,12 +82,9 @@
             }
             
             /**
-            * Set the private key file and UserPass to sign the message.
-            *
-            * @access public
-            * @param string $key_filename Parameter File Name
-            * @param string $key_pass UserPass for private key
-            */
+             * Кодирует строку
+             * @param string $txt
+             */
             private function QP($txt)
             {
                 $line="";
@@ -60,11 +100,10 @@
             }
 
             /**
-            * Generate DKIM signature
-            *
-            * @access public
-            * @param string $s Header
-            */
+             * Создает DKIM ключ
+             *
+             * @param string $s заголовок
+             */
             private function Sign($s)
             {
                 $privKeyStr = file_get_contents($this->_private);
@@ -80,11 +119,10 @@
             }
 
             /**
-            * Generate DKIM Canonicalization Header
-            *
-            * @access public
-            * @param string $s Header
-            */
+             * Создает основной заголовок DKIM
+             *
+             * @param string $s заголовок
+             */
             private function HeaderC($s)
             {
                 $s = preg_replace("/\r\n\s+/", " ", $s);
@@ -99,11 +137,10 @@
             }
 
             /**
-            * Generate DKIM Canonicalization Body
-            *
-            * @access public
-            * @param string $body Message Body
-            */
+             * Создает основной контент DKIM
+             *
+             * @param string $body содержание письма
+             */
             private function BodyC($body)
             {
                 if ($body == '') {
@@ -118,13 +155,12 @@
             }
             
             /**
-            * Create the DKIM header, body, as new header
-            *
-            * @access public
-            * @param string $headers_line Header lines
-            * @param string $subject Subject
-            * @param string $body Body
-            */
+             * Создает заголовок и тело письма с DKIM
+             *
+             * @param string[] $headers строки заголовка
+             * @param string $subject Тема письма
+             * @param string $body Тело письма
+             */
             public function Add($headers, $subject, $body)
             {
                 $DKIMsignatureType    = 'rsa-sha1'; // Signature & hash algorithms

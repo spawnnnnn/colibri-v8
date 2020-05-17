@@ -26,8 +26,25 @@
          */
         class Directory extends Node
         {
+            /**
+             * Путь к папке
+             *
+             * @var string
+             */
             private $path;
+
+            /**
+             * Родительская директория
+             *
+             * @var Directory
+             */
             private $parent;
+
+            /**
+             * Путь в виде массива  
+             *
+             * @var array
+             */
             private $pathArray;
 
             /**
@@ -40,6 +57,12 @@
                 $this->path = dirname($path[strlen($path) - 1] == '/' ? $path . '#' : $path);
             }
 
+            /**
+             * Геттер
+             *
+             * @param string $property свойство
+             * @return mixed
+             */
             public function __get($property)
             {
                 $return = null;
@@ -87,7 +110,7 @@
             /**
              * Копирует директорию
              *
-             * @param string $path
+             * @param string $path путь куда скопировать директорию
              * @return void
              */
             public function CopyTo($path)
@@ -98,7 +121,7 @@
             /**
              * Перемещает директорию
              *
-             * @param string $path
+             * @param string $path путь куда переместить директорию
              * @return void
              */
             public function MoveTo($path)
@@ -134,7 +157,7 @@
             /**
              * Проверяет есть ли директория на диске
              *
-             * @param string $path
+             * @param string $path путь к директории
              * @return boolean
              */
             public static function Exists($path)
@@ -145,9 +168,9 @@
             /**
              * Создает директорию
              *
-             * @param string $path
-             * @param boolean $recursive
-             * @param integer $mode
+             * @param string $path пусть к директории
+             * @param boolean $recursive если true то директории будут созданы по всему пути до достижения указанной директории
+             * @param integer $mode режим создания по умолчанию 0777
              * @return Directory
              */
             public static function Create($path, $recursive = true, $mode = 0777)
@@ -167,7 +190,7 @@
             /**
              * Удаляет директорию с диска
              *
-             * @param string $path
+             * @param string $path путь к директории
              * @return void
              */
             public static function Delete($path)
@@ -194,8 +217,8 @@
             /**
              * Копирует директорию
              *
-             * @param string $from
-             * @param string $to
+             * @param string $from какую директорию скопировать
+             * @param string $to куда скопировать
              * @return void
              */
             public static function Copy($from, $to)
@@ -224,8 +247,8 @@
             /**
              * Перемещает директорию
              *
-             * @param string $from
-             * @param string $to
+             * @param string $from какую директорию переместить
+             * @param string $to куда переместить
              * @return void
              */
             public static function Move($from, $to)
@@ -240,6 +263,12 @@
                 rename($from, $to);
             }
 
+            /**
+             * Возвращает обьект содержащий данные о директории
+             *
+             * @param string $filename
+             * @return array
+             */
             public static function PathInfo($filename)
             {
                 $pathInfo = [];
@@ -254,7 +283,7 @@
             /**
              * Возвращает массив из данных
              *
-             * @return void
+             * @return array
              */
             public function ToArray()
             {

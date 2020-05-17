@@ -17,7 +17,7 @@
             /**
              * Возвращает список полей в запросе
              *
-             * @return array(string)
+             * @return string[]
              */
             public function Fields();
 

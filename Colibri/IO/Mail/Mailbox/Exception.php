@@ -10,6 +10,9 @@
 
         use Colibri\AppException;
 
+        /**
+         * Исключение для Mailbox
+         */
         class Exception extends AppException
         {
         }

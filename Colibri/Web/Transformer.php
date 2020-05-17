@@ -1,7 +1,6 @@
 <?php
-
     /**
-     * Kласс обработчика Controller
+     * Web
      * 
      * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
      * @copyright 2019 Colibri
@@ -78,6 +77,11 @@
              */
             protected $_server;
 
+            /**
+             * Конструктор
+             *
+             * @param Server $server контекст сервера
+             */
             public function __construct(Server $server)
             {
                 $this->_server = $server;

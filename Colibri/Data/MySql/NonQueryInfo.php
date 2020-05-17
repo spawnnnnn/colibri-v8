@@ -23,6 +23,15 @@
          */
         final class NonQueryInfo extends SqlNonQueryInfo
         {
+            /**
+             * Конструктор
+             *
+             * @param string $type
+             * @param int $insertid
+             * @param int $affected
+             * @param string $error
+             * @param string $query
+             */
             public function __construct($type, $insertid, $affected, $error, $query)
             {
                 $this->type = $type;

@@ -15,20 +15,86 @@
          */
         class Attachment
         {
-            public $path; // file path or string (if attachment is string type)
-            public $filename; // file name
-            public $charset; // file encoding
-            public $encoding; // file encoding
-            public $name; // attachment name
-            public $type; // mime type
-            public $cid; // ??
-            public $isString; // is attachemtn is string
-            public $isInline; // is inline image
+            /**
+             * Путь к файлу
+             *
+             * @var string
+             */
+            public $path; 
+
+            /**
+             * Наименование файла
+             *
+             * @var string
+             */
+            public $filename;
             
+            /**
+             * Кодировка файла
+             *
+             * @var string
+             */
+            public $charset;
+
+            /**
+             * Кодировка данных вложения
+             *
+             * @var string
+             */
+            public $encoding; 
+            
+            /**
+             * Название прикрепления
+             *
+             * @var string
+             */
+            public $name;
+
+            /**
+             * Тип MIME для файла
+             *
+             * @var string
+             */
+            public $type; 
+
+            /**
+             * Черт его знает что это
+             * 
+             * @var string
+             */
+            public $cid;
+
+            /**
+             * true если файл это строка
+             *
+             * @var bool
+             */
+            public $isString;
+
+            /**
+             * true если впложение inline
+             *
+             * @var bool
+             */
+            public $isInline;
+            
+            /**
+             * Конструктор
+             */
             public function __construct()
             {
             }
             
+            /**
+             * Создает вложение
+             *
+             * @param string $path путь к файлу
+             * @param string $name название вложения
+             * @param string $encoding кодировка данных вложения
+             * @param string $type MIME тип вложения
+             * @param string $charset кодировка вложения
+             * @return Attachment
+             */
             public static function Create($path, $name = '', $encoding = 'base64', $type = 'application/octet-stream', $charset = '')
             {
                 $ma = new Attachment();
@@ -55,6 +121,16 @@
                 return $ma;
             }
             
+            /**
+             * Создает строковое вложение
+             *
+             * @param string $string данные вложения
+             * @param string $filename название файла
+             * @param string $encoding кодировка данных вложения
+             * @param string $type MIME тип вложения
+             * @param string $charset кодировка вложения
+             * @return Attachment
+             */
             public static function CreateString($string, $filename, $encoding = 'base64', $type = 'application/octet-stream', $charset = '')
             {
                 $ma = new Attachment();
@@ -72,6 +148,17 @@
                 return $ma;
             }
             
+            /**
+             * Создает встроенное вложение
+             *
+             * @param string $path путь к файлу
+             * @param string $cid не знаю что это
+             * @param string $name название вложения
+             * @param string $encoding кодировка данных вложения
+             * @param string $type MIME тип вложения
+             * @param string $charset кодировка вложения
+             * @return void
+             */
             public function CreateEmbeded($path, $cid, $name = '', $encoding = 'base64', $type = 'application/octet-stream', $charset = '')
             {
                 $ma = new Attachment();

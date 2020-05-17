@@ -10,6 +10,9 @@
 
         use Colibri\AppException;
 
+        /**
+         * Исключения для моделей данных
+         */
         class DataModelException extends AppException
         {
         }

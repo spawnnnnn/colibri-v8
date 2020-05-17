@@ -25,6 +25,7 @@
             private $itemClass = '';
             
             /**
+             * Конструктор
              * @param array $data
              * @param string $itemClass возвращаемый класс
              */

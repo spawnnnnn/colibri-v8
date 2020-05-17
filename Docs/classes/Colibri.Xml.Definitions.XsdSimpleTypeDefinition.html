@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>API Documentation</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src').replace( /\\/g, '/');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">API Documentation</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown">
+                        <a href="../index.html" class="dropdown-toggle" data-toggle="dropdown">
+                            API Documentation <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                                                        <li><a href="../namespaces/Colibri.html">\Colibri</a></li>
+                                                    </ul>
+                    </li>
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">2</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                            <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1920505197"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-1920505197" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1823139586"></a>
+                                <a href="../namespaces/Colibri.html" style="margin-left: 30px; padding-left: 0">Colibri</a>
+            </div>
+            <div id="namespace-1823139586" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1589207176"></a>
+                                <a href="../namespaces/Colibri.Collections.html" style="margin-left: 30px; padding-left: 0">Collections</a>
+            </div>
+            <div id="namespace-1589207176" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Colibri.Collections.IArrayList.html">IArrayList</a></li>
+                                                    <li class="interface"><a href="../classes/Colibri.Collections.ICollection.html">ICollection</a></li>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Collections.ArrayList.html">ArrayList</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Collections.ArrayListIterator.html">ArrayListIterator</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Collections.Collection.html">Collection</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Collections.CollectionException.html">CollectionException</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Collections.CollectionIterator.html">CollectionIterator</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Collections.ObjectCollection.html">ObjectCollection</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Collections.ObjectList.html">ObjectList</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Collections.ReadonlyCollection.html">ReadonlyCollection</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-751936417"></a>
+                                <a href="../namespaces/Colibri.Configuration.html" style="margin-left: 30px; padding-left: 0">Configuration</a>
+            </div>
+            <div id="namespace-751936417" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1624694554"></a>
+                                <a href="../namespaces/Colibri.Configuration.Drivers.html" style="margin-left: 30px; padding-left: 0">Drivers</a>
+            </div>
+            <div id="namespace-1624694554" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Colibri.Configuration.Drivers.IConfigDriver.html">IConfigDriver</a></li>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Configuration.Drivers.XmlConfigDriver.html">XmlConfigDriver</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Configuration.Drivers.YmlConfigDriver.html">YmlConfigDriver</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Configuration.Config.html">Config</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Configuration.ConfigException.html">ConfigException</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Configuration.ConfigItemsList.html">ConfigItemsList</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-147209356"></a>
+                                <a href="../namespaces/Colibri.Data.html" style="margin-left: 30px; padding-left: 0">Data</a>
+            </div>
+            <div id="namespace-147209356" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1732871356"></a>
+                                <a href="../namespaces/Colibri.Data.Models.html" style="margin-left: 30px; padding-left: 0">Models</a>
+            </div>
+            <div id="namespace-1732871356" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Data.Models.DataModelException.html">DataModelException</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Data.Models.DataRow.html">DataRow</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Data.Models.DataTable.html">DataTable</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Data.Models.DataTableIterator.html">DataTableIterator</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Data.Models.NestedSet.html">NestedSet</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1004131557"></a>
+                                <a href="../namespaces/Colibri.Data.MySql.html" style="margin-left: 30px; padding-left: 0">MySql</a>
+            </div>
+            <div id="namespace-1004131557" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Data.MySql.Command.html">Command</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Data.MySql.Connection.html">Connection</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Data.MySql.DataReader.html">DataReader</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Data.MySql.Exception.html">Exception</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Data.MySql.NonQueryInfo.html">NonQueryInfo</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Data.MySql.QueryBuilder.html">QueryBuilder</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1631768937"></a>
+                                <a href="../namespaces/Colibri.Data.SqlClient.html" style="margin-left: 30px; padding-left: 0">SqlClient</a>
+            </div>
+            <div id="namespace-1631768937" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Colibri.Data.SqlClient.IConnection.html">IConnection</a></li>
+                                                    <li class="interface"><a href="../classes/Colibri.Data.SqlClient.IDataReader.html">IDataReader</a></li>
+                                                    <li class="interface"><a href="../classes/Colibri.Data.SqlClient.IQueryBuilder.html">IQueryBuilder</a></li>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Data.SqlClient.Command.html">Command</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Data.SqlClient.DataField.html">DataField</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Data.SqlClient.NonQueryInfo.html">NonQueryInfo</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Data.DataAccessPoint.html">DataAccessPoint</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Data.DataAccessPoints.html">DataAccessPoints</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Data.DataAccessPointsException.html">DataAccessPointsException</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1302512271"></a>
+                                <a href="../namespaces/Colibri.Encryption.html" style="margin-left: 30px; padding-left: 0">Encryption</a>
+            </div>
+            <div id="namespace-1302512271" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Encryption.Crypt.html">Crypt</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Encryption.Rc4Crypt.html">Rc4Crypt</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1580345863"></a>
+                                <a href="../namespaces/Colibri.Events.html" style="margin-left: 30px; padding-left: 0">Events</a>
+            </div>
+            <div id="namespace-1580345863" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                            <li class="trait"><a href="../classes/Colibri.Events.TEventDispatcher.html">TEventDispatcher</a></li>
+                                                                            <li class="class"><a href="../classes/Colibri.Events.Event.html">Event</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Events.EventDispatcher.html">EventDispatcher</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Events.EventsContainer.html">EventsContainer</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1044521279"></a>
+                                <a href="../namespaces/Colibri.Graphics.html" style="margin-left: 30px; padding-left: 0">Graphics</a>
+            </div>
+            <div id="namespace-1044521279" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Graphics.Font.html">Font</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Graphics.Graphics.html">Graphics</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Graphics.Point.html">Point</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Graphics.Quadro.html">Quadro</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Graphics.Size.html">Size</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1950173593"></a>
+                                <a href="../namespaces/Colibri.Helpers.html" style="margin-left: 30px; padding-left: 0">Helpers</a>
+            </div>
+            <div id="namespace-1950173593" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Helpers.Date.html">Date</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Helpers.Encoding.html">Encoding</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Helpers.HtmlEncoder.html">HtmlEncoder</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Helpers.Mem.html">Mem</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Helpers.MimeType.html">MimeType</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Helpers.Objects.html">Objects</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Helpers.Randomization.html">Randomization</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Helpers.Strings.html">Strings</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Helpers.TimeZone.html">TimeZone</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Helpers.Variable.html">Variable</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Helpers.XmlEncoder.html">XmlEncoder</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1002477610"></a>
+                                <a href="../namespaces/Colibri.IO.html" style="margin-left: 30px; padding-left: 0">IO</a>
+            </div>
+            <div id="namespace-1002477610" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-48196110"></a>
+                                <a href="../namespaces/Colibri.IO.FileSystem.html" style="margin-left: 30px; padding-left: 0">FileSystem</a>
+            </div>
+            <div id="namespace-48196110" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1826133419"></a>
+                                <a href="../namespaces/Colibri.IO.FileSystem.Archivers.html" style="margin-left: 30px; padding-left: 0">Archivers</a>
+            </div>
+            <div id="namespace-1826133419" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.IO.FileSystem.Archivers.GZFile.html">GZFile</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.IO.FileSystem.Attributes.html">Attributes</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.FileSystem.Directory.html">Directory</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.FileSystem.Exception.html">Exception</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.FileSystem.File.html">File</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.FileSystem.FileStream.html">FileStream</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.FileSystem.Finder.html">Finder</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.FileSystem.Node.html">Node</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.FileSystem.Security.html">Security</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.FileSystem.Stream.html">Stream</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1325470588"></a>
+                                <a href="../namespaces/Colibri.IO.Mail.html" style="margin-left: 30px; padding-left: 0">Mail</a>
+            </div>
+            <div id="namespace-1325470588" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1069578199"></a>
+                                <a href="../namespaces/Colibri.IO.Mail.Mailbox.html" style="margin-left: 30px; padding-left: 0">Mailbox</a>
+            </div>
+            <div id="namespace-1069578199" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.Mailbox.Exception.html">Exception</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.Mailbox.Mail.html">Mail</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.Mailbox.Mail.html">Mail</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.Mailbox.Mailbox.html">Mailbox</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.Address.html">Address</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.AddressList.html">AddressList</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.Attachment.html">Attachment</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.AttachmentList.html">AttachmentList</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.Certificate.html">Certificate</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.DKIM.html">DKIM</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.ErrorMessages.html">ErrorMessages</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.Exception.html">Exception</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.Helper.html">Helper</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.MailerTypes.html">MailerTypes</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.Message.html">Message</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.POP3.html">POP3</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.Sender.html">Sender</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.SMTP.html">SMTP</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Mail.Template.html">Template</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-251579191"></a>
+                                <a href="../namespaces/Colibri.IO.Request.html" style="margin-left: 30px; padding-left: 0">Request</a>
+            </div>
+            <div id="namespace-251579191" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.IO.Request.Credentials.html">Credentials</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Request.Data.html">Data</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Request.DataFile.html">DataFile</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Request.DataItem.html">DataItem</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Request.Encryption.html">Encryption</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Request.Exception.html">Exception</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Request.Request.html">Request</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Request.RequestResult.html">RequestResult</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.IO.Request.Type.html">Type</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-129941528"></a>
+                                <a href="../namespaces/Colibri.Modules.html" style="margin-left: 30px; padding-left: 0">Modules</a>
+            </div>
+            <div id="namespace-129941528" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Modules.Module.html">Module</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Modules.ModuleException.html">ModuleException</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Modules.ModuleManager.html">ModuleManager</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1138039933"></a>
+                                <a href="../namespaces/Colibri.Security.html" style="margin-left: 30px; padding-left: 0">Security</a>
+            </div>
+            <div id="namespace-1138039933" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-510062963"></a>
+                                <a href="../namespaces/Colibri.Security.Adapters.html" style="margin-left: 30px; padding-left: 0">Adapters</a>
+            </div>
+            <div id="namespace-510062963" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Colibri.Security.Adapters.IDataAdapter.html">IDataAdapter</a></li>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Security.Adapters.DataAdapter.html">DataAdapter</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Security.Adapters.XmlDataAdapter.html">XmlDataAdapter</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Security.Role.html">Role</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Security.SecurityException.html">SecurityException</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Security.SecurityManager.html">SecurityManager</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Security.User.html">User</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-800138489"></a>
+                                <a href="../namespaces/Colibri.Threading.html" style="margin-left: 30px; padding-left: 0">Threading</a>
+            </div>
+            <div id="namespace-800138489" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Threading.ErrorCodes.html">ErrorCodes</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Threading.Exception.html">Exception</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Threading.Manager.html">Manager</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Threading.Process.html">Process</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Threading.Worker.html">Worker</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1780801118"></a>
+                                <a href="../namespaces/Colibri.Utils.html" style="margin-left: 30px; padding-left: 0">Utils</a>
+            </div>
+            <div id="namespace-1780801118" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-636468137"></a>
+                                <a href="../namespaces/Colibri.Utils.Logs.html" style="margin-left: 30px; padding-left: 0">Logs</a>
+            </div>
+            <div id="namespace-636468137" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Utils.Logs.FileLogger.html">FileLogger</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Utils.Logs.GraylogLogger.html">GraylogLogger</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Utils.Logs.Logger.html">Logger</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Utils.Logs.LoggerException.html">LoggerException</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Utils.Logs.MemoryLogger.html">MemoryLogger</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-987348029"></a>
+                                <a href="../namespaces/Colibri.Utils.Shell.html" style="margin-left: 30px; padding-left: 0">Shell</a>
+            </div>
+            <div id="namespace-987348029" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Utils.Shell.Async.html">Async</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Utils.Shell.Execute.html">Execute</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Utils.Debug.html">Debug</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Utils.ObjectEx.html">ObjectEx</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-597515658"></a>
+                                <a href="../namespaces/Colibri.Web.html" style="margin-left: 30px; padding-left: 0">Web</a>
+            </div>
+            <div id="namespace-597515658" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Web.Request.html">Request</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Web.RequestCollection.html">RequestCollection</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Web.RequestedFile.html">RequestedFile</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Web.RequestFileCollection.html">RequestFileCollection</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Web.Response.html">Response</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Web.Server.html">Server</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Web.Template.html">Template</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Web.Transformer.html">Transformer</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1304076385"></a>
+                                <a href="../namespaces/Colibri.Xml.html" style="margin-left: 30px; padding-left: 0">Xml</a>
+            </div>
+            <div id="namespace-1304076385" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-935438191"></a>
+                                <a href="../namespaces/Colibri.Xml.Definitions.html" style="margin-left: 30px; padding-left: 0">Definitions</a>
+            </div>
+            <div id="namespace-935438191" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Xml.Definitions.XsdAttributeDefinition.html">XsdAttributeDefinition</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Xml.Definitions.XsdBaseTypeDefinition.html">XsdBaseTypeDefinition</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Xml.Definitions.XsdElementDefinition.html">XsdElementDefinition</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Xml.Definitions.XsdSchemaDefinition.html">XsdSchemaDefinition</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Xml.Definitions.XsdSimpleTypeDefinition.html">XsdSimpleTypeDefinition</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-75094831"></a>
+                                <a href="../namespaces/Colibri.Xml.Serialization.html" style="margin-left: 30px; padding-left: 0">Serialization</a>
+            </div>
+            <div id="namespace-75094831" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Xml.Serialization.XmlCData.html">XmlCData</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Xml.Serialization.XmlSerialized.html">XmlSerialized</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.Xml.XmlAttribute.html">XmlAttribute</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Xml.XmlNamedNodeList.html">XmlNamedNodeList</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Xml.XmlNode.html">XmlNode</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Xml.XmlNodeAttributeList.html">XmlNodeAttributeList</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Xml.XmlNodeList.html">XmlNodeList</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Xml.XmlNodeListIterator.html">XmlNodeListIterator</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.Xml.XmlQuery.html">XmlQuery</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Colibri.App.html">App</a></li>
+                                                    <li class="class"><a href="../classes/Colibri.AppException.html">AppException</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/Colibri.Xml.Definitions.html">\Colibri\Xml\Definitions</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\Colibri\Xml\Definitions</small>XsdSimpleTypeDefinition</h1>
+                    <p><em>Тип данных</em></p>
+                    
+                    
+                                        
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/Colibri.Xml.Definitions.XsdSimpleTypeDefinition.html#method___construct" class="">__construct()</a><br />
+                                                                    <a href="../classes/Colibri.Xml.Definitions.XsdSimpleTypeDefinition.html#method___get" class="">__get()</a><br />
+                                                                    <a href="../classes/Colibri.Xml.Definitions.XsdSimpleTypeDefinition.html#method_jsonSerialize" class="">jsonSerialize()</a><br />
+                                                                    <a href="../classes/Colibri.Xml.Definitions.XsdSimpleTypeDefinition.html#method_ToObject" class="">ToObject()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/Colibri.Xml.Definitions.XsdSimpleTypeDefinition.html#property_name" class="">$name</a><br />
+                                                                    <a href="../classes/Colibri.Xml.Definitions.XsdSimpleTypeDefinition.html#property_annotation" class="">$annotation</a><br />
+                                                                    <a href="../classes/Colibri.Xml.Definitions.XsdSimpleTypeDefinition.html#property_restrictions" class="">$restrictions</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No constants found</em>
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <em>No protected methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No protected properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <em>No private methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/Colibri.Xml.Definitions.XsdSimpleTypeDefinition.html#property__node" class="">$_node</a><br />
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/Xml.Definitions.XsdSimpleTypeDefinition.html"><div class="path-wrapper">Xml\Definitions\XsdSimpleTypeDefinition.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">Xml\Definitions</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                    <div class="namespace-wrapper">\Colibri\Xml\Definitions\XsdSimpleTypeDefinition</div>
+                            </dd>
+
+                                                                            <dt>Implements</dt>
+                                                        <dd><a href=""><div class="namespace-wrapper"></div></a></dd>
+                        
+                        
+                        
+                                                
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr><td colspan="2"><em>None found</em></td></tr>
+                                        </table>
+                </aside>
+            </div>
+
+                        
+                                    <a id="properties" name="properties"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Properties</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_name" name="property_name" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$name</h3>
+                <pre class="signature">$name : string</pre>
+                <p><em></em></p>
+                <p>название типа</p>
+
+                                <h4>Type</h4>
+                string
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_annotation" name="property_annotation" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$annotation</h3>
+                <pre class="signature">$annotation : string</pre>
+                <p><em></em></p>
+                <p>аннотация типа</p>
+
+                                <h4>Type</h4>
+                string
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_restrictions" name="property_restrictions" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$restrictions</h3>
+                <pre class="signature">$restrictions : \Colibri\Xml\Definitions\stdClass</pre>
+                <p><em></em></p>
+                <p>ограничения</p>
+
+                                <h4>Type</h4>
+                \Colibri\Xml\Definitions\stdClass
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property__node" name="property__node" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$_node</h3>
+                <pre class="signature">$_node : \Colibri\Xml\Definitions\XmlNode</pre>
+                <p><em>Узел типа</em></p>
+                
+
+                                <h4>Type</h4>
+                \Colibri\Xml\Definitions\XmlNode
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                            
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___construct" name="method___construct" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__construct()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__construct(\Colibri\Xml\Definitions\XmlNode  <span class="argument">$typeNode</span>) </pre>
+                <p><em>Конструктор</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>\Colibri\Xml\Definitions\XmlNode</td>
+                                <td>$typeNode </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Colibri.Xml.Definitions.XsdSimpleTypeDefinition.html"><div class="path-wrapper">\Colibri\Xml\Definitions\XsdSimpleTypeDefinition</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___get" name="method___get" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__get()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__get(string  <span class="argument">$property</span>) : mixed</pre>
+                <p><em>Геттер</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$property </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    mixed
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Colibri.Xml.Definitions.XsdSimpleTypeDefinition.html"><div class="path-wrapper">\Colibri\Xml\Definitions\XsdSimpleTypeDefinition</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_jsonSerialize" name="method_jsonSerialize" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">jsonSerialize()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">jsonSerialize() : \Colibri\Xml\Definitions\stdClass</pre>
+                <p><em>Возвращает данные в виде простого обьекта для упаковки в json</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    \Colibri\Xml\Definitions\stdClass
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Colibri.Xml.Definitions.XsdSimpleTypeDefinition.html"><div class="path-wrapper">\Colibri\Xml\Definitions\XsdSimpleTypeDefinition</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_ToObject" name="method_ToObject" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">ToObject()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">ToObject() : \Colibri\Xml\Definitions\stdClass</pre>
+                <p><em>Возвращает данные в виде простого обьекта</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    \Colibri\Xml\Definitions\stdClass
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Colibri.Xml.Definitions.XsdSimpleTypeDefinition.html"><div class="path-wrapper">\Colibri\Xml\Definitions\XsdSimpleTypeDefinition</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">XsdSimpleTypeDefinition.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/Xml\Definitions\XsdSimpleTypeDefinition.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                            <li><a href="../namespaces/Colibri.html">\Colibri</a></li>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on May 17th, 2020 at 13:56.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>

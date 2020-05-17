@@ -17,6 +17,12 @@
          */
         class DataItem extends ObjectEx
         {
+            /**
+             * Конструктор
+             *
+             * @param string $name название свойства
+             * @param string $data данные
+             */
             public function __construct($name, $data)
             {
                 parent::__construct();

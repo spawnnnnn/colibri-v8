@@ -6,7 +6,7 @@
      * @copyright 2019 Colibri
      * @package Colibri\IO\Mail
      */
-    namespace Colibri\Io\Mail {
+    namespace Colibri\IO\Mail {
 
         /**
          * Типы отправителей

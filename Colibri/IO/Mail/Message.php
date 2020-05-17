@@ -16,30 +16,143 @@
          */
         class Message
         {
+            /**
+             * ID письма
+             *
+             * @var string
+             */
             public $id;
-            public $priority           = 3;
-            public $charset            = 'iso-8859-1';
-            public $contenttype        = 'text/plain';
-            public $errorinfo          = '';
 
+            /**
+             * Приоритет
+             *
+             * @var integer
+             */
+            public $priority           = 3;
+
+            /**
+             * Чарсет
+             *
+             * @var string
+             */
+            public $charset            = 'iso-8859-1';
+
+            /**
+             * Тип контента
+             *
+             * @var string
+             */
+            public $contenttype        = 'text/plain';
+
+            /**
+             * Информация об ошибке
+             *
+             * @var string
+             */
+            public $errorinfo          = '';
+            
+            /**
+             * Кодировка письма
+             *
+             * @var string
+             */
             public $encoding           = '8bit';
+
+            /**
+             * Отправитель  
+             *
+             * @var Address
+             */
             public $from               = null; // mailaddress
+
+            /**
+             * Тема письма
+             *
+             * @var string
+             */
             public $subject            = '';
+
+            /**
+             * Содержание письма
+             *
+             * @var string
+             */
             public $body               = '';
+
+            /**
+             * Дополнительные данные в письме
+             *
+             * @var string
+             */
             public $altbody            = '';
+
+            /**
+             * Нужно ли врапить текст и сколько символов должна быть строка
+             *
+             * @var integer
+             */
             public $wordwrap           = 0;
+
+            /**
+             * Адрес, куда подтверждать прочтение
+             *
+             * @var string
+             */
             public $confirmreadingto   = '';
+
+            /**
+             * Куда отправлять письмо, если не смогли доставить
+             *
+             * @var string
+             */
             public $returnpath         = '';
             
+            /**
+             * Кому
+             *
+             * @var AddressList
+             */
             public $to                 = null; // array of mailaddress
+            /**
+             * CC
+             *
+             * @var AddressList
+             */
             public $cc                 = null; // array of mailaddress
+            /**
+             * BCC
+             *
+             * @var AddressList
+             */
             public $bcc                = null; // array of mailaddress
+            /**
+             * Отвечать кому
+             *
+             * @var AddressList
+             */
             public $replyto            = null; // array of mailaddress
             
+            /**
+             * Вложения
+             *
+             * @var AttachmentsList
+             */
             public $attachments         = null;
             
+            /**
+             * Дополнительные данные в заголовках
+             *
+             * @var array
+             */
             public $customheader       = array();
             
+            /**
+             * Конструктор
+             *
+             * @param Address|string $from
+             * @param Address|string $to
+             * @param string $subject
+             */
             public function __construct($from = null, $to = null, $subject = '')
             {
                 $this->to = new AddressList();
@@ -76,6 +189,12 @@
                 $this->attachments = new AttachmentList();
             }
             
+            /**
+             * Геттер
+             *
+             * @param string $property
+             * @return mixed
+             */
             public function __get($property)
             {
                 $property = strtolower($property);
@@ -101,6 +220,12 @@
                 return $return;
             }
             
+            /**
+             * Сеттер
+             *
+             * @param string $property
+             * @param mixed $value
+             */
             public function __set($property, $value)
             {
                 if (strtolower($property) == 'altbody') {
@@ -115,6 +240,13 @@
                 $this->$property = $value;
             }
             
+            /**
+             * Включить вложенное изображения
+             *
+             * @param Message $message
+             * @param string $basedir
+             * @return void
+             */
             public function IncludeEmbededImages($message, $basedir = '')
             {
                 preg_match_all("/(src|background)=\"(.*)\"/Ui", $message, $images);

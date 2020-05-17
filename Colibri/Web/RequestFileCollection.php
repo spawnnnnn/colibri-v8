@@ -1,7 +1,6 @@
 <?php
     /**
-     * Коллекция файлов запроса
-     * Только для чтения
+     * Web
      * 
      * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
      * @copyright 2019 Colibri
@@ -20,8 +19,8 @@
             /**
              * Магический метод
              *
-             * @param string $property
-             * @return RequestedFile
+             * @param string $property свойство
+             * @return RequestedFile выбранный файл или null
              */
             public function __get($property)
             {

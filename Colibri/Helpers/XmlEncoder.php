@@ -15,7 +15,14 @@
          */
         class XmlEncoder
         {
-            private static function _getContent($v, $cdata)
+            /**
+             * Возвращает контент обьекта в виде xml
+             *
+             * @param mixed $v
+             * @param bool $cdata
+             * @return string
+             */
+            private static function _getContent($v, $cdata = false)
             {
                 $ret = '';
                 if (Variable::IsObject($v) || Variable::IsArray($v)) {

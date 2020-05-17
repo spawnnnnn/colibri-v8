@@ -8,13 +8,27 @@
      */
     namespace Colibri\IO\Mail {
 
+        /**
+         * Класс помощник для всяких операций с строками
+         */
         class Helper
         {
+            /** Конец */
             const LE = "\n";
+            /** Конец строки */
             const LF = "\n";
+            /** Перевод корретки */
             const CR = "\r";
+            /** Конец строки и перевод корретки */
             const CRLF = "\r\n";
 
+            /**
+             * Исправляет конец строки
+             *
+             * @param string $line строка
+             * @param string $char добавить в конце
+             * @return string
+             */
             public static function FixEOL($line, $char = self::LE)
             {
                 $line = str_replace(self::CRLF, $char, $line);
@@ -23,14 +37,13 @@
             }
     
             /**
-            * Finds last character boundary prior to maxLength in a utf-8
-            * quoted (printable) encoded string.
-            * Original written by Colin Brown.
-            * @access public
-            * @param string $encodedText utf-8 QP text
-            * @param int    $maxLength   find last character boundary prior to this length
-            * @return int
-            */
+             * Finds last character boundary prior to maxLength in a utf-8
+             * quoted (printable) encoded string.
+             * Original written by Colin Brown.
+             * @param string $encodedText utf-8 QP text
+             * @param int    $maxLength   find last character boundary prior to this length
+             * @return int
+             */
             public static function UTF8CharBoundary($encodedText, $maxLength)
             {
                 $foundSplitPos = false;
@@ -65,15 +78,16 @@
             }
 
             /**
-            * Wraps message for use with mailers that do not
-            * automatically perform wrapping and for quoted-printable.
-            * Original written by philippe.
-            * @param string $message The message to wrap
-            * @param integer $length The line length to wrap to
-            * @param boolean $qp_mode Whether to run in Quoted-Printable mode
-            * @access public
-            * @return string
-            */
+             * Wraps message for use with mailers that do not
+             * automatically perform wrapping and for quoted-printable.
+             * Original written by philippe.
+             *
+             * @param string $message
+             * @param string $length
+             * @param string $charset
+             * @param boolean $qp_mode
+             * @return string
+             */
             public static function WrapText($message, $length, $charset, $qp_mode = false)
             {
                 $soft_break = ($qp_mode) ? sprintf(" =%s", self::LE) : self::LE;
@@ -157,13 +171,14 @@
             }
 
             /**
-            * Correctly encodes and wraps long multibyte strings for mail headers
-            * without breaking lines within a character.
-            * Adapted from a function by paravoid at http://uk.php.net/manual/en/function.mb-encode-mimeheader.php
-            * @access public
-            * @param string $str multi-byte text to wrap encode
-            * @return string
-            */
+             * Correctly encodes and wraps long multibyte strings for mail headers
+             * without breaking lines within a character.
+             * Adapted from a function by paravoid at http://uk.php.net/manual/en/function.mb-encode-mimeheader.php
+             * @access public
+             * @param string $str multi-byte text to wrap encode
+             * @param string $charset charset
+             * @return string
+             */
             public static function Base64EncodeWrapMB($str, $charset)
             {
                 $start = "=?".$charset."?B?";
@@ -196,13 +211,14 @@
             }
 
             /**
-            * Encode string to quoted-printable.
-            * Only uses standard PHP, slow, but will always work
-            * @access public
-            * @param string $string the text to encode
-            * @param integer $line_max Number of chars allowed on a line before wrapping
-            * @return string
-            */
+             * Encode string to quoted-printable.
+             * Only uses standard PHP, slow, but will always work
+             * @access public
+             * @param string $input the text to encode
+             * @param integer $line_max Number of chars allowed on a line before wrapping
+             * @param bool $space_conv
+             * @return string
+             */
             public static function EncodeQPphp($input = '', $line_max = 76, $space_conv = false)
             {
                 $hex = array('0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F');
@@ -244,17 +260,17 @@
             }
 
             /**
-            * Encode string to RFC2045 (6.7) quoted-printable format
-            * Uses a PHP5 stream filter to do the encoding about 64x faster than the old version
-            * Also results in same content as you started with after decoding
-            * @see EncodeQPphp()
-            * @access public
-            * @param string $string the text to encode
-            * @param integer $line_max Number of chars allowed on a line before wrapping
-            * @param boolean $space_conv Dummy param for compatibility with existing EncodeQP function
-            * @return string
-            * @author Marcus Bointon
-            */
+             * Encode string to RFC2045 (6.7) quoted-printable format
+             * Uses a PHP5 stream filter to do the encoding about 64x faster than the old version
+             * Also results in same content as you started with after decoding
+             * @see EncodeQPphp()
+             * @access public
+             * @param string $string the text to encode
+             * @param integer $line_max Number of chars allowed on a line before wrapping
+             * @param boolean $space_conv Dummy param for compatibility with existing EncodeQP function
+             * @return string
+             * @author Marcus Bointon
+             */
             public static function EncodeQP($string, $line_max = 76, $space_conv = false)
             {
                 if (function_exists('quoted_printable_encode')) { //Use native function if it's available (>= PHP5.3)
@@ -280,13 +296,13 @@
             }
 
             /**
-            * Encode string to q encoding.
-            * @link http://tools.ietf.org/html/rfc2047
-            * @param string $str the text to encode
-            * @param string $position Where the text is going to be used, see the RFC for what that means
-            * @access public
-            * @return string
-            */
+             * Encode string to q encoding.
+             * @link http://tools.ietf.org/html/rfc2047
+             * @param string $str the text to encode
+             * @param string $position Where the text is going to be used, see the RFC for what that means
+             * @access public
+             * @return string
+             */
             public static function EncodeQ($str, $position = 'text')
             {
                 // There should not be any EOL in the string
@@ -313,13 +329,13 @@
             }
 
             /**
-            * Encodes string to requested format.
-            * Returns an empty string on failure.
-            * @param string $str The text to encode
-            * @param string $encoding The encoding to use; one of 'base64', '7bit', '8bit', 'binary', 'quoted-printable'
-            * @access public
-            * @return string
-            */
+             * Encodes string to requested format.
+             * Returns an empty string on failure.
+             * @param string $str The text to encode
+             * @param string $encoding The encoding to use; one of 'base64', '7bit', '8bit', 'binary', 'quoted-printable'
+             * @access public
+             * @return string
+             */
             public static function EncodeString($str, $encoding = 'base64')
             {
                 $encoded = '';
@@ -348,10 +364,13 @@
             }
 
             /**
-            * Encode a header string to best (shortest) of Q, B, quoted or none.
-            * @access public
-            * @return string
-            */
+             * Encode a header string to best (shortest) of Q, B, quoted or none.
+             * @access public
+             * @param string $str
+             * @param string $position
+             * @param string $charset
+             * @return string
+             */
             public static function EncodeHeader($str, $position = 'text', $charset = 'utf-8')
             {
                 $x = 0;
@@ -408,26 +427,19 @@
             }
 
             /**
-            * Encodes attachment in requested format.
-            * Returns an empty string on failure.
-            * @param string $path The full path to the file
-            * @param string $encoding The encoding to use; one of 'base64', '7bit', '8bit', 'binary', 'quoted-printable'
-            * @see EncodeFile()
-            * @access private
-            * @return string
-            */
+             * Encodes attachment in requested format.
+             * Returns an empty string on failure.
+             * @param string $path The full path to the file
+             * @param string $encoding The encoding to use; one of 'base64', '7bit', '8bit', 'binary', 'quoted-printable'
+             * @see EncodeFile()
+             * @access private
+             * @return string
+             */
             public static function EncodeFile($path, $encoding = 'base64')
             {
                 try {
                     if (!is_readable($path)) {
                         throw new Exception("Can not open file ".$path);
-                    }
-
-                    if (function_exists('get_magic_quotes')) {
-                        function get_magic_quotes()
-                        {
-                            return false;
-                        }
                     }
 
                     return self::EncodeString(file_get_contents($path), $encoding);
@@ -437,9 +449,14 @@
             }
 
             /**
-            * Returns the start of a message boundary.
-            * @access private
-            */
+             * Returns the start of a message boundary.
+             * @param string $boundary
+             * @param string $charSet
+             * @param string $contentType
+             * @param string $encoding
+             * @return string
+             * @access private
+             */
             public static function GetBoundaryBegin($boundary, $charSet, $contentType, $encoding)
             {
                 $result = '';
@@ -452,34 +469,46 @@
             }
 
             /**
-            * Returns the end of a message boundary.
-            * @access private
-            */
+             * Returns the end of a message boundary.
+             * @access private
+             * @param string $boundary
+             * @return string
+             */
             public static function GetBoundaryEnd($boundary)
             {
                 return self::LE . '--' . $boundary . '--' . self::LE;
             }
 
             /**
-            *  Returns a formatted header line.
-            * @access public
-            * @return string
-            */
+             *  Returns a formatted header line.
+             * @access public
+             * @param string $name
+             * @param string $value
+             * @return string
+             */
             public static function HeaderLine($name, $value)
             {
                 return $name . ': ' . $value . self::LE;
             }
 
             /**
-            * Returns a formatted mail line.
-            * @access public
-            * @return string
-            */
+             * Returns a formatted mail line.
+             * @access public
+             * @param string $value
+             * @return string
+             */
             public static function TextLine($value)
             {
                 return $value . self::LE;
             }
 
+            /**
+             * Checks a string gor multibyte
+             *
+             * @param string $string
+             * @param string $encoding
+             * @return bool
+             */
             public static function CheckForMultbyte($string, $encoding)
             {
                 if (function_exists('mb_strlen')) {
@@ -488,6 +517,12 @@
                 return false;
             }
 
+            /**
+             * Strips a new lines from string
+             *
+             * @param string $string
+             * @return string
+             */
             public static function StripNewLines($string)
             {
                 return trim(str_replace(self::LF, '', str_replace(self::CR, '', $string)));

@@ -316,7 +316,7 @@
             /**
              * Магическая функция
              *
-             * @param string $property
+             * @param string $key
              * @param mixed $value
              * @return void
              */
@@ -326,6 +326,7 @@
             }
 
             /**
+             * Устанавливает значение по индексу
              * @param string $offset
              * @param mixed $value
              * @return void
@@ -336,6 +337,7 @@
             }
         
             /**
+             * Проверяет наличие значения по индексу
              * @param mixed $offset
              * @return bool
              */
@@ -349,6 +351,7 @@
             }
         
             /**
+             * Удаляет значение по индексу
              * @param mixed $offset
              * @return void
              */

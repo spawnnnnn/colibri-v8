@@ -47,7 +47,7 @@
              * Вернуть в формате для базы данных
              *
              * @param int $time
-             * @param boolean $milliseconds
+             * @param boolean $format
              * @return string
              */
             public static function ToDbString($time = null, $format = '%Y-%m-%d %H:%M:%S')

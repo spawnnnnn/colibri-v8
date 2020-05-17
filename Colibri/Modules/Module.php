@@ -46,6 +46,9 @@
              */
             protected $_moduleFile;
             
+            /**
+             * Конструктор
+             */
             public function __construct()
             {
                 // загружаем настройки модуля
@@ -68,6 +71,12 @@
                 return $this->_config;
             }
 
+            /**
+             * Геттер
+             *
+             * @param string $prop свойство
+             * @return mixed
+             */
             public function __get($prop)
             {
                 $prop = strtolower($prop);

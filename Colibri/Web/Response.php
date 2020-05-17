@@ -1,7 +1,7 @@
 <?php
 
     /**
-     * Класс отвечающий за вывод
+     * Web
      * 
      * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
      * @copyright 2019 Colibri
@@ -136,8 +136,8 @@
             /**
              * Добавить хедер
              *
-             * @param string $name
-             * @param string $value
+             * @param string $name название 
+             * @param string $value значение
              * @return void
              */
             private function _addHeader($name, $value) {
@@ -181,7 +181,7 @@
             /**
              * Добавить expires
              *
-             * @param int $date
+             * @param int $date дата
              * @return Response
              */
             public function ExpiresAt($date) {
@@ -192,7 +192,7 @@
             /**
              * Добавить cache-control и все остальные приблуды
              *
-             * @param int $seconds
+             * @param int $seconds количество секунд
              * @return Response
              */
             public function Cache($seconds) {
@@ -214,7 +214,7 @@
             /**
              * Переадресация
              *
-             * @param string $url
+             * @param string $url url куда нужно переадресовать
              * @return Response
              */
             public function Redirect($url) {
@@ -235,8 +235,8 @@
             /**
              * Добавить content-disposition
              *
-             * @param string $type
-             * @param string $name
+             * @param string $type тип запрашеваемого файла
+             * @param string $name название файла
              * @return Response
              */
             public function ContentDisposition($type, $name) {
@@ -247,7 +247,7 @@
             /**
              * Добавтиь content-transfer-encoding
              *
-             * @param string $type
+             * @param string $type тип запрашеваемых данных
              * @return Response
              */
             public function ContentTransferEncoding($type = 'binary') {
@@ -258,7 +258,7 @@
             /**
              * Добавить pragma
              *
-             * @param string $type
+             * @param string $type тип Pragma
              * @return Response
              */
             public function Pragma($type = 'binary') {
@@ -269,7 +269,7 @@
             /**
              * Добавтить content-length
              *
-             * @param int $length
+             * @param int $length длина
              * @return Response
              */
             public function ContentLength($length) {
@@ -280,7 +280,7 @@
             /**
              * Добавить cache-control
              *
-             * @param string $type
+             * @param string $type тип документа (MIME)
              * @return Response
              */
             public function CacheControl($type) {
@@ -291,7 +291,7 @@
             /**
              * Вернуть ошибку и остановится 
              *
-             * @param string $content
+             * @param string $content контент, который нужно отправить в результат
              * @return void
              */
             public function Error404($content = '') {
@@ -301,8 +301,8 @@
             /**
              * Выдать ответ с результатом
              *
-             * @param int $status
-             * @param string $content
+             * @param int $status стаус ответа
+             * @param string $content контент
              * @return void
              */
             public function Close($status, $content = '') {
@@ -314,8 +314,8 @@
             /**
              * Переадресация на загрузку файла
              *
-             * @param string $filename
-             * @param string $filecontent
+             * @param string $filename название файла
+             * @param string $filecontent контент файла
              * @return string
              */
             public function DownloadFile($filename, $filecontent) {

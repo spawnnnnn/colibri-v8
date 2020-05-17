@@ -1,8 +1,7 @@
 <?php
 
     /**
-     * Класс описывающий файл отправленный в запрос
-     * Только для чтения
+     * Web
      * 
      * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
      * @copyright 2019 Colibri
@@ -15,8 +14,8 @@
         /**
          * Файл из списка файлов запроса
          * 
-         * @property boolean $isValid
-         * @property string $binary
+         * @property boolean $isValid проверка валидности файла
+         * @property string $binary данные в бинарном виде
          * 
          */
         class RequestedFile {
@@ -61,7 +60,7 @@
             /**
              * Конструктор
              *
-             * @param array $arrFILE
+             * @param array $arrFILE массив из исходного запроса для загрузки в обьект
              */
             function __construct($arrFILE) {
 
@@ -84,7 +83,7 @@
             /**
              * Магический метод
              *
-             * @param string $prop
+             * @param string $prop свойство
              * @return mixed
              */
             public function __get($prop) {

@@ -12,6 +12,9 @@
 
         use Colibri\AppException;
 
+        /**
+         * Класс исключение для обьекта Security
+         */
         class SecurityException extends AppException {
 
         }

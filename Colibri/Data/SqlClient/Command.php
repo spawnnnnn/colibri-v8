@@ -150,6 +150,7 @@
             /**
              * Выполняет запрос и возвращает IDataReader
              *
+             * @param boolean $info выполнить ли запрос на получение переменной affected
              * @return IDataReader
              */
             abstract public function ExecuteReader($info = true);

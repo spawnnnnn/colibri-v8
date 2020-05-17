@@ -8,25 +8,91 @@
      */
     namespace Colibri\IO\Mail\Mailbox {
 
+        /**
+         * Класс для работы с почтовым ящиком 
+         */
         class Mailbox {
-            protected $imapPath;
-            protected $imapLogin;
-            protected $imapPassword;
-            protected $imapOptions = 0;
-            protected $imapRetriesNum = 0;
-            protected $imapParams = array();
-            protected $serverEncoding;
-            protected $attachmentsDir = null;
-            protected $expungeOnDisconnect = true;
-            private $imapStream;
+
             /**
-                 * @param string $imapPath
-                 * @param string $login
-                 * @param string $password
-                 * @param string $attachmentsDir
-                 * @param string $serverEncoding
-                 * @throws Exception
-                 */
+             * Путь к IMAP
+             *
+             * @var string
+             */
+            protected $imapPath;
+            
+            /**
+             * Логин в IMAP
+             * 
+             * @var string
+             */
+            protected $imapLogin;
+
+            /**
+             * Пароль в IMAP
+             *  
+             * @var string
+             */
+            protected $imapPassword;
+
+            /**
+             * Опции IMAP
+             *
+             * @var int
+             */
+            protected $imapOptions = 0;
+
+            /**
+             * Количество попыток подключения
+             *
+             * @var int
+             */
+            protected $imapRetriesNum = 0;
+
+            /**
+             * Параметры IMAP
+             *
+             * @var array
+             */
+            protected $imapParams = array();
+
+            /**
+             * Кодировка сервера
+             *
+             * @var string
+             */
+            protected $serverEncoding;
+
+            /**
+             * Папка для хранения вложений
+             *
+             * @var string
+             */
+            protected $attachmentsDir = null;
+
+            /**
+             * Черти что :) 
+             *
+             * @var boolean
+             */
+            protected $expungeOnDisconnect = true;
+
+            /**
+             * Стрим IMAP
+             *
+             * @var resource
+             */
+            private $imapStream;
+
+            /**
+             * Конструктор
+             * 
+             * @param string $imapPath путь к IMAP  
+             * @param string $login логин 
+             * @param string $password пароль
+             * @param string $attachmentsDir директория для хранения вложений
+             * @param string $serverEncoding кодировка сервера
+             * @throws Exception
+             */
             public function __construct($imapPath, $login, $password, $attachmentsDir = null, $serverEncoding = 'UTF-8') {
                 $this->setImapPath($imapPath);
                 $this->imapLogin = $login;
@@ -39,6 +105,7 @@
                     $this->attachmentsDir = rtrim(realpath($attachmentsDir), '\\/');
                 }
             }
+
             /**
              * Set custom connection arguments of imap_open method. See http://php.net/imap_open
              * @param int $options
@@ -51,16 +118,16 @@
                 $this->imapParams = $params;
             }
                 
-                /**
-                 * Set custom folder for attachments in case you want to have tree of folders for each email
-                 * i.e. a/1 b/1 c/1 where a,b,c - senders, i.e. john@smith.com
-                 * @param string $dir folder where to save attachments
-                 * 
-                 * @return void
-                 */
-                public function setAttachmentsDir($dir) {
-                        $this->attachmentsDir = $dir;
-                }
+            /**
+             * Set custom folder for attachments in case you want to have tree of folders for each email
+             * i.e. a/1 b/1 c/1 where a,b,c - senders, i.e. john@smith.com
+             * @param string $dir folder where to save attachments
+             * 
+             * @return void
+             */
+            public function setAttachmentsDir($dir) {
+                    $this->attachmentsDir = $dir;
+            }
                 
             /**
              * Get IMAP mailbox connection stream
@@ -79,6 +146,7 @@
                 }
                 return $this->imapStream;
             }
+
             /**
              * Switch mailbox without opening a new connection
              * 
@@ -91,6 +159,12 @@
                     throw new Exception("Couldn't switch  mailbox: " . imap_last_error());
                 }
             }
+
+            /**
+             * Создает стрим IMAP
+             *
+             * @return void
+             */
             protected function initImapStream() {
                 $_imapStream = @imap_open($this->imapPath, $this->imapLogin, $this->imapPassword, $this->imapOptions, $this->imapRetriesNum, $this->imapParams);
                 if(!$_imapStream) {
@@ -100,12 +174,19 @@
                 }
                 return $_imapStream;
             }
+
+            /**
+             * Отключиться
+             *
+             * @return void
+             */
             protected function disconnect() {
                 $_imapStream = $this->getImapStream(false);
                 if($_imapStream && is_resource($_imapStream)) {
                     imap_close($_imapStream, $this->expungeOnDisconnect ? CL_EXPUNGE : 0);
                 }
             }
+            
             /**
              * Sets 'expunge on disconnect' parameter
              * @param bool $isEnabled
@@ -113,6 +194,7 @@
             public function setExpungeOnDisconnect($isEnabled) {
                 $this->expungeOnDisconnect = $isEnabled;
             }
+
             /**
              * Get information about the current mailbox.
              *
@@ -128,6 +210,7 @@
             public function checkMailbox() {
                 return imap_check($this->getImapStream());
             }
+
             /**
              * Creates a new mailbox specified by mailbox.
              *
@@ -136,6 +219,7 @@
             public function createMailbox() {
                 return imap_createmailbox($this->getImapStream(), imap_utf7_encode($this->imapPath));
             }
+
             /**
              * Gets status information about the given mailbox.
              *
@@ -147,6 +231,7 @@
             public function statusMailbox() {
                 return imap_status($this->getImapStream(), $this->imapPath, SA_ALL);
             }
+
             /**
              * Gets listing the folders
              *
@@ -168,6 +253,7 @@
                 }
                 return $folders;
             }
+
             /**
              * This function uses imap_search() to perform a search on the mailbox currently opened in the given IMAP stream.
              * For example, to match all unanswered mails sent by Mom, you'd use: "UNANSWERED FROM mom".
@@ -181,6 +267,8 @@
             }
             /**
              * Save mail body.
+             * @param string $mailId
+             * @param string $filename
              * @return bool
              */
             public function saveMail($mailId, $filename = 'email.eml') {
@@ -188,6 +276,7 @@
             }
             /**
              * Marks mails listed in mailId for deletion.
+             * @param string $mailId
              * @return bool
              */
             public function deleteMail($mailId) {
@@ -195,6 +284,8 @@
             }
             /**
              * Moves mails listed in mailId into new mailbox
+             * @param string $mailId
+             * @param string $mailBox
              * @return bool
              */
             public function moveMail($mailId, $mailBox) {
@@ -202,6 +293,8 @@
             }
             /**
              * Copys mails listed in mailId into new mailbox
+             * @param string $mailId
+             * @param string $mailBox
              * @return bool
              */
             public function copyMail($mailId, $mailBox) {
@@ -216,6 +309,7 @@
             }
             /**
              * Add the flag \Seen to a mail.
+             * @param string $mailId
              * @return bool
              */
             public function markMailAsRead($mailId) {
@@ -223,6 +317,7 @@
             }
             /**
              * Remove the flag \Seen from a mail.
+             * @param string $mailId
              * @return bool
              */
             public function markMailAsUnread($mailId) {
@@ -230,6 +325,7 @@
             }
             /**
              * Add the flag \Flagged to a mail.
+             * @param string $mailId
              * @return bool
              */
             public function markMailAsImportant($mailId) {
@@ -237,6 +333,7 @@
             }
             /**
              * Add the flag \Seen to a mails.
+             * @param string $mailId
              * @return bool
              */
             public function markMailsAsRead(array $mailId) {
@@ -244,6 +341,7 @@
             }
             /**
              * Remove the flag \Seen from some mails.
+             * @param array $mailId
              * @return bool
              */
             public function markMailsAsUnread(array $mailId) {
@@ -251,6 +349,7 @@
             }
             /**
              * Add the flag \Flagged to some mails.
+             * @param array $mailId
              * @return bool
              */
             public function markMailsAsImportant(array $mailId) {
@@ -467,6 +566,15 @@
                 }
                 return $mail;
             }
+            /**
+             * Создает пакет IMAP
+             *
+             * @param Mail $mail
+             * @param mixed $partStructure
+             * @param mixed $partNum
+             * @param boolean $markAsSeen
+             * @return void
+             */
             protected function initMailPart(Mail $mail, $partStructure, $partNum, $markAsSeen = true) {
                 $options = FT_UID;
                 if(!$markAsSeen) {
@@ -574,6 +682,13 @@
                     }
                 }
             }
+            /**
+             * Декодирует строку MIME
+             *
+             * @param string $string
+             * @param string $charset
+             * @return string
+             */
             protected function decodeMimeStr($string, $charset = 'utf-8') {
                 $newString = '';
                 $elements = imap_mime_header_decode($string);
@@ -585,11 +700,24 @@
                 }
                 return $newString;
             }
+            /**
+             * Проверяет не закодирована ли строка как urlencode
+             *
+             * @param string $string
+             * @return boolean
+             */
             function isUrlEncoded($string) {
                 $hasInvalidChars = preg_match( '#[^%a-zA-Z0-9\-_\.\+]#', $string );
                 $hasEscapedChars = preg_match( '#%[a-zA-Z0-9]{2}#', $string );
                 return !$hasInvalidChars && $hasEscapedChars;
             }
+            /**
+             * Декодирует RFC2231
+             *
+             * @param string $string
+             * @param string $charset
+             * @return string
+             */
             protected function decodeRFC2231($string, $charset = 'utf-8') {
                 if(preg_match("/^(.*?)'.*?'(.*?)$/", $string, $matches)) {
                     $encoding = $matches[1];
@@ -617,11 +745,15 @@
                 }
                 return $convertedString ?: $string;
             }
+            /**
+             * Деструктор
+             */
             public function __destruct() {
                 $this->disconnect();
             }
             /**
-             * @param $imapPath
+             * Устанавливает путь к IMAP
+             * @param string $imapPath
              * @return void
              */
             protected function setImapPath($imapPath)

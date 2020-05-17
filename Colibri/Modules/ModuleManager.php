@@ -48,6 +48,9 @@
              */
             private $_list;
 
+            /**
+             * Конструктор
+             */
             public function __construct()
             {
                 $this->_list = new Collection();
@@ -109,6 +112,12 @@
                 return $module;
             }
 
+            /**
+             * Геттер
+             *
+             * @param string $property свойство
+             * @return mixed
+             */
             public function __get($property)
             {
                 $property = strtolower($property);

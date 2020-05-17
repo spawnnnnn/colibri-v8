@@ -16,15 +16,18 @@
          */
         class Finder {
 
+            /**
+             * Конструктор
+             */
             public function __construct() { }
 
             /**
              * Найти файлы
              *
-             * @param string $path
-             * @param string $match
-             * @param boolean $sortField
-             * @param boolean $sortType
+             * @param string $path путь к папке
+             * @param string $match регулярное выражение
+             * @param boolean $sortField поле для сориторовки
+             * @param boolean $sortType тип сортировки
              * @return ArrayList
              */
             public function Files($path, $match = '', $sortField = false, $sortType = false) {
@@ -57,9 +60,9 @@
             /**
              * Найти директории
              *
-             * @param string $path
-             * @param boolean $sortField
-             * @param boolean $sortType
+             * @param string $path путь к папке
+             * @param boolean $sortField поле для сортировки
+             * @param boolean $sortType типа сортировки
              * @return ArrayList
              */
             public function Directories($path, $sortField = false, $sortType = false) {
@@ -85,7 +88,7 @@
             /**
              * Вернуть папки в директории
              *
-             * @param string $path
+             * @param string $path путь к директории
              * @return ArrayList
              */
             public function Children($path) {

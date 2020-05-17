@@ -64,7 +64,9 @@
             }
             
             /**
-             * @inheritDoc
+             * Закрывает ресурс запроса
+             *
+             * @return void
              */
             public function Close()
             {
@@ -74,7 +76,9 @@
             }
             
             /**
-             * @inheritDoc
+             * Считывает следующую строку и возвращет в виде обьекта
+             *
+             * @return stdClass
              */
             public function Read()
             {
@@ -87,7 +91,9 @@
             }
 
             /**
-             * @inheritDoc
+             * Возвращает список полей в запросе
+             *
+             * @return string[]
              */
             public function Fields()
             {
@@ -113,7 +119,9 @@
             }
 
             /**
-             * @inheritDoc
+             * Возвращает количество строк в текущей странице
+             *
+             * @return int
              */
             public function Count()
             {
@@ -124,7 +132,9 @@
             }
             
             /**
-             * @inheritDoc
+             * Возвращает общее количество строк
+             *
+             * @return int
              */
             public function Affected()
             {
@@ -132,14 +142,21 @@
             }
 
             /**
-             * @inheritDoc
+             * Возвращает наличие строк
+             *
+             * @return bool
              */
             public function HasRows()
             {
                 return $this->_results && mysqli_num_rows($this->_results) > 0;
             }
 
-
+            /**
+             * Конвертация типов
+             *
+             * @param string $type_id
+             * @return string
+             */
             private function _type2txt($type_id)
             {
                 static $types;
@@ -157,6 +174,12 @@
                 return array_key_exists($type_id, $types)? $types[$type_id] : null;
             }
 
+            /**
+             * Конвертация флафов
+             *
+             * @param int $flags_num
+             * @return array
+             */
             private function _flags2txt($flags_num)
             {
                 static $flags;

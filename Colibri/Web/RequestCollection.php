@@ -1,7 +1,6 @@
 <?php
     /**
-     * Коллекция данных из запроса
-     * Только для чтения
+     * Web
      * 
      * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
      * @copyright 2019 Colibri
@@ -22,6 +21,12 @@
          */
         class RequestCollection extends ReadonlyCollection {
 
+            /**
+             * Конструктор 
+             *
+             * @param array $data
+             * @param mixed $mq
+             */
             public function __construct($data = array(), $mq = null) {
                 parent::__construct($data);
             }
@@ -46,7 +51,7 @@
             /**
              * Магический метод
              *
-             * @param string $property
+             * @param string $property свойство
              * @return mixed
              */
             public function __get($property) {

@@ -18,6 +18,9 @@
 
             /**
              * Конструктор
+             *
+             * @param integer $maxLogLevel
+             * @param array $dummy
              */
             public function __construct($maxLogLevel = 7, $dummy = []) {
                 $this->_maxLogLevel = $maxLogLevel;
@@ -25,9 +28,10 @@
             }
 
             /**
-             * Пишет в лог строку
+             * Записывает в лог данные
              *
-             * @param array ...$args
+             * @param int $level уровень ошибки
+             * @param mixed $data данные
              * @return void
              */
             public function WriteLine($level, $data) {
@@ -37,9 +41,9 @@
             }
 
             /**
-             * Возвращает данные лога в виде массива
+             * Возвращает контент лог файла
              *
-             * @return array
+             * @return mixed
              */
             public function Content() {
                 return $this->_device;

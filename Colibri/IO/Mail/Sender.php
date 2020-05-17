@@ -17,50 +17,151 @@
          */
         class Sender
         {
+            /** Версия */
             const Version           = '5.1';
             
+            /**
+             * Домен
+             *
+             * @var string
+             */
             public $DOMAIN          = '';
 
+            /**
+             * Тип отправителя
+             *
+             * @var string
+             */
             public $Mailer          = MailerTypes::Mail;
             
+            /**
+             * Путь к сендмейлу
+             *
+             * @var string
+             */
             public $Sendmail        = '/usr/sbin/sendmail';
             
+            /**
+             * Отправитель (эл. адрес)
+             *
+             * @var string
+             */
             public $Sender          = '';
             
+            /**
+             * Хост
+             *
+             * @var string
+             */
             public $Host            = 'localhost';
+            
+            /**
+             * Порт
+             *
+             * @var integer
+             */
             public $Port            = 25;
+
+            /**
+             * Строка Hello
+             *
+             * @var string
+             */
             public $Helo            = '';
+
+            /**
+             * Пользователь
+             *
+             * @var string
+             */
             public $Username        = '';
+
+            /**
+             * Пароль
+             *
+             * @var string
+             */
             public $UserPass        = '';
+
+            /**
+             * Таймаут подключения
+             *
+             * @var integer
+             */
             public $Timeout         = 10;
             
+            /**
+             * Безопасность SMTP (ssl|tls и т.д.)
+             *
+             * @var string
+             */
             public $SMTPSecure      = '';
+
+            /**
+             * Авторизация в SMTP
+             *
+             * @var boolean
+             */
             public $SMTPAuth        = false;
+
+            /**
+             * Включить режим отладки
+             *
+             * @var boolean
+             */
             public $SMTPDebug       = false;
+
+            /**
+             * Держать подключение активным
+             *
+             * @var boolean
+             */
             public $SMTPKeepAlive   = false;
             
+            /**
+             * Данные DKIM
+             *
+             * @var DKIM
+             */
             public $DKIM            = null;
+
+            /**
+             * Сертификат
+             *
+             * @var Certificate
+             */
             public $certificate     = null;
             
 
             /**
-            * Callback Action function name
-            * the function that handles the result of the send email action. Parameters:
-            *   bool    $result        result of the send action
-            *   string  $to            email address of the recipient
-            *   string  $cc            cc email addresses
-            *   string  $bcc           bcc email addresses
-            *   string  $subject       the subject
-            *   string  $body          the email body
-            * @var string
-            */
+             * Callback Action function name
+             * the function that handles the result of the send email action. Parameters:
+             *   bool    $result        result of the send action
+             *   string  $to            email address of the recipient
+             *   string  $cc            cc email addresses
+             *   string  $bcc           bcc email addresses
+             *   string  $subject       the subject
+             *   string  $body          the email body
+             * @var string
+             */
             public $callback        = '';
 
             /////////////////////////////////////////////////
             // PROPERTIES, PRIVATE AND PROTECTED
             /////////////////////////////////////////////////
 
+            /**
+             * SMTP 
+             *
+             * @var SMTP
+             */
             private $smtp         = null;
+
+            /**
+             * Массив разделителей
+             *
+             * @var array
+             */
             private $boundary     = array();
             
             /////////////////////////////////////////////////
@@ -69,13 +170,20 @@
 
             /**
             * Constructor
-            * @param boolean $exceptions Should we throw external exceptions?
+            * @param boolean $mailer Тип мейлера
             */
             public function __construct($mailer)
             {
                 $this->Mailer = $mailer;
             }
             
+            /**
+             * Статический конструктор
+             *
+             * @param string $mailer MailerTypes::*
+             * @param string $domain домен
+             * @return Sender
+             */
             public static function Create($mailer, $domain = '')
             {
                 $config = App::$config->Query('mailer.'.$mailer)->AsObject();
@@ -161,11 +269,12 @@
             }
 
             /**
-            * Creates message and assigns Mailer. If the message is
-            * not sent successfully then it returns false.  Use the ErrorInfo
-            * variable to view description of the error.
-            * @return bool
-            */
+             * Creates message and assigns Mailer. If the message is
+             * not sent successfully then it returns false.  Use the ErrorInfo
+             * variable to view description of the error.
+             * @param Message $m
+             * @return bool
+             */
             public function Send(Message $m)
             {
                 if ($m->to->count + $m->cc->count + $m->bcc->count < 1) {
@@ -188,6 +297,14 @@
                 }
             }
 
+            /**
+             * Отправить письмо через Sendmail
+             *
+             * @param Message $m
+             * @param string $header
+             * @param string $body
+             * @return bool
+             */
             private function SendmailSend(Message $m, $header, $body)
             {
                 if ($this->Sender != '') {
@@ -219,6 +336,14 @@
                 return true;
             }
 
+            /**
+             * Отпавить письмо через функцию mail
+             *
+             * @param Message $m
+             * @param string $header
+             * @param string $body
+             * @return bool
+             */
             private function MailSend(Message $m, $header, $body)
             {
                 $toArr = array();
@@ -248,6 +373,14 @@
                 return true;
             }
 
+            /**
+             * Отправить письмо через сторонний SMTP
+             *
+             * @param Message $m
+             * @param string $header
+             * @param string $body
+             * @return bool
+             */
             private function SmtpSend(Message $m, $header, $body)
             {
                 $bad_rcpt = array();
@@ -312,6 +445,11 @@
                 return true;
             }
 
+            /**
+             * Подключиться к SMTP
+             *
+             * @return void
+             */
             private function SmtpConnect()
             {
                 if (Variable::IsNull($this->smtp)) {
@@ -371,6 +509,11 @@
                 return true;
             }
 
+            /**
+             * Закрыть подключение к SMTP
+             *
+             * @return void
+             */
             private function SmtpClose()
             {
                 if (!is_null($this->smtp) && $this->smtp->Connected()) {
@@ -380,10 +523,12 @@
             }
 
             /**
-            * Creates recipient headers.
-            * @access public
-            * @return string
-            */
+             * Creates recipient headers.
+             * @access public
+             * @param string $type
+             * @param string $addr
+             * @return string
+             */
             private function _appendToHeader($type, $addr)
             {
                 if ($addr instanceof Address) {
@@ -395,13 +540,12 @@
                 }
             }
 
-            
-
             /**
-            * Set the body wrapping.
-            * @access public
-            * @return void
-            */
+             * Set the body wrapping.
+             * @access public
+             * @param Message $m
+             * @return void
+             */
             private function _setWordWrap($m)
             {
                 if ($m->wordwrap < 1) {
@@ -420,10 +564,11 @@
             }
 
             /**
-            * Assembles message header.
-            * @access public
-            * @return string The assembled header
-            */
+             * Assembles message header.
+             * @access public
+             * @param Message $m
+             * @return string The assembled header
+             */
             private function _createHeader(Message $m)
             {
                 $result = '';
@@ -502,10 +647,11 @@
             }
 
             /**
-            * Returns the message MIME.
-            * @access public
-            * @return string
-            */
+             * Returns the message MIME.
+             * @access public
+             * @param Message $m
+             * @return string
+             */
             private function _getMailMIME($m)
             {
                 $result = '';
@@ -539,10 +685,11 @@
             }
 
             /**
-            * Assembles the message body.  Returns an empty string on failure.
-            * @access public
-            * @return string The assembled message body
-            */
+             * Assembles the message body.  Returns an empty string on failure.
+             * @access public
+             * @param Message $m
+             * @return string The assembled message body
+             */
             private function _createBody(Message $m)
             {
                 $body = '';
@@ -621,11 +768,12 @@
             }
 
             /**
-            * Attaches all fs, string, and binary attachments to the message.
-            * Returns an empty string on failure.
-            * @access private
-            * @return string
-            */
+             * Attaches all fs, string, and binary attachments to the message.
+             * Returns an empty string on failure.
+             * @access private
+             * @param Message $m
+             * @return string
+             */
             private function AttachAll(Message $m)
             {
                 // Return text of body
@@ -687,10 +835,10 @@
             }
 
             /**
-            * Returns the server hostname or 'localhost.localdomain' if unknown.
-            * @access private
-            * @return string
-            */
+             * Returns the server hostname or 'localhost.localdomain' if unknown.
+             * @access private
+             * @return string
+             */
             private function _hostName()
             {
                 if ($this->DOMAIN != '') {
@@ -705,7 +853,17 @@
                 return $result;
             }
 
-            
+            /**
+             * Выполняет колбэк функцию
+             *
+             * @param bool $isSent
+             * @param AddressList $to
+             * @param AddressList $cc
+             * @param AddressList $bcc
+             * @param string $subject
+             * @param string $body
+             * @return void
+             */
             protected function doCallback($isSent, $to, $cc, $bcc, $subject, $body)
             {
                 if (!empty($this->callback) && function_exists($this->callbackcallback)) {

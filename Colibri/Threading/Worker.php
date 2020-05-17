@@ -1,5 +1,12 @@
 <?php
-
+    /**
+     * Threading
+     * 
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2020 ColibriLab
+     * @package Colibri\Threading
+     * 
+     */
     namespace Colibri\Threading {
 
         use Colibri\App;
@@ -61,6 +68,7 @@
              *
              * @param integer $timeLimit лимит по времени для выполнения воркера
              * @param integer $prio приоритет, требуется наличие nohup
+             * @param string $key ключ процесса (уникальный ключ для того, чтобы в дальнейшем можно было идентифицировать процесс)
              */
             public function __construct($timeLimit = 0, $prio = 0, $key = '') {
                 $this->_timeLimit = $timeLimit;
@@ -118,7 +126,7 @@
             /**
              * Подготавливает параметры к отправке в поток
              *
-             * @param mixed $params
+             * @param mixed $params параметры процесса для сериализации
              * @return void
              */
             public function PrepareParams($params) {
@@ -128,6 +136,7 @@
             /**
              * Разбирает параметры из строки в объект
              *
+             * @param mixed $params параметры процесса для десериализации
              * @return void
              */
             public function Prepare($params) {
@@ -153,6 +162,11 @@
                 return Variable::Unserialize($workerString);
             }
 
+            /**
+             * Проверяет запущен ли другой инстанс процесса
+             *
+             * @return bool
+             */
             public function Exists() {
 
                 $output = '';

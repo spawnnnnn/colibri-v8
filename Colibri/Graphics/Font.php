@@ -11,11 +11,11 @@
         /**
          * Шрифт
          *
-         * @property-read string $file
-         * @property-read string $path
-         * @property-read int $angle
-         * @property-read string $src
-         * @property-read int $size
+         * @property-read string $file название файла шрифта
+         * @property-read string $path путь к шрифтам
+         * @property-read int $angle угол
+         * @property-read string $src полный путь к шрифту
+         * @property-read int $size размер/кегль
          *
          */
         class Font
@@ -73,6 +73,12 @@
                 }
             }
             
+            /**
+             * Геттер
+             *
+             * @param string $prop
+             * @return mixed
+             */
             public function __get($prop)
             {
                 $return = null;
@@ -105,8 +111,9 @@
             }
             
             /**
-            * Возвращает размер области вывода текста
-            */
+             * Возвращает размер области вывода текста
+             * @param string $text
+             */
             public function MeasureText($text)
             {
                 $ar = imagettfbbox($this->_fontSize, $this->_angle, $this->_path."/".$this->_file, $text);
@@ -128,8 +135,11 @@
             }
 
             /**
-            * Возвращает размер области вывода текста
-            */
+             * Возвращает размер области вывода текста
+             * @param string $text
+             * @param int $startAt
+             * @param int $size
+             */
             public function InscribeText($text, &$startAt, &$size)
             {
                 $rect = imagettfbbox($this->_fontSize, 0, $this->_path."/".$this->_file, $text.'|');

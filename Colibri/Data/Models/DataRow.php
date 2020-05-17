@@ -27,16 +27,34 @@
              */
             protected $_table;
 
+            /**
+             * Конструктор
+             *
+             * @param DataTable $table
+             * @param mixed $data
+             * @param string $tablePrefix
+             */
             public function __construct(DataTable $table, $data = null, $tablePrefix = '')
             {
                 parent::__construct($data, $tablePrefix);
                 $this->_table = $table;
             }
 
+            /**
+             * Создает модель
+             *
+             * @return DataRow
+             */
             public static function Create()
             {
             }
             
+            /**
+             * Геттер
+             *
+             * @param string $property
+             * @return mixed
+             */
             public function __get($property)
             {
                 $return = null;
@@ -49,6 +67,12 @@
                 return $return;
             }
             
+            /**
+             * Сеттер
+             *
+             * @param string $property
+             * @param mixed $value
+             */
             public function __set($property, $value)
             {
                 $property = strtolower($property);
@@ -67,6 +91,11 @@
                 return new ObjectEx($this->_data, $this->_prefix);
             }
             
+            /**
+             * Сохраняет модель
+             *
+             * @return void
+             */
             public function Save()
             {
                 if (!$this->_changed) {
@@ -107,6 +136,11 @@
                 return true;
             }
             
+            /**
+             * Удаляет модель
+             *
+             * @return void
+             */
             public function Delete()
             {
                 $tables = [];

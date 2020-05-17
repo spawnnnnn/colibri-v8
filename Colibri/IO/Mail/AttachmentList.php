@@ -15,6 +15,12 @@
          */
         class AttachmentList extends ArrayList
         {
+            /**
+             * Добавить вложение в список
+             *
+             * @param Attachment $a вложение
+             * @return void
+             */
             public function Add($a)
             {
                 if (!($a instanceof Attachment)) {
@@ -24,6 +30,12 @@
                 parent::Add($a);
             }
             
+            /**
+             * Добавить список вложений в текущий список
+             *
+             * @param Attachment[] $values
+             * @return void
+             */
             public function AddRange($values)
             {
                 foreach ($values as $v) {
@@ -34,6 +46,11 @@
                 parent::Append($values);
             }
 
+            /**
+             * Отвечает true если в списке есть встроенные вложения
+             *
+             * @return bool
+             */
             public function HasInline()
             {
                 foreach ($this as $a) {

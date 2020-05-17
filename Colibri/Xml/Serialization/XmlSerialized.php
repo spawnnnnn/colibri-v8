@@ -1,26 +1,64 @@
 <?php
-
+    /**
+     * Serialization
+     *
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2020 ColibriLab
+     * @package Colibri\Xml\Serialization
+     *
+     */
     namespace Colibri\Xml\Serialization {
 
         use Colibri\Helpers\Variable;
 
         /**
          * Представляет собой десериализованный из xml обьект
-         * @property-read array $attributes - аттрибуты
-         * @property-read mixed $content - данные
+         * @property string $name
+         * @property array $attributes - аттрибуты
+         * @property mixed $content - данные
          */
         class XmlSerialized implements \JsonSerializable {
 
+            /**
+             * Название элемента
+             *
+             * @var string
+             */
             private $_name;
+
+            /**
+             * Список атрибутов
+             *
+             * @var stdCLass
+             */
             private $_attributes;
+
+            /**
+             * Список элементов
+             *
+             * @var stdClass|array
+             */
             private $_content;
 
+            /**
+             * Конструктор
+             *
+             * @param string $name название элемента
+             * @param array $attributes список атрибутов
+             * @param array $content контент
+             */
             public function __construct($name = null, $attributes = null, $content = null) {
                 $this->_name = $name;
                 $this->_attributes = (object)$attributes;
                 $this->_content = $content;
             }
 
+            /**
+             * Геттер
+             *
+             * @param string $property
+             * @return mixed
+             */
             public function __get($property) {
                 if(strtolower($property) == 'attributes') {
                     return $this->_attributes;
@@ -33,6 +71,12 @@
                 }
             }
 
+            /**
+             * Сеттер
+             *
+             * @param string $property
+             * @param mixed $value
+             */
             public function __set($property, $value) {
                 if(strtolower($property) == 'attributes') {
                     $this->_attributes = (object)$value;
@@ -51,11 +95,22 @@
                 }
             }
 
+            /**
+             * Возвращает обьект для последующей сериализации в json
+             *
+             * @return stdClass
+             */
             public function jsonSerialize()
             {
                 return (object)array('class' => self::class,'name' => $this->_name, 'content' => $this->_content, 'attributes' => $this->_attributes);
             }
 
+            /**
+             * Поднимает обьект из json
+             *
+             * @param string $jsonString строка в которую запакован обьект XmlSeralized
+             * @return XmlSerialized
+             */
             public static function jsonUnserialize($jsonString) {
                 $object = is_string($jsonString) ? json_decode($jsonString, true) : $jsonString;
                 if(is_null($object)) {

@@ -24,9 +24,10 @@
             /**
              * Конструктор
              *
-             * @param string $name
-             * @param string $data
-             * @return void
+             * @param string $name название свойства
+             * @param string $filePathOrFileData данные или путь к файлу
+             * @param string $filename название файла
+             * @param boolean $mime тип MIME
              */
             public function __construct($name, $filePathOrFileData, $filename = '', $mime = false)
             {

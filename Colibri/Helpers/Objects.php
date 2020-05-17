@@ -13,6 +13,12 @@
          */
         class Objects
         {
+            /**
+             * Проверка на ассоциативный массив
+             *
+             * @param mixed $array
+             * @return bool
+             */
             public static function IsAssociativeArray($array)
             {
                 $keys = array_keys($array);
@@ -24,6 +30,12 @@
                 return false;
             }
 
+            /**
+             * Переделывает массив в обьект
+             *
+             * @param array $array
+             * @return stdClass
+             */
             public static function ArrayToObject($array)
             {
                 if (is_object($array)) {

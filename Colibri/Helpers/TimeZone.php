@@ -74,6 +74,13 @@
                 return self::$texts[self::$zone]['weekdays'][$weekday];
             }
 
+            /**
+             * Форматирует строку с учетом зоны
+             *
+             * @param string $format
+             * @param float $microtime
+             * @return string
+             */
             public static function FTimeU($format, $microtime)
             {
                 if (preg_match('/^[0-9]*\\.([0-9]+)$/', $microtime, $reg)) {

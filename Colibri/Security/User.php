@@ -22,6 +22,11 @@
         class User extends ObjectEx
         {
 
+            /**
+             * Конструктор
+             *
+             * @param mixed $userData
+             */
             public function __construct($userData)
             {
                 parent::__construct($userData);
@@ -75,6 +80,12 @@
                 return $this->password == $pass;
             }
 
+            /**
+             * Сеттер
+             *
+             * @param string $property свойство
+             * @param mixed $value значение
+             */
             public function __set($property, $value)
             {
                 $property = strtolower($property);

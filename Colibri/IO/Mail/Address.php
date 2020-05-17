@@ -13,13 +13,43 @@
 
         /**
          * Электронный адрес
+         * 
+         * @property string $address эл. адрес
+         * @property string $name отображаемое имя  
+         * @property string $charset кодировка
+         * @property-read string $formated отформатированная строка содержащая отображаемое имя и эл. адрес
+         * 
          */
         class Address
         {
+            /**
+             * Эл. адрес
+             *
+             * @var string
+             */
             private $_address;
+
+            /**
+             * Отображаемое имя
+             *
+             * @var string
+             */
             private $_displayName;
+
+            /**
+             * Кодировка
+             *
+             * @var string
+             */
             private $_charset;
             
+            /**
+             * Конструктпор
+             *
+             * @param string $address эл. адрес
+             * @param string $displayName отображаемое имя
+             * @param string $charset кодировка
+             */
             public function __construct($address, $displayName = '', $charset = 'utf-8')
             {
                 $address = trim($address);
@@ -30,6 +60,12 @@
                 $this->_charset = $charset;
             }
             
+            /**
+             * Геттер
+             *
+             * @param string $property свойство
+             * @return string
+             */
             public function __get($property)
             {
                 $return = null;
@@ -57,6 +93,12 @@
                 return $return;
             }
 
+            /**
+             * Сеттер
+             *
+             * @param string $property свойство
+             * @param string $value значение
+             */
             public function __set($property, $value)
             {
                 switch (strtolower($property)) {
@@ -78,6 +120,11 @@
                 }
             }
             
+            /**
+             * Возвращает отформатированное значение
+             *
+             * @return string
+             */
             private function _formatAddress()
             {
                 if (Variable::IsEmpty($this->_displayName)) {

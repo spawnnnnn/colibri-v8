@@ -18,7 +18,12 @@
          */
         class Debug {
 
-
+            /**
+             * Превращает аргументы в правильный текстовый вид
+             *
+             * @param array $args
+             * @return array
+             */
             private static function _createArgs($args) {
                 $count = count($args);
                 $result = array();
@@ -60,9 +65,8 @@
             /**
              * Печатает красиво обьект в виде дерева
              *
-             * @param mixed $what
              */
-            public static function IOut($what){
+            public static function IOut(){
 
                 $mode = App::$config ? App::$config->Query('mode')->GetValue() : 'development';
                 if($mode === App::ModeTest) {

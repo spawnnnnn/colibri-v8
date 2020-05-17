@@ -1,5 +1,12 @@
 <?php
-
+    /**
+     * Xml
+     *
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2020 ColibriLab
+     * @package Colibri\Xml
+     *
+     */
     namespace Colibri\Xml {
 
         use Colibri\Collections\ArrayListIterator;

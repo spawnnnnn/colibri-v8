@@ -85,8 +85,25 @@
             // PROPERTIES, PRIVATE AND PROTECTED
             /////////////////////////////////////////////////
         
+            /**
+             * the socket to the server
+             *
+             * @var mixed
+             */
             private $smtp_conn; // the socket to the server
+
+            /**
+             * error if any on the last call
+             *
+             * @var mixed
+             */
             private $error;     // error if any on the last call
+
+            /**
+             * the reply the server sent to us for HELO
+             *
+             * @var mixed
+             */
             private $helo_rply; // the reply the server sent to us for HELO
         
             /**
@@ -118,6 +135,9 @@
              * SMTP CODE SUCCESS: 220
              * SMTP CODE FAILURE: 421
              * @access public
+             * @param string $host
+             * @param int $port
+             * @param int $tval
              * @return bool
              */
             public function Connect($host, $port = 0, $tval = 30)
@@ -219,6 +239,8 @@
              * Performs SMTP authentication.  Must be run after running the
              * Hello() method.  Returns true if successfully authenticated.
              * @access public
+             * @param string $username
+             * @param string $password
              * @return bool
              */
             public function Authenticate($username, $password)
@@ -340,6 +362,7 @@
              * SMTP CODE FAILURE: 451,554
              * SMTP CODE ERROR  : 500,501,503,421
              * @access public
+             * @param mixed $msg_data
              * @return bool
              */
             public function Data($msg_data)
@@ -475,6 +498,7 @@
              * SMTP CODE SUCCESS: 250
              * SMTP CODE ERROR  : 500, 501, 504, 421
              * @access public
+             * @param string $host
              * @return bool
              */
             public function Hello($host = '')
@@ -504,6 +528,8 @@
             /**
              * Sends a HELO/EHLO command.
              * @access private
+             * @param mixed $hello
+             * @param string $host
              * @return bool
              */
             private function SendHello($hello, $host)
@@ -545,6 +571,7 @@
              * SMTP CODE SUCCESS: 552,451,452
              * SMTP CODE SUCCESS: 500,501,421
              * @access public
+             * @param string $from
              * @return bool
              */
             public function Mail($from)
@@ -589,6 +616,7 @@
              * SMTP CODE SUCCESS: 221
              * SMTP CODE ERROR  : 500
              * @access public
+             * @param bool $close_on_error
              * @return bool
              */
             public function Quit($close_on_error = true)
@@ -643,6 +671,7 @@
              * SMTP CODE FAILURE: 550,551,552,553,450,451,452
              * SMTP CODE ERROR  : 500,501,503,421
              * @access public
+             * @param string $to
              * @return bool
              */
             public function Recipient($to)
@@ -736,6 +765,7 @@
              * SMTP CODE SUCCESS: 552,451,452
              * SMTP CODE SUCCESS: 500,501,502,421
              * @access public
+             * @param string $from
              * @return bool
              */
             public function SendAndMail($from)

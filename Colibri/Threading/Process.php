@@ -1,5 +1,12 @@
 <?php
-
+    /**
+     * Threading
+     * 
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2020 ColibriLab
+     * @package Colibri\Threading
+     * 
+     */
     namespace Colibri\Threading {
 
         /**
@@ -46,6 +53,8 @@
 
             /**
              * Worker который нужно запустить
+             * 
+             * @var Worker
              */
             private $_worker;
 
@@ -79,7 +88,7 @@
             /**
              * Getter
              *
-             * @param string $prop
+             * @param string $prop свойство
              * @return mixed
              */
             public function __get(string $prop)
@@ -94,7 +103,7 @@
             /**
              * Запускает Worker
              *
-             * @param stdClass $params
+             * @param stdClass $params параметры для передачи в процесс
              * @return void
              */
             public function Run($params)

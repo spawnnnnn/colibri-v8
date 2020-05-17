@@ -35,6 +35,11 @@
              */
             private $_path;
             
+            /**
+             * Конструктор
+             *
+             * @param mixed $configData
+             */
             public function __construct($configData)
             {
                 $this->_path = null;
@@ -58,7 +63,11 @@
             }
             
             /**
-             * @inheritDoc
+             * Считает данные
+             *
+             * @param string $query
+             * @param mixed $default
+             * @return mixed
              */
             public function Read(string $query, $default = null) {
                 $command = explode('.', $query);
@@ -113,7 +122,7 @@
             }
 
             /**
-             * Функция обработки команд в yaml
+             * Функция обработки команд в xml
              *
              * @param string $value значение
              * @return mixed
@@ -127,35 +136,48 @@
             }
 
             /**
-             * @inheritDoc
+             * Пишет данные
+             *
+             * @param string $query
+             * @param mixed $value
+             * @return bool
              */
             public function Write(string $query, $value) {
 
             } 
             
             /**
-             * @inheritDoc
+             * Вернуть внутренние данные в виде обьекта
+             *
+             * @return stdClass
              */
             public function AsObject() {
                 return (object)XmlEncoder::Decode($this->_configData->xml);
             }
 
             /**
-             * @inheritDoc
+             * Вернуть внутренние данные в виде массива
+             *
+             * @return array
              */
             public function AsArray() {
                 return (array)XmlEncoder::Decode($this->_configData->raw);
             }
 
             /**
-             * @inheritDoc
+             * Вернуть внутренние данные в исходном виде
+             *
+             * @return array
              */
             public function AsRaw() {
                 return $this->_configData;
             }
 
             /**
-             * @inheritDoc
+             * Вернуть хранимое значение
+             * Внимание! Если текущие данные массив или обьект, то будет возвращен null
+             *
+             * @return mixed
              */
             public function GetValue() {
                 if ($this->_configData instanceof XmlNode) {

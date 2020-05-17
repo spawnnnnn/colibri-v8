@@ -128,6 +128,11 @@
                 return $this->_configData->AsArray();
             }
 
+            /**
+             * Возвращает исходные данные
+             *
+             * @return void
+             */
             public function AsRaw() {
                 return $this->_configData->AsRaw();
             }

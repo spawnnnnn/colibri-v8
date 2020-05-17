@@ -154,6 +154,13 @@
                 $this->encryption = $encryption;
             }
 
+            /**
+             * Создает данные запроса типа Multipart/Formdata
+             *
+             * @param string $boundary разделитель
+             * @param mixed $files данные
+             * @return string
+             */
             private function _createMultipartRequestBody($boundary, $files){
                 $data = '';
                 $eol = "\r\n";

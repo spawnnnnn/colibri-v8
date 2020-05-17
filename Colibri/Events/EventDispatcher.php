@@ -33,6 +33,9 @@
              */
             private $_events;
         
+            /**
+             * Конструктор
+             */
             private function __construct()
             {
                 $this->_events = new Collection();
@@ -61,6 +64,11 @@
                 $this->_events->Clear();
             }
         
+            /**
+             * Клонирует обьект
+             *
+             * @return void
+             */
             public function __clone()
             {
             }
@@ -187,10 +195,16 @@
                 return $e->Exists($listener);
             }
         
+            /**
+             * Регистрирует слушателей к событию
+             *
+             * @param string $ename
+             * @return ArrayList
+             */
             public function RegisteredListeners($ename = "")
             {
                 if ($this->_events->Count() == 0) {
-                    return false;
+                    return null;
                 }
                 
                 $listeners = new ArrayList();

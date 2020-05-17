@@ -10,6 +10,9 @@
 
         use Colibri\AppException;
 
+        /**
+         * Исключение для веб-запросов
+         */
         class Exception extends AppException
         {
         }

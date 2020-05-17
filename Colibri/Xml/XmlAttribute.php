@@ -1,9 +1,21 @@
 <?php
-
+    /**
+     * Xml
+     * 
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2019 Colibri
+     * @package Colibri\Xml
+     * 
+     */
     namespace Colibri\Xml {
 
         /**
          * Класс для работы с атрибутами
+         * 
+         * @property string $value значение атрибута
+         * @property-read string $name название атрибута
+         * @property-read string $type тип атрибута
+         * @property-read DOMNode $raw узел
          */
         class XmlAttribute {
 
@@ -17,7 +29,7 @@
             /**
              * Конструктор
              *
-             * @param \DOMNode $data
+             * @param \DOMNode $data raw узел для инициализации врапера
              */
             public function __construct(\DOMNode $data) {
                 $this->_data = $data;
@@ -26,7 +38,7 @@
             /**
              * Getter
              *
-             * @param string $property
+             * @param string $property название свойства
              * @return mixed
              */
             public function __get($property) {
@@ -48,8 +60,8 @@
             /**
              * Setter
              *
-             * @param string $property
-             * @param string $value
+             * @param string $property название свойства
+             * @param string $value значение свойства
              * @return void
              */
             public function __set($property, $value) {

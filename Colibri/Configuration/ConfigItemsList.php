@@ -16,8 +16,19 @@
          */
         class ConfigItemsList extends ArrayList {
 
+            /**
+             * Тип хранилища конфигурации
+             *
+             * @var string
+             */
             private $_type;
 
+            /**
+             * Конструктор
+             *
+             * @param string $data
+             * @param string $type
+             */
             public function __construct($data, string $type = '')
             {
                 parent::__construct($data);

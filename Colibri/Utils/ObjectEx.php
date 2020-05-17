@@ -170,6 +170,12 @@
                 return json_encode($this->ToArray());
             }
 
+            /**
+             * Проверяет на наличие свойства в обьекте
+             *
+             * @param string $name название свойства
+             * @return boolean
+             */
             public function __isset($name)
             {
                 if (!$this->$name) {
@@ -178,6 +184,11 @@
                 return true;
             }
 
+            /**
+             * Удаляет свойство из обьекта
+             *
+             * @param string $name название свойства
+             */
             public function __unset($name)
             {
                 unset($this->_data[$name]);
@@ -186,7 +197,7 @@
             /**
              * Магическая функция
              *
-             * @param string $property
+             * @param string $property название свойства
              * @return mixed
              */
             public function __get($property)
@@ -200,8 +211,8 @@
             /**
              * Магическая функция
              *
-             * @param string $property
-             * @param mixed $value
+             * @param string $property название свойства
+             * @param mixed $value значение свойства
              */
             public function __set($property, $value)
             {
@@ -216,8 +227,8 @@
             /**
              * Добавляет свойство к обьекту
              *
-             * @param string $property
-             * @param mixed $value
+             * @param string $property название свойства
+             * @param mixed $value значение свойства
              */
             public function AddProperty($property, $value)
             {
@@ -229,7 +240,7 @@
             /**
              * Возвращает свойство обьекта
              *
-             * @param string $property
+             * @param string $property название свойства
              */
             public function GetProperty($property)
             {
@@ -240,7 +251,7 @@
             /**
              * Удаляет свойство из обьекта
              *
-             * @param mixed $property
+             * @param mixed $property название свойства
              */
             public function DeleteProperty($property)
             {
@@ -253,10 +264,10 @@
              * Обработчик по умолчанию события TypeExchange для замены типов
              *
              * @param string $mode - Режим 'get' или 'set'
-             * @param string $property - Свойство
-             * @param mixed $value
+             * @param string $property - название свойства
+             * @param mixed $value значение свойства
              */
-            protected function _typeExchange($mode, $property, $value = false)
+            protected function _typeExchange($mode, $property, $value = null)
             {
                 if ($mode == 'get') {
                     return $this->_data[$property];

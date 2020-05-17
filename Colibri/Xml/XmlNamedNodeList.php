@@ -1,9 +1,20 @@
 <?php
-
+    /**
+     * Xml
+     * 
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2019 Colibri
+     * @package Colibri\Xml
+     * 
+     */
     namespace Colibri\Xml {
 
         use Colibri\Collections\ObjectCollection;
 
+        /**
+         * Список узлов
+         * @property-read DOMDocument $document
+         */
         class XmlNamedNodeList extends ObjectCollection {
 
             /**
@@ -13,6 +24,12 @@
              */
             private $_document;
     
+            /**
+             * Конструктор
+             *
+             * @param \DOMNodeList $nodelist Список узлов
+             * @param \DOMDocument $dom Документ
+             */
             public function __construct(\DOMNodeList $nodelist, \DOMDocument $dom) {
                 $this->_document = $dom;
     
@@ -23,7 +40,13 @@
     
                 parent::__construct($data);
             }
-    
+            
+            /**
+             * Возвраащет узел по ключу
+             *  
+             * @param string $key
+             * @return XmlNode
+             */
             public function Item($key) {
                 $v = parent::Item($key);
                 if(is_null($v)) {
@@ -32,10 +55,22 @@
                 return new XmlNode($v, $this->_document);
             }
     
+            /**
+             * Возвращает узел по индексу
+             *
+             * @param int $index
+             * @return XmlNode
+             */
             public function ItemAt($index) {
                 return new XmlNode(parent::ItemAt($index), $this->_document);
             }
-    
+            
+            /**
+             * Геттер
+             *
+             * @param string $property
+             * @return mixed
+             */
             public function __get($property) {
                 if(strtolower($property) == 'document') {
                     return $this->_document;

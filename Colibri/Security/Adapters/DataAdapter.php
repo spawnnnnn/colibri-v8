@@ -22,10 +22,32 @@
          */
         class DataAdapter implements IDataAdapter
         {
+            /**
+             * Точка доступа
+             *
+             * @var DataAccessPoint
+             */
             private $_dataPoint;
+            /**
+             * Таблица пользователей
+             *
+             * @var string
+             */
             private $_sourceUsers;
+            /**
+             * Таблица ролей
+             *
+             * @var string
+             */
             private $_sourceRoles;
 
+            /**
+             * КОнструктор
+             *
+             * @param string $datapoint
+             * @param string $usersTable
+             * @param string $rolesTable
+             */
             public function __construct($datapoint, $usersTable, $rolesTable)
             {
                 $this->_dataPoint = App::$dataAccessPoints->Get($datapoint);
@@ -34,7 +56,9 @@
             }
 
             /**
-             * @inheritDoc
+             * Проверить необходимость установки
+             *
+             * @return bool
              */
             public function Check()
             {
@@ -47,7 +71,9 @@
             }
 
             /**
-             * @inheritDoc
+             * Создать источники данных
+             *
+             * @return void
              */
             public function Create()
             {
@@ -85,7 +111,9 @@
             }
 
             /**
-             * @inheritDoc
+             * Удаление источников данных
+             *
+             * @return void
              */
             public function Dispose()
             {
@@ -94,7 +122,9 @@
             }
 
             /**
-             * @inheritDoc
+             * Возвращает список пользователей
+             *
+             * @return User[]
              */
             public function Users()
             {
@@ -107,7 +137,9 @@
             }
 
             /**
-             * @inheritDoc
+             * Возвращает список ролей
+             *
+             * @return Role[]
              */
             public function Roles()
             {
@@ -120,7 +152,11 @@
             }
 
             /**
-             * @inheritDoc
+             * Обновляет данные роли
+             *
+             * @param Role $roleData
+             * @param int $id
+             * @return int
              */
             public function UpdateRole($roleData, $id = false)
             {
@@ -138,7 +174,11 @@
             }
 
             /**
-             * @inheritDoc
+             * Обновляет данные пользователя
+             *
+             * @param User $userData
+             * @param int $id
+             * @return int
              */
             public function UpdateUser($userData, $id = false)
             {

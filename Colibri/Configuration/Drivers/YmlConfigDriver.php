@@ -21,8 +21,18 @@
          */
         class YmlConfigDriver implements IConfigDriver {
 
+            /**
+             * Данные конфигурации
+             *
+             * @var mixed
+             */
             private $_configData;
 
+            /**
+             * Конструктор
+             *
+             * @param mixed $configData
+             */
             public function __construct($configData)
             {
                 if (is_array($configData) || is_object($configData)) {
@@ -38,7 +48,11 @@
             }
             
             /**
-             * @inheritDoc
+             * Считает данные
+             *
+             * @param string $query
+             * @param mixed $default
+             * @return mixed
              */
             public function Read(string $query, $default = null) {
                 $command = explode('.', $query);
@@ -105,14 +119,20 @@
             }
 
             /**
-             * @inheritDoc
+             * Пишет данные
+             *
+             * @param string $query
+             * @param mixed $value
+             * @return bool
              */
             public function Write(string $query, $value) {
 
             }
 
             /**
-             * @inheritDoc
+             * Вернуть внутренние данные в виде обьекта
+             *
+             * @return stdClass
              */
             public function AsObject()
             {
@@ -120,7 +140,9 @@
             }
 
             /**
-             * @inheritDoc
+             * Вернуть внутренние данные в виде массива
+             *
+             * @return array
              */
             public function AsArray()
             {
@@ -128,14 +150,19 @@
             }
 
             /**
-             * @inheritDoc
+             * Вернуть внутренние данные в исходном виде
+             *
+             * @return array
              */
             public function AsRaw() {
                 return $this->AsArray();
             }
 
             /**
-             * @inheritDoc
+             * Вернуть хранимое значение
+             * Внимание! Если текущие данные массив или обьект, то будет возвращен null
+             *
+             * @return mixed
              */
             public function GetValue()
             {

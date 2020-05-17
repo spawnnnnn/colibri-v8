@@ -16,7 +16,10 @@
         class GraylogLogger extends Logger {
             
             /**
-             * @inheritDoc
+             * Конструктор
+             *
+             * @param integer $maxLogLevel
+             * @param string $device
              */
             public function __construct($maxLogLevel = 7, $device = '') {
                 $this->_maxLogLevel = $maxLogLevel;    
@@ -33,7 +36,11 @@
             }
             
             /**
-             * @inheritDoc
+             * Записывает в лог данные
+             *
+             * @param int $level уровень ошибки
+             * @param mixed $data данные
+             * @return void
              */
             public function WriteLine($level, $data) {
 
@@ -63,7 +70,9 @@
             }
 
             /**
-             * @inheritDoc
+             * Возвращает контент лог файла
+             *
+             * @return mixed
              */
             public function Content() {
                 return null;

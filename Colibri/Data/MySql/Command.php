@@ -19,6 +19,12 @@
          */
         final class Command extends SqlCommand
         {
+            /**
+             * Подгатавливает mysqlistmt
+             *
+             * @param string $query
+             * @return mysqli_stmt
+             */
             private function _prepareStatement($query)
             {
                 if (!$this->_params) {

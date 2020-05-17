@@ -16,8 +16,19 @@
          */
         class Template
         {
+            /**
+             * Данные шаблона
+             *
+             * @var mixed
+             */
             private $_data;
             
+            /**
+             * Конструктор
+             *
+             * @param string $file
+             * @param boolean $isFile
+             */
             public function __construct($file, $isFile = true)
             {
                 if ($isFile) {
@@ -30,11 +41,25 @@
                 }
             }
             
+            /**
+             * Статический конструктор
+             *
+             * @param string $file
+             * @param boolean $isFile
+             * @return Template
+             */
             public static function Create($file, $isFile = true)
             {
                 return new Template($file, $isFile);
             }
             
+            /**
+             * Превращает обьект в однополосный для включения в текст
+             *
+             * @param mixeds $object
+             * @param string $startKey
+             * @return array
+             */
             public static function ObjectToReplacements($object, $startKey = 'item')
             {
                 $replacements = array();
@@ -52,6 +77,12 @@
                 return $replacements;
             }
             
+            /**
+             * Выполняет замены в тексте
+             *
+             * @param mixed $replacements
+             * @return Template
+             */
             public function Apply($replacements)
             {
                 foreach ($replacements as $key => $value) {
@@ -83,7 +114,13 @@
                 return $this;
             }
             
-            public function ToString($replacements = false)
+            /**
+             * Возвращает текст с автозаменами
+             *
+             * @param array $replacements
+             * @return string
+             */
+            public function ToString($replacements = null)
             {
                 if ($replacements) {
                     $this->Apply($replacements);

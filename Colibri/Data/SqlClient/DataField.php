@@ -9,6 +9,9 @@
      */
     namespace Colibri\Data\SqlClient {
 
+        /**
+         * Описание поля данных в запросе
+         */
         class DataField {
 
             /**

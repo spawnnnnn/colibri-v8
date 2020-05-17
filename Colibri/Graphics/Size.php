@@ -44,6 +44,12 @@
                 $this->height = $height;
             }
             
+            /**
+             * Геттер
+             *
+             * @param string $nm
+             * @return mixed
+             */
             public function __get($nm) {
                 $return = null;
                 switch($nm) {

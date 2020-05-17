@@ -128,8 +128,25 @@
             // PROPERTIES, PRIVATE AND PROTECTED
             /////////////////////////////////////////////////
         
+            /**
+             * Коннекция
+             *
+             * @var mixed
+             */
             private $pop_conn;
+
+            /**
+             * Индикация подключения
+             *
+             * @var bool
+             */
             private $connected;
+
+            /**
+             * Ошибки
+             *
+             * @var array
+             */
             private $error;     //  Error log array
         
             /**
@@ -152,6 +169,7 @@
              * @param integer $tval
              * @param string $username
              * @param string $password
+             * @param int $debug_level
              */
             public function Authorise($host, $port = false, $tval = false, $username = '', $password = '', $debug_level = 0)
             {

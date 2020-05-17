@@ -1,27 +1,61 @@
 <?php
-
+    /**
+     * Definitions
+     *
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2020 ColibriLab
+     * @package Colibri\Xml\Definitions
+     *
+     */
     namespace Colibri\Xml\Definitions {
 
         /**
          * Представление атрибута
          * 
-         * @property-read string $annotation
-         * @property-read string $name
-         * @property-read XsdSimplTypeDefinition|XsdBaseTypeDefinition $type
-         * @property-read string $use
-         * @property-read string $default
+         * @property-read string $annotation аннотация элемента
+         * @property-read string $name название элемента
+         * @property-read XsdSimplTypeDefinition|XsdBaseTypeDefinition $type тип элемента
+         * @property-read string $use использование
+         * @property-read string $default значение по умолчанию
+         * @property-read string $group группа
+         * @property-read array $autocomplete список значений для интеллисенса
+         * @property-read string $generate команда для генерации элемента
+         * @property-read string $lookup команда для генерации межобьектных связей
          */
         class XsdAttributeDefinition implements \JsonSerializable {
             
+            /**
+             * Узел атрибута
+             *
+             * @var XmlNode
+             */
             private $_node;
+
+            /**
+             * Схема
+             *
+             * @var XmlSchemDefinition
+             */
             private $_schema;
 
+            /**
+             * Конструктор
+             *
+             * @param XmlNode $attributeNode
+             * @param XmlSchemaDefinition $schema
+             */
             public function __construct($attributeNode, $schema)
             {
                 $this->_node = $attributeNode;
                 $this->_schema = $schema;
             }
 
+            /**
+             * Геттер
+             *
+             * @param string $name
+             * @return mixed
+             */
             public function __get($name)
             {
                 if(strtolower($name) == 'annotation') {
@@ -57,11 +91,21 @@
                 
             }
 
+            /**
+             * Возвращает данные в виде простого обьекта для упаковки в json
+             *
+             * @return stdClass
+             */
             public function jsonSerialize()
             {
                 return (object)array('name' => $this->name, 'annotation' => $this->annotation, 'type' => $this->type, 'use' => $this->use, 'default' => $this->default, 'group' => $this->group, 'autocomplete' => $this->autocomplete, 'generate' => $this->generate, 'lookup' => $this->lookup);
             }
 
+            /**
+             * Возвращает данные в виде простого обьекта
+             *
+             * @return stdClass
+             */
             public function ToObject()
             {
                 return (object)array('name' => $this->name, 'annotation' => $this->annotation, 'type' => $this->type->ToObject(), 'use' => $this->use, 'default' => $this->default, 'group' => $this->group, 'autocomplete' => $this->autocomplete, 'generate' => $this->generate, 'lookup' => $this->lookup);

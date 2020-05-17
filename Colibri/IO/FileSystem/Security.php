@@ -25,9 +25,25 @@
          */
         class Security {
 
+            /**
+             * Источник
+             *
+             * @var File|Directory
+             */
             protected $source;
+            /**
+             * Права доступа
+             *
+             * @var array
+             */
             protected $flags;
 
+            /**
+             * Конструктор
+             *
+             * @param File|Directory $source источник
+             * @param mixed $flags флаги
+             */
             function __construct($source, $flags = null){
                 $this->source = $source;
                 if ($flags === null) {
@@ -45,10 +61,22 @@
                 }
             }
 
+            /**
+             * Геттер
+             *
+             * @param string $property свойство
+             * @return mixed
+             */
             function __get($property) {
                 return $this->flags->$property;
             }
 
+            /**
+             * Сеттер
+             *
+             * @param string $property свойство
+             * @param mixed $value значение
+             */
             function __set($property, $value){
                 $this->flags->$property = $value;
             }

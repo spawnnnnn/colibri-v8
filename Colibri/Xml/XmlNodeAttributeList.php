@@ -1,10 +1,17 @@
 <?php
-
+    /**
+     * Xml
+     *
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2020 ColibriLab
+     * @package Colibri\Xml
+     *
+     */
     namespace Colibri\Xml {
 
-use Colibri\Helpers\Strings;
+        use Colibri\Helpers\Strings;
 
-/**
+        /**
          * Список атрибутов
          * @property-read int $count
          */
@@ -31,12 +38,24 @@ use Colibri\Helpers\Strings;
              */
             private $_data;
 
+            /**
+             * Конструктор
+             *
+             * @param \DOMDocument $document документ
+             * @param \DOMNode $node узел
+             * @param \DOMNamedNodeMap $xmlattributes список атрибутов
+             */
             public function __construct(\DOMDocument $document, \DOMNode $node, \DOMNamedNodeMap $xmlattributes) {
                 $this->_document = $document;
                 $this->_node = $node;
                 $this->_data = $xmlattributes;
             }
 
+            /**
+             * Возвращает итератор для обхода методом foreach
+             *
+             * @return XmlNodeListIterator
+             */
             public function getIterator() {
                 return new XmlNodeListIterator($this);
             }
@@ -60,6 +79,12 @@ use Colibri\Helpers\Strings;
                 return $this->_data->Count();
             }
 
+            /**
+             * Геттер
+             *
+             * @param string $property
+             * @return XmlAttribute|null
+             */
             public function __get($property) {
 
                 $attr = $this->_data->getNamedItem(Strings::FromCamelCaseAttr($property));
@@ -73,8 +98,8 @@ use Colibri\Helpers\Strings;
             /**
              * Добавляет атрибут
              *
-             * @param string $name
-             * @param string $value
+             * @param string $name название атрибута
+             * @param string $value значение атрибута
              * @return void
              */
             public function Append($name, $value) {
@@ -86,7 +111,7 @@ use Colibri\Helpers\Strings;
             /**
              * Удаляет аттрибут по имени
              *
-             * @param string $name
+             * @param string $name название атрибута
              * @return void
              */
             public function Remove($name) {

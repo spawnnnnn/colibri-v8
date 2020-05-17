@@ -45,6 +45,12 @@
                 $this->_name = $name;
             }
         
+            /**
+             * Геттер
+             *
+             * @param string $key
+             * @return mixed
+             */
             public function __get($key)
             {
                 $return = null;

@@ -1,13 +1,44 @@
 <?php
-
+    /**
+     * Xml
+     *
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2020 ColibriLab
+     * @package Colibri\Xml
+     *
+     */
     namespace Colibri\Xml {
 
+        /**
+         * Класс запросчик к документу
+         */
         class XmlQuery {
 
+            /**
+             * Узел конекст
+             *
+             * @var XmlNode
+             */
             private $_contextNode;
+            /**
+             * Элемент управления запросами
+             *
+             * @var DOMXPath
+             */
             private $_operator;
+            /**
+             * Вернуть в виде именованной коллекции, или в виде простого списка
+             *
+             * @var bool
+             */
             private $_returnAsNamedMap;
     
+            /**
+             * Конструктор
+             *
+             * @param XmlNode $node контекстный узел
+             * @param boolean $returnAsNamedMap вернуть в виде именованной коллекции
+             */
             public function __construct(XmlNode $node, $returnAsNamedMap = false) {
                 $this->_returnAsNamedMap = $returnAsNamedMap;
                 $this->_contextNode = $node;
@@ -17,8 +48,8 @@
             /**
              * Выполняет запрос
              *
-             * @param string $xpathQuery
-             * @return XmlNodeList
+             * @param string $xpathQuery строка запроса 
+             * @return XmlNodeList список узлов
              */
             public function Query($xpathQuery) {
                 $res = $this->_operator->query($xpathQuery, $this->_contextNode->raw);

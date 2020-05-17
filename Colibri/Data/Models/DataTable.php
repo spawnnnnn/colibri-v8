@@ -73,6 +73,7 @@
             /**
              * Статический конструктор
              *
+             * @param DataAccessPoint|string $point
              * @return DataTable
              */
             public static function Create($point)
@@ -307,6 +308,11 @@
                 return $ret;
             }
 
+            /**
+             * Сохраняет таблицу
+             *
+             * @return void
+             */
             public function Save()
             {
                 foreach ($this as $row) {
@@ -314,6 +320,11 @@
                 }
             }
 
+            /**
+             * Удаляет таблицу
+             *
+             * @return void
+             */
             public function Delete()
             {
                 foreach ($this as $row) {
@@ -322,6 +333,7 @@
             }
 
             /**
+             * Устанавливает значение по индексу
              * @param int $offset
              * @param DataRow $value
              * @return void
@@ -336,6 +348,7 @@
             }
         
             /**
+             * Проверяет есть ли данные по индексу
              * @param int $offset
              * @return bool
              */
@@ -345,6 +358,7 @@
             }
         
             /**
+             * удаляет данные по индексу
              * @param int $offset
              * @return void
              */

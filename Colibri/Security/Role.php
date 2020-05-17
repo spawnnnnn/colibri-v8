@@ -19,6 +19,11 @@
          */
         class Role extends ObjectEx
         {
+            /**
+             * Конструктор
+             *
+             * @param mixed $roleData
+             */
             public function __construct($roleData)
             {
                 parent::__construct($roleData);

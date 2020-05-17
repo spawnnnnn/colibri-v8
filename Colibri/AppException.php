@@ -1,15 +1,30 @@
 <?php
-
+    /**
+     * Colibri
+     * 
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2019 Colibri
+     * @package Colibri
+     * 
+     */
     namespace Colibri {
 
         use Throwable;
 
+        /**
+         * Класс исключения для приложения
+         */
         class AppException extends \Exception {
 
+            /**
+             * Данные приложения
+             *
+             * @var mixed
+             */
             private $_appData;
 
             /**
-             * Constructor
+             * Конструктор
              *
              * @param string $message
              * @param int $code
@@ -23,7 +38,7 @@
             }
 
             /**
-             * Returns custom app data 
+             * Возвращает данные приложения
              *
              * @return mixed
              */

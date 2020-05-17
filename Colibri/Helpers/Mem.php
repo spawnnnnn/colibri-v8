@@ -24,6 +24,8 @@
             /**
              * Создает синглтон обьект мемкэш
              *
+             * @param string $host
+             * @param int $port
              */
             public static function Create($host, $port)
             {

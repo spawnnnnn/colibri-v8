@@ -8,6 +8,9 @@
      */
     namespace Colibri\Helpers {
 
+        /**
+         * Работа со строками
+         */
         class Strings
         {
 
@@ -182,6 +185,12 @@
                 return substr($string, 0, strlen($start)) == $start;
             }
 
+            /**
+             * Удаляет разметку из строки
+             *
+             * @param string $html
+             * @return string
+             */
             public static function StripHTML($html)
             {
                 return strip_tags($html);
@@ -203,7 +212,15 @@
                 return implode('\\', $className);
             }
 
-            public static function Substring($string, $start, $length = false)
+            /**
+             * Вырезает кусок из строки
+             *
+             * @param string $string
+             * @param int $start
+             * @param int $length
+             * @return string
+             */
+            public static function Substring($string, $start, $length = null)
             {
                 $enc = mb_detect_encoding($string);
                 if (!$length) {
@@ -212,6 +229,12 @@
                 return mb_substr($string, $start, $length, $enc);
             }
 
+            /**
+             * Возвращает длину строки
+             *
+             * @param string $string
+             * @return int
+             */
             public static function Length($string)
             {
                 $encoding = mb_detect_encoding($string);
@@ -221,6 +244,13 @@
                 return mb_strlen($string, $encoding);
             }
 
+            /**
+             * Форматирует число в виде строки
+             * @param int|float $secuence число, которое нужно форматировать
+             * @param array $labels слова определяющие 
+             * @param bool $viewnumber показать число перед словом
+             * @return string 
+             */
             public static function FormatSequence($secuence, $labels = array("год", "года", "лет"), $viewnumber = false)
             {
                 $isfloat = intval($secuence) != floatval($secuence);
@@ -278,8 +308,16 @@
                         }
                     }
                 }
+                return '';
             }
     
+            /**
+             * Размер файла текстом
+             * @param int $number размер
+             * @param int $range делитель
+             * @param array $postfixes слова
+             * @return string результат
+             */
             public static function FormatFileSize($number, $range = 1024, $postfixes = array("bytes", "Kb", "Mb", "Gb", "Tb"))
             {
                 for ($j=0; $j < count($postfixes); $j++) {
@@ -293,6 +331,14 @@
                 return $number." ".$postfixes[$j];
             }
 
+            /**
+             * Делит по количеству букв и добавляет ...
+             *
+             * @param string $str
+             * @param int $length
+             * @param string $ellipsis
+             * @return void
+             */
             public static function TrimLength($str, $length, $ellipsis = "...")
             {
                 if (mb_strlen($str, "utf-8") > $length) {
@@ -302,6 +348,14 @@
                 }
             }
 
+            /**
+             * Вырезает нужное количество слов из текста
+             *
+             * @param string $text
+             * @param int $n
+             * @param string $ellipsis
+             * @return string
+             */
             public static function Words($text, $n, $ellipsis = "...")
             {
                 $text = Strings::StripHTML(trim($text));
@@ -323,6 +377,14 @@
                 }
             }
 
+            /**
+             * Добавляет перед текстом нужное количество букв
+             *
+             * @param string $s текст
+             * @param int $l количество
+             * @param string $c символ
+             * @return string
+             */
             public static function Expand($s, $l, $c)
             {
                 if (strlen($s) >= $l) {
@@ -332,6 +394,13 @@
                 }
             }
 
+            /**
+             * Подгатавливает текст для вложения в html аттрибут
+             *
+             * @param string $string
+             * @param boolean $quoters
+             * @return string
+             */
             public static function PrepareAttribute($string, $quoters = false)
             {
                 if ($quoters) {
@@ -344,6 +413,12 @@
                 return preg_replace("/\"/", "&quot;", $string);
             }
 
+            /**
+             * Возвращает произвольную строку заданной длины
+             *
+             * @param int $length
+             * @return string
+             */
             public static function Randomize($length)
             {
                 return Randomization::Mixed($length);

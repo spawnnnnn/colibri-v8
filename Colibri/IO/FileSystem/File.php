@@ -30,12 +30,27 @@
          */
         class File extends Node
         {
+            /**
+             * Данные о пути к файлу
+             *
+             * @var array
+             */
             private $info;
+
+            /**
+             * Длина файла в байтах
+             *
+             * @var integer
+             */
             private $_size = 0;
 
+            /** режим чтение */
             const MODE_READ = "rb9";
+            /** режим запись */
             const MODE_WRITE = "wb9";
+            /** режим добавление данных */
             const MODE_APPEND = "ab9";
+            /** режим создания при записи */
             const MODE_CREATEWRITE = "wb9";
 
             /**
@@ -55,6 +70,12 @@
                 }
             }
 
+            /**
+             * Геттер
+             *
+             * @param string $property свойство
+             * @return mixed
+             */
             public function __get($property)
             {
                 $return = null;
@@ -133,7 +154,7 @@
             /**
              * Копирует файл
              *
-             * @param string $path
+             * @param string $path путь, куда скопировать
              * @return void
              */
             public function CopyTo($path)
@@ -144,7 +165,7 @@
             /**
              * Переместить файл
              *
-             * @param string $path
+             * @param string $path путь, куда переместить
              * @return void
              */
             public function MoveTo($path)
@@ -165,7 +186,7 @@
             /**
              * Считывает данные файл
              *
-             * @param string $path
+             * @param string $path путь к файлу
              * @return string
              */
             public static function Read($path)
@@ -179,10 +200,10 @@
             /**
              * Записывает данные в файл
              *
-             * @param string $path
-             * @param string $content
-             * @param boolean $recursive
-             * @param integer $mode
+             * @param string $path пусть к файлу
+             * @param string $content контент, который нужно записать
+             * @param boolean $recursive если true то папки будут созданы по всему пути до достижения $path
+             * @param integer $mode режим создания файла и папок, по умолчанию 0777
              * @return void
              */
             public static function Write($path, $content, $recursive = false, $mode = 0777)
@@ -197,10 +218,10 @@
             /**
              * Записывает данные в файл
              *
-             * @param string $path
-             * @param string $content
-             * @param boolean $recursive
-             * @param integer $mode
+             * @param string $path путь к файлу
+             * @param string $content данные, которые нужно дозаписать
+             * @param boolean $recursive если true то папки будут созданы по всему пути до достижения $path
+             * @param integer $mode режим создания файла и папок, по умолчанию 0777
              * @return void
              */
             public static function Append($path, $content, $recursive = false, $mode = 0777)
@@ -215,7 +236,7 @@
             /**
              * Возвращает стрим файла
              *
-             * @param string $path
+             * @param string $path путь к файлу
              * @return FileStream
              */
             public static function Open($path)
@@ -229,7 +250,7 @@
             /**
              * Проверяет наличие файла
              *
-             * @param string $path
+             * @param string $path путь к файлу
              * @return boolean
              */
             public static function Exists($path)
@@ -240,7 +261,7 @@
             /**
              * Проверяет пустой ли файл
              *
-             * @param string $path
+             * @param string $path путь к файлу
              * @return boolean
              */
             public static function IsEmpty($path)
@@ -256,9 +277,9 @@
             /**
              * Создает файл и возвращает стрим
              *
-             * @param string $path
-             * @param boolean $recursive
-             * @param integer $mode
+             * @param string $path путь к файлу
+             * @param boolean $recursive если true то папки будут созданы по всему пути до достижения $path
+             * @param integer $mode режим создания файла и папок, по умолчанию 0777
              * @return FileStream
              */
             public static function Create($path, $recursive = true, $mode = 0777)
@@ -277,7 +298,7 @@
             /**
              * Удаляет файл
              *
-             * @param string $path
+             * @param string $path путь к файлу
              * @return boolean
              */
             public static function Delete($path)
@@ -292,8 +313,8 @@
             /**
              * Копирует файла
              *
-             * @param string $from
-             * @param string $to
+             * @param string $from какой файл
+             * @param string $to куда скопировать
              * @return void
              */
             public static function Copy($from, $to)
@@ -308,8 +329,8 @@
             /**
              * Переносит файл
              *
-             * @param string $from
-             * @param string $to
+             * @param string $from какой файл
+             * @param string $to куда перенести
              * @return void
              */
             public static function Move($from, $to)
@@ -324,7 +345,7 @@
             /**
              * Проверяет не директория ли
              *
-             * @param string $path
+             * @param string $path путь к файлу или директории
              * @return boolean
              */
             public static function IsDirectory($path)

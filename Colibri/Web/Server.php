@@ -1,18 +1,18 @@
 <?php
     /**
-     * Веб сервер
+     * Web
      * 
      * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
      * @copyright 2019 Colibri
-     * @package Colibri\Utils\Config
+     * @package Colibri\Web
      * 
      * 
      */
     namespace Colibri\Web {
 
         use Colibri\App;
-    use Colibri\AppException;
-    use Colibri\Helpers\XmlEncoder;
+        use Colibri\AppException;
+        use Colibri\Helpers\XmlEncoder;
         use Colibri\Helpers\HtmlEncoder;
         use Colibri\Events\TEventDispatcher;
         use Colibri\Events\EventsContainer;
@@ -26,29 +26,33 @@
             
             use TEventDispatcher;
 
-            /**
-             * Список ошибок
-             */
+            /** Команда не найдена */
             const IncorrectCommandObject = 1;
+
+            /** Метод не найден */
             const UnknownMethodInObject = 2;
 
-            /**
-             * Список типов
-             */
+            /** Вернуть в виде JSON */
             const JSON = 'json';
+            /** Вернуть в виде XML */
             const XML = 'xml';
+            /** Вернуть в виде HTML */
             const HTML = 'html';
+            /** Вернуть в виде CSS */
             const CSS = 'css';
+            /** Вернуть в виде JS */
             const JS = 'js';
 
-
+            /**
+             * Данные полученные при последней обработке запроса
+             *
+             * @var stdClass
+             */
             private $_lastParsedData = null;
             
 
             /**
              * Конструктор
-             *
-             * @param integer $type
              */
             public function __construct() {
 
@@ -57,7 +61,8 @@
             /**
              * Отображает результат
              *
-             * @param mixed $result
+             * @param string $type тип ответа
+             * @param mixed $result результ
              * @return void
              */
             public function CloseResponse($type, $result) {
@@ -75,6 +80,12 @@
                 }
             }
 
+            /**
+             * Возвращает полное название класса трансформера
+             *
+             * @param string $class текст запроса
+             * @return string
+             */
             protected function _getTransformerFullName($class) {
                 $class = Strings::UrlToNamespace($class);
                 if(strpos($class, 'Modules') === 0) {
@@ -88,6 +99,12 @@
                 return '\\App\\Transformers\\'.$class.'Transformer';
             }
 
+            /**
+             * Собирает данные о трансформере по команде
+             *
+             * @param string $cmd
+             * @return stdClass
+             */
             protected function _parseCommandLine($cmd) {
                 $res = preg_match('/\/([^\/]+)\.(.+)/', $cmd, $matches);
 
@@ -127,6 +144,8 @@
              * 
              * т.е. нам нужно получить lowercase url в котором все большие 
              * буквы заменяются на - и маленькая буква, т.е. test-rpc = TestRpc
+             * 
+             * @param string $cmd команда
              *
              * @return string Результат работы в виде строки JSON или XML
              */
@@ -226,6 +245,12 @@
                 
             }
 
+            /**
+             * Геттер
+             *
+             * @param string $property
+             * @return mixed
+             */
             public function __get($property) {
                 $return = null;
                 if(strtolower($property) == 'cmd' && $this->_lastParsedData !== null) {

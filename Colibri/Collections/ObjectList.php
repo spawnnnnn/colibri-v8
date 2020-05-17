@@ -26,6 +26,7 @@
             private $itemClass = '';
             
             /**
+             * Конструктор
              * @param array $data
              * @param string $itemClass возвращаемый класс
              */
@@ -53,6 +54,12 @@
                 return $r;
             }
 
+            /**
+             * Возвращает обьект по индексу
+             *
+             * @param int $index
+             * @return mixed
+             */
             public function Item($index) {
                 if (Variable::IsEmpty($this->itemClass)) {
                     return $this->data[$index];

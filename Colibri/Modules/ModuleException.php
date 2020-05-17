@@ -10,6 +10,9 @@
 
         use Colibri\AppException;
 
+        /**
+         * Исключение в модулях
+         */
         class ModuleException extends AppException
         {
         }

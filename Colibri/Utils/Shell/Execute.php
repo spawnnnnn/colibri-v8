@@ -33,9 +33,15 @@
 
             /**
              * Конструктор
+             * 
+             * получает на вход путь к файлу sudoProcessor
+             * в частности в нем должно быть следующее
+             * sudo su <user|root> -c "$1"
+             * файл должен быть с правами 07хх для пользователя www-data
+             * в /etc/sudoers должно быть разрешено www-data исполнять этот файл
              *
-             * @param string $outputFile
-             * @return ShellBatch
+             * @param string $sudoProcessor путь к файлу, к которому разрешен доступ из веб-скриптов, и который умеет выполнять команды 
+             * @return void
              */
             public function __construct($sudoProcessor = null) {
                 $this->_sudoProcessor = $sudoProcessor;

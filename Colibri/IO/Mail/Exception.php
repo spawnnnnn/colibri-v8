@@ -15,6 +15,11 @@
          */
         class Exception extends AppException
         {
+            /**
+             * Возвращает сообщение в исключении
+             *
+             * @return void
+             */
             public function ToString()
             {
                 return '<strong>' . $this->message . "</strong><br />\n";

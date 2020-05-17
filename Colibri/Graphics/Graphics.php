@@ -26,13 +26,44 @@
          */
         class Graphics
         {
+            /**
+             * Изображение
+             *
+             * @var mixed
+             */
             private $_img;
+
+            /**
+             * Размеры
+             *
+             * @var Size
+             */
             private $_size;
+
+            /**
+             * Тип изображения
+             *
+             * @var string
+             */
             private $_type;
+
+            /**
+             * Файл, где хранится изображение
+             *
+             * @var string
+             */
             private $_file;
             
+            /**
+             * История
+             *
+             * @var array
+             */
             private $_history = array();
             
+            /**
+             * Конструктор
+             */
             public function __construct()
             {
                 $this->_img = null;
@@ -40,6 +71,9 @@
                 $this->_type = 'unknown';
             }
             
+            /**
+             * Деструктор
+             */
             public function __destruct()
             {
                 if (is_resource($this->_img)) {
@@ -47,6 +81,12 @@
                 }
             }
             
+            /**
+             * Геттер
+             *
+             * @param string $property
+             * @return mixed
+             */
             public function __get($property)
             {
                 $return = null;
@@ -84,6 +124,12 @@
                 return $return;
             }
             
+            /**
+             * Сеттер
+             *
+             * @param string $property
+             * @param mixed $value
+             */
             public function __set($property, $value)
             {
                 if (strtolower($property) == 'type') {
@@ -321,6 +367,11 @@
                 }
             }
             
+            /**
+             * Устанавливает алфа канал
+             *
+             * @return void
+             */
             private function _safeAlpha()
             {
                 // save alpha
@@ -328,6 +379,11 @@
                 imagesavealpha($this->_img, 1);
             }
             
+            /**
+             * Возвращает данные изображения
+             *
+             * @return string
+             */
             private function _getImageData()
             {
                 $tempFile = tempnam(null, null);

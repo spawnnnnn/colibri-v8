@@ -1,6 +1,6 @@
 <?php
     /**
-     * Класс запроса
+     * Web
      * 
      * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
      * @copyright 2019 Colibri
@@ -17,18 +17,18 @@
         /**
          * Класс запроса
          * 
-         * @property-read RequestCollection $get
-         * @property-read RequestCollection $post
-         * @property-read RequestFileCollection $files
-         * @property-read RequestCollection $session
-         * @property-read RequestCollection $server
-         * @property-read RequestCollection $cookie
-         * @property-read RequestCollection $headers
-         * @property-read string $remoteip
-         * @property-read string $uri
-         * @property-read string $host
-         * @property-read string $address
-         * @property-read string $type
+         * @property-read RequestCollection $get список параметров в строке
+         * @property-read RequestCollection $post список параметров POST
+         * @property-read RequestFileCollection $files список файлов в запросе
+         * @property-read RequestCollection $session данные сессии
+         * @property-read RequestCollection $server данные сервера
+         * @property-read RequestCollection $cookie куки
+         * @property-read RequestCollection $headers заголовки запроса
+         * @property-read string $remoteip IP адрес клиента
+         * @property-read string $uri URI запроса
+         * @property-read string $host домен сервера
+         * @property-read string $address полный адрес текущей страницы
+         * @property-read string $type тип запроса
          * 
          */
         class Request {
@@ -88,8 +88,8 @@
             /**
              * Возвращает URI с добавлением или удалением параметров
              *
-             * @param array $add
-             * @param array $remove
+             * @param array $add список данных для добавления в querystring
+             * @param array $remove удаление параметров из querystring
              * @return string
              */
             public function Uri($add = array(), $remove = array()) {
@@ -110,7 +110,7 @@
             /**
              * Магический метод
              *
-             * @param string $prop
+             * @param string $prop свойство
              * @return mixed
              */
             public function __get($prop) {
@@ -194,7 +194,7 @@
             }
 
             /**
-             * Возвращает копию RequestPayload в виде обьекта или SimpleXMLElement
+             * Возвращает копию RequestPayload в виде обьекта
              * 
              * @param string $type тип результата
              * 

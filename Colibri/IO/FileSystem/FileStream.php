@@ -41,7 +41,7 @@
             /**
              * Передвинуть позицию
              *
-             * @param integer $offset
+             * @param integer $offset куда передвинуть позицию
              * @return void
              */
             public function seek($offset = 0)
@@ -54,10 +54,10 @@
             }
 
             /**
-             * Считать из файла
+             * Считать из стрима
              *
-             * @param integer $offset
-             * @param integer $count
+             * @param int $offset откуда начать считывание
+             * @param int $count количество байл которые нужно считать
              * @return string
              */
             public function read($offset = 0, $count = 0)
@@ -67,10 +67,10 @@
             }
 
             /**
-             * Записaть в файл
+             * Записать в стрим
              *
-             * @param string $buffer
-             * @param integer $offset
+             * @param string $buffer контент, которые нужно записать
+             * @param int $offset место откуда записать
              * @return void
              */
             public function write($buffer, $offset = 0)
@@ -80,7 +80,7 @@
             }
 
             /**
-             * Сбросить изменения на диск
+             * Сохранить изменения
              *
              * @return void
              */
@@ -90,7 +90,7 @@
             }
 
             /**
-             * Закрыть дескриптор
+             * Закрыть стрим
              *
              * @return void
              */
@@ -101,6 +101,12 @@
                 $this->_stream = false;
             }
 
+            /**
+             * Геттер
+             *
+             * @param string $property свойство
+             * @return mixed
+             */
             public function __get($property)
             {
                 if ($property == 'stream') {

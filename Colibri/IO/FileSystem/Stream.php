@@ -45,17 +45,24 @@
                 unset($this->_stream);
             }
 
-            public function __get(/*string*/ $property)
+            /**
+             * Геттер
+             * @param string $property свойство 
+             * @return mixed
+             */
+            public function __get($property)
             {
                 if ($property == 'length') {
                     return $this->_length;
                 }
+
+                return null;
             }
 
             /**
              * Передвинуть позицию
              *
-             * @param integer $offset
+             * @param integer $offset куда передвинуть позицию
              * @return void
              */
             abstract public function seek($offset = 0);
@@ -63,17 +70,17 @@
             /**
              * Считать из стрима
              *
-             * @param int $offset
-             * @param int $count
-             * @return void
+             * @param int $offset откуда начать считывание
+             * @param int $count количество байл которые нужно считать
+             * @return string
              */
             abstract public function read($offset = null, $count = null);
             
             /**
              * Записать в стрим
              *
-             * @param strimg $content
-             * @param int $offset
+             * @param string $content контент, которые нужно записать
+             * @param int $offset место откуда записать
              * @return void
              */
             abstract public function write($content, $offset = null); 

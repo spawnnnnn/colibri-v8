@@ -51,6 +51,9 @@
              */
             private $_dataAdapter;
 
+            /**
+             * Конструктор
+             */
             public function __construct()
             {
                 $this->_permissions = [];
@@ -180,6 +183,12 @@
                 return $this->_dataAdapter->Dispose();
             }
 
+            /**
+             * Геттер
+             *
+             * @param string $name
+             * @return mixed
+             */
             public function __get($name)
             {
                 if(strtolower($name) == 'dataadapter') {

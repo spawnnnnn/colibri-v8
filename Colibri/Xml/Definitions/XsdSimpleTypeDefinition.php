@@ -1,22 +1,45 @@
 <?php
-
+    /**
+     * Definitions
+     *
+     * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
+     * @copyright 2020 ColibriLab
+     * @package Colibri\Xml\Definitions
+     *
+     */
     namespace Colibri\Xml\Definitions {
 
         /**
          * Тип данных
          * 
-         * @property-read string $name
-         * @property-read string $annotation
-         * @property-read stdClass $restrictions
+         * @property-read string $name название типа
+         * @property-read string $annotation аннотация типа
+         * @property-read stdClass $restrictions ограничения
          */
         class XsdSimpleTypeDefinition implements \JsonSerializable {
 
+            /**
+             * Узел типа
+             *
+             * @var XmlNode
+             */
             private $_node;
 
+            /**
+             * Конструктор
+             *
+             * @param XmlNode $typeNode
+             */
             public function __construct($typeNode) {
                 $this->_node = $typeNode;
             }
 
+            /**
+             * Геттер
+             *
+             * @param string $property
+             * @return mixed
+             */
             public function __get($property) {
                 if(strtolower($property) == 'name') {
                     return $this->_node->attributes->name ? $this->_node->attributes->name->value : 'simpleType';
@@ -82,11 +105,21 @@
                 }
             }
 
+            /**
+             * Возвращает данные в виде простого обьекта для упаковки в json
+             *
+             * @return stdClass
+             */
             public function jsonSerialize()
             {
                 return (object)array('name' => $this->name, 'annotation' => $this->annotation, 'restrictions' => $this->restrictions, 'attributes' => $this->attributes);
             }
 
+            /**
+             * Возвращает данные в виде простого обьекта
+             *
+             * @return stdClass
+             */
             public function ToObject()
             {
                 return (object)array('name' => $this->name, 'annotation' => $this->annotation, 'restrictions' => $this->restrictions, 'attributes' => $this->attributes);

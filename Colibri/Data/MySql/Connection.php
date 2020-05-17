@@ -22,7 +22,18 @@
          */
         final class Connection implements IConnection
         {
+            /**
+             * Данные о подключении
+             *
+             * @var stdClass
+             */
             private $_connectioninfo = null;
+
+            /**
+             * Ресур mysqli
+             *
+             * @var mysqli
+             */
             private $_resource = null;
             
             /**
