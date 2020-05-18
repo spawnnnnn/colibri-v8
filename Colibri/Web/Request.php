@@ -29,6 +29,8 @@
          * @property-read string $host домен сервера
          * @property-read string $address полный адрес текущей страницы
          * @property-read string $type тип запроса
+         * @property-read string $path путь запроса
+         * @property-read string $queryString параметры запроса
          * 
          */
         class Request {
@@ -161,6 +163,16 @@
                     }
                     case 'uri': {
                         $return = $this->server->request_uri ? $this->server->request_uri : '';
+                        break;
+                    }
+                    case 'path': {
+                        $uri = $this->server->request_uri ? $this->server->request_uri : '';
+                        $queryString = $this->server->query_string ? $this->server->query_string : '';
+                        $return = str_replace('?'.$queryString, '', $uri);
+                        break;
+                    }
+                    case 'querystring': {
+                        $return = $this->server->query_string ? $this->server->query_string : '';
                         break;
                     }
                     case 'host': {
