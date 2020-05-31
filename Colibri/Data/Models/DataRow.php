@@ -45,8 +45,9 @@
              *
              * @return DataRow
              */
-            public static function Create()
+            public static function Create(DataTable $table, $data = null, $tablePrefix = '')
             {
+                return new DataRow($table, $data, $tablePrefix);
             }
             
             /**

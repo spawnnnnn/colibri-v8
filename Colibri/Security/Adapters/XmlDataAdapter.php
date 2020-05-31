@@ -66,7 +66,7 @@
             public function Check()
             {
                 try {
-                    if (!Directory::Exists(App::$appRoot.'Config/'.$this->_dataPoint) || !File::Exists(App::$appRoot.'Config/'.$this->_dataPoint.'users.xml') || !File::Exists(App::$appRoot.'Config/'.$this->_dataPoint.'roles.xml')) {
+                    if (!Directory::Exists(App::AppRoot().'Config/'.$this->_dataPoint) || !File::Exists(App::AppRoot().'Config/'.$this->_dataPoint.'users.xml') || !File::Exists(App::AppRoot().'Config/'.$this->_dataPoint.'roles.xml')) {
                         return false;
                     }
                 } catch (SecurityException $e) {
@@ -82,11 +82,11 @@
              */
             public function Create()
             {
-                Directory::Create(App::$appRoot.'Config/'.$this->_dataPoint, true, 0777);
-                File::Create(App::$appRoot.'Config/'.$this->_dataPoint.'users.xml', true, 0777);
-                File::Create(App::$appRoot.'Config/'.$this->_dataPoint.'roles.xml', true, 0777);
+                Directory::Create(App::AppRoot().'Config/'.$this->_dataPoint, true, 0777);
+                File::Create(App::AppRoot().'Config/'.$this->_dataPoint.'users.xml', true, 0777);
+                File::Create(App::AppRoot().'Config/'.$this->_dataPoint.'roles.xml', true, 0777);
 
-                File::Write(App::$appRoot.'Config/'.$this->_dataPoint.'/'.$this->_sourceUsers.'.xml', '<'.'?xml version="1.0" encoding="utf-8"?'.'>
+                File::Write(App::AppRoot().'Config/'.$this->_dataPoint.'/'.$this->_sourceUsers.'.xml', '<'.'?xml version="1.0" encoding="utf-8"?'.'>
                 <users>
                     <row>
                         <id>1</id>
@@ -100,7 +100,7 @@
                 </users>
                 ');
 
-                File::Write(App::$appRoot.'Config/'.$this->_dataPoint.'/'.$this->_sourceRoles.'.xml', '<'.'?xml version="1.0" encoding="utf-8"?'.'>
+                File::Write(App::AppRoot().'Config/'.$this->_dataPoint.'/'.$this->_sourceRoles.'.xml', '<'.'?xml version="1.0" encoding="utf-8"?'.'>
                 <roles>
                     <row>
                         <id>1</id>
@@ -153,7 +153,7 @@
             {
                 $users = array();
 
-                $xml = XmlNode::Load(App::$appRoot.'Config/'.$this->_dataPoint.'/'.$this->_sourceUsers.'.xml', true);
+                $xml = XmlNode::Load(App::AppRoot().'Config/'.$this->_dataPoint.'/'.$this->_sourceUsers.'.xml', true);
                 $rows = $xml->Query('//row');
                 foreach ($rows as $row) {
                     $u = (object)[
@@ -178,7 +178,7 @@
             public function Roles()
             {
                 $roles = array();
-                $xml = XMLNode::Load(App::$appRoot.'Config/'.$this->_dataPoint.'/'.$this->_sourceRoles.'.xml', true);
+                $xml = XMLNode::Load(App::AppRoot().'Config/'.$this->_dataPoint.'/'.$this->_sourceRoles.'.xml', true);
                 $rows = $xml->Query('//row');
                 foreach ($rows as $row) {
                     $r = (object)[
@@ -200,7 +200,7 @@
              */
             public function UpdateRole($roleData, $id = null)
             {
-                $path = App::$appRoot.'Config/'.$this->_dataPoint.'/'.$this->_sourceRoles.'.xml';
+                $path = App::AppRoot().'Config/'.$this->_dataPoint.'/'.$this->_sourceRoles.'.xml';
                 $xml = XMLNode::Load($path, true);
                 if ($id) {
                     // update
@@ -228,7 +228,7 @@
             public function UpdateUser($userData, $id = null)
             {
                 $userData = (object)$userData;
-                $path = App::$appRoot.'Config/'.$this->_dataPoint.'/'.$this->_sourceUsers.'.xml';
+                $path = App::AppRoot().'Config/'.$this->_dataPoint.'/'.$this->_sourceUsers.'.xml';
                 $xml = XMLNode::Load($path, true);
                 if ($id) {
                     // update

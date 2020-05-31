@@ -40,7 +40,8 @@
 
             /**
              * Перескопить на первую запись
-             *
+             * 
+             * @return string
              */
             public function rewind()
             {
@@ -51,6 +52,7 @@
             /**
              * Вернуть текущее значение
              *
+             * @return mixed
              */
             public function current()
             {
@@ -64,6 +66,7 @@
             /**
              * Вернуть ключ текущего положения
              *
+             * @return string
              */
             public function key()
             {
@@ -72,7 +75,9 @@
 
             /**
              * Вернуть следующее значение
-             *
+             *  
+             * @return mixed
+             * 
              */
             public function next()
             {
@@ -87,6 +92,7 @@
             /**
              * Проверка валидности итератора, т.е. валидно ли текущее значение
              *
+             * @return bool
              */
             public function valid()
             {

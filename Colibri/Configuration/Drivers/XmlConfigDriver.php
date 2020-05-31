@@ -11,7 +11,8 @@
     namespace Colibri\Configuration\Drivers {
 
         use Colibri\App;
-        use Colibri\Helpers\XmlEncoder;
+    use Colibri\Collections\ArrayList;
+    use Colibri\Helpers\XmlEncoder;
         use Colibri\Configuration\ConfigException;
         use Colibri\IO\FileSystem\File;
         use Colibri\Xml\XmlNode;
@@ -130,7 +131,7 @@
             private function _prepareValue(XmlNode $value)
             {
                 if($value->attributes->include && $value->attributes->include->value) {
-                    return XMLNode::Load(($this->_path ? $this->_path : App::$appRoot).$value->attributes->include->value, true);
+                    return XMLNode::Load(($this->_path ? $this->_path : App::AppRoot()).$value->attributes->include->value, true);
                 }
                 return $value;
             }

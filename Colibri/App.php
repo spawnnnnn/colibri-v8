@@ -21,11 +21,13 @@
         use Colibri\Utils\Debug;
         use Colibri\Utils\Logs\Logger;
         use Colibri\Web\Server;
+        use Psr\Container\ContainerInterface;
+        use Psr\Container\NotFoundExceptionInterface;
 
         /**
          * Класс приложения
          */
-        final class App
+        final class App implements ContainerInterface
         {
             // подключаем функционал событийной модели
             use TEventDispatcher;
@@ -42,81 +44,34 @@
             /** RPC сервер */
             const ApplicationRpcSerwer = 'rpcserver';
 
+
+            /**
+             * Контейнер для хранения всякого
+             *
+             * @var array
+             */
+            private $_containedDIObjects;
+
             /**
              * Синглтон
              *
              * @var App
              */
-            public static $instance;
-
-            /**
-             * Обьект запроса
-             *
-             * @var Request
-             */
-            public static $request;
-
-            /**
-             * Обьект ответа
-             *
-             * @var Response
-             */
-            public static $response;
+            private static $instance;
 
             /**
              * Корень приложения
              *
              * @var string
              */
-            public static $appRoot;
+            private static $appRoot;
 
             /**
              * Корень web
              *
              * @var string
              */
-            public static $webRoot;
-
-            /**
-             * Конфигурационный файл приложения
-             *
-             * @var Config
-             */
-            public static $config;
-
-            /**
-             * Диспатчер событий
-             *
-             * @var EventDispatcher
-             */
-            public static $eventDispatcher;
-
-            /**
-             * Менеджер модулей
-             *
-             * @var ModuleManager
-             */
-            public static $moduleManager;
-
-            /**
-             * Менеджер безопасности
-             *
-             * @var SecurityManager
-             */
-            public static $securityManager;
-
-            /**
-             * Доступ к данным DAL
-             *
-             * @var DataAccessPoints
-             */
-            public static $dataAccessPoints;
-            
-            /**
-             * Лог девайс
-             * @var Logger
-             */
-            public static $log;
+            private static $webRoot;
 
             /**
              * Список приложений
@@ -134,13 +89,13 @@
             /**
              * Статический конструктор
              *
-             * @return void
+             * @return App
              */
-            public static function Create()
+            public static function Instance()
             {
 
                 if(!self::$instance) {
-                    self::$instance = new App();
+                    self::$instance = new self();
                     self::$instance->Initialize();
                 }
 
@@ -181,44 +136,47 @@
                 }
                 
                 // поднимаем конфиги
-                if(!self::$config) {
-                    self::$config = Config::Create(self::$appRoot.'/Config/App.xml');
+                if(!$this->Has(Config::class)) {
+                    $this->_containedDIObjects[Config::class] = Config::Create(self::$appRoot.'/Config/App.xml');
                 } 
 
                 // создание DAL
-                if(!self::$dataAccessPoints) {
-                    self::$dataAccessPoints = DataAccessPoints::Create();
+                if(!$this->Has(DataAccessPoints::class)) {
+                    $this->_containedDIObjects[DataAccessPoints::class] = DataAccessPoints::Instance();
                 }
 
                 // поднимаем лог девайс
-                if(!self::$log) {
-                    self::$log = Logger::Create(self::$config->Query('logger'));
+                if(!$this->Has(Logger::class)) {
+                    $this->_containedDIObjects[Logger::class] = Logger::Create(self::Config()->Query('logger'));
                 }
 
                 // в первую очеред запускаем события
-                if (!self::$eventDispatcher) {
-                    self::$eventDispatcher = EventDispatcher::Create();
+                if (!$this->Has(EventDispatcher::class)) {
+                    $this->_containedDIObjects[EventDispatcher::class] = EventDispatcher::Instance();
                 }
 
                 $this->DispatchEvent(EventsContainer::AppInitializing);
 
                 // запускаем запрос
-                if(!self::$request) {
-                    self::$request = Request::Create();
+                if(!$this->Has(Request::class)) {
+                    $this->_containedDIObjects[Request::class] = Request::Instance();
                 }
                 // запускаем ответ
-                if (!self::$response) {
-                    self::$response = Response::Create();
+                if (!$this->Has(Response::class)) {
+                    $this->_containedDIObjects[Response::class] = Response::Instance();
                 } 
 
-                if (!self::$moduleManager) {
-                    self::$moduleManager = ModuleManager::Create();
-                    self::$moduleManager->Initialize();
+                if (!$this->Has(ModuleManager::class)) {
+                    $moduleManager = ModuleManager::Instance();
+                    $moduleManager->Initialize();
+                    $this->_containedDIObjects[ModuleManager::class] = $moduleManager;
+
                 }
 
-                if (!self::$securityManager) {
-                    self::$securityManager = SecurityManager::Create();
-                    self::$securityManager->Initialize();
+                if (!$this->Has(SecurityManager::class)) {
+                    $securityManager = SecurityManager::Instance();
+                    $securityManager->Initialize();
+                    $this->_containedDIObjects[SecurityManager::class] = $securityManager;
                 }
 
                 // инициируем WebServer
@@ -249,7 +207,7 @@
              * @param Exception $ex
              */
             public function ExeptionHandler($ex) {
-                Debug::IOut("An error was accured: code ".$ex->getCode().' message: '.$ex->getMessage(), debug_backtrace());
+                Debug::IOut("An error was accured: code ".$ex->GetCode().' message: '.$ex->GetMessage(), debug_backtrace());
             }
 
             /**
@@ -298,10 +256,131 @@
                 return isset(self::$services[$type]) ? self::$services[$type] : []; 
             }
 
+
+            /**
+             * Finds an entry of the container by its identifier and returns it.
+             *
+             * @param string $id Identifier of the entry to look for.
+             *
+             * @throws NotFoundExceptionInterface  No entry was found for **this** identifier.
+             * @throws ContainerExceptionInterface Error while retrieving the entry.
+             *
+             * @return mixed Entry.
+             */
+            public function Get($id) {
+                if(!$this->Has($id)) {
+                    throw new NotFoundExceptionInterface();
+                }
+                return $this->_containedDIObjects[$id];
+            }
+
+            /**
+             * Returns true if the container can return an entry for the given identifier.
+             * Returns false otherwise.
+             *
+             * `has($id)` returning true does not mean that `get($id)` will not throw an exception.
+             * It does however mean that `get($id)` will not throw a `NotFoundExceptionInterface`.
+             *
+             * @param string $id Identifier of the entry to look for.
+             *
+             * @return bool
+             */
+            public function Has($id) {
+                return isset($this->_containedDIObjects[$id]);
+            }
+
+            /**
+             * Возвращает полный путь к приложению
+             * @return string путь к приложению
+             */
+            public static function AppRoot() {
+                return self::$appRoot;
+            }
+
+            /**
+             * Возвращает полный путь к корню вебсайта
+             * @return string путь к корню вебсайта
+             */
+            public static function WebRoot() {
+                return self::$webRoot;
+            }
+
+            /**
+             * Возвращает конфигурацию приложения
+             *
+             * @return Config
+             */
+            public static function Config() {
+                return self::Instance()->Get(Config::class);
+            }
+
+            /**
+             * Возвращает контейнер подключений
+             *
+             * @return DataAccessPoints
+             */
+            public static function DataAccessPoints() {
+                return self::Instance()->Get(DataAccessPoints::class);
+            }
+
+            /**
+             * Возвращает менеджер событий
+             *
+             * @return EventDispatcher
+             */
+            public static function EventDispatcher() {
+                return self::Instance()->Get(EventDispatcher::class);
+            }
+
+            /**
+             * Возвращает логгер
+             *
+             * @return Logger
+             */
+            public static function Logger() {
+                return self::Instance()->Get(Logger::class);
+            }
+
+            /**
+             * Возвращает серверный запрос
+             *
+             * @return Request
+             */
+            public static function Request() {
+                return self::Instance()->Get(Request::class);
+            }
+
+            /**
+             * Возвращает обьект для ответа серверу
+             *
+             * @return Response
+             */
+            public static function Response() {
+                return self::Instance()->Get(Response::class);
+            }
+
+            /**
+             * Возвращает менеджер модулей
+             *
+             * @return ModuleManager
+             */
+            public static function ModuleManager() {
+                return self::Instance()->Get(ModuleManager::class);
+            }
+
+            /**
+             * Возвращает менеджер безопасности
+             *
+             * @return SecurityManager
+             */
+            public static function SecurityManager() {
+                return self::Instance()->Get(SecurityManager::class);
+            }
+
         }
         
 
-        App::Create();
+        App::Instance();
 
     }
 

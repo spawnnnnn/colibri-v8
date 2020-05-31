@@ -50,7 +50,7 @@
              */
             public function __construct($datapoint, $usersTable, $rolesTable)
             {
-                $this->_dataPoint = App::$dataAccessPoints->Get($datapoint);
+                $this->_dataPoint = App::DataAccessPoints()->Get($datapoint);
                 $this->_sourceUsers = $usersTable;
                 $this->_sourceRoles = $rolesTable;
             }
@@ -162,15 +162,16 @@
             {
                 if ($id) {
                     // update
-                    return ($this->_dataPoint->Update($this->_sourceRoles, $roleData, 'id=\''.$this->id.'\'') === true ? $id : false);
+                    if($this->_dataPoint->Update($this->_sourceRoles, $roleData, 'id=\''.$this->id.'\'')) {
+                        return true;
+                    }
                 } else {
                     $res = $this->_dataPoint->Insert($this->_sourceRoles, $roleData, 'id');
                     if ($res->insertid > -1) {
                         return $res->insertid;
-                    } else {
-                        return false;
                     }
                 }
+                return false;
             }
 
             /**
@@ -185,18 +186,16 @@
                 if ($id) {
                     // update
                     $result = $this->_dataPoint->Update($this->_sourceUsers, $userData, 'id=\''.$id.'\'');
-                    if ($result->error != '') {
-                        return false;
+                    if (!$result->error) {
+                        return $id;
                     }
-                    return $id;
                 } else {
                     $res = $this->_dataPoint->Insert($this->_sourceUsers, $userData, 'id');
                     if ($res->insertid > -1) {
                         return $res->insertid;
-                    } else {
-                        return false;
-                    }
+                    } 
                 }
+                return false;
             }
             
         }

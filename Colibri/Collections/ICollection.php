@@ -9,68 +9,60 @@
      */
     namespace Colibri\Collections {
 
-        use ArrayAccess;
-
         /**
          * Интерфейс для именованных массивов
          */
-        interface ICollection extends \IteratorAggregate, ArrayAccess
+        interface ICollection extends IReadonlyCollection
         {
 
             /**
-             * Проверка существования ключа в массиве
-             * @param string $key
-             * @return boolean
-             */
-            public function Exists($key);
-            
-            /**
-             * Вернуть ключ по индексу
-             * @param int $index
-             * @return string
-             */
-            public function Key($index);
-
-            /**
-             * Вернуть значение по ключу
-             * @param string $key
-             * @return mixed
-             */
-            public function Item($key);
-
-            /**
-             * Вернуть значение по индексу
-             * @param int $index
-             * @return mixed
-             */
-            public function ItemAt($index);
-
-            /**
              * Добавить ключ значение, если ключ есть, то будет произведена замена
+             *
              * @param string $key
              * @param mixed $value
              * @return mixed
              */
             public function Add($key, $value);
+
+            /**
+             * Добавляет значения из другой коллекции, массива или обьекта
+             * Для удаления необходимо передать свойство со значением null
+             *
+             * @param mixed $from - коллекция | массив
+             */
+            public function Append($from);
+
+            /**
+             * Добавляет значение в указанное место в коллекцию
+             *
+             * @param mixed $index
+             * @param mixed $key
+             * @param mixed $value
+             */
+            public function Insert($index, $key, $value);
+
             /**
              * Удалить ключ и значение из массива
+             *
              * @param string $key
              * @return boolean
              */
             public function Delete($key);
 
             /**
-             * В строку, с соединителями
-             * @param string[] $splitters
-             * @return string
+             * Удалить ключ и значение из массива по индексу
+             *
+             * @param string $index
+             * @return boolean
              */
-            public function ToString($splitters = null);
+            public function DeleteAt($index);
 
             /**
-             * вернуть данные в виде обычного массива
-             * @return array
+             * Очистить
+             *
+             * @return void
              */
-            public function ToArray();
+            public function Clear();
 
         }
         

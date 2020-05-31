@@ -10,7 +10,7 @@
 
         use ArrayAccess;
         use Colibri\App;
-        use Colibri\Collections\ObjectList;
+        use Colibri\Collections\ArrayList;
         use Colibri\Data\DataAccessPoint;
         use Colibri\Data\SqlClient\IDataReader;
         use Colibri\Helpers\Variable;
@@ -45,7 +45,7 @@
             /**
              * Кэш загруженных строк
              *
-             * @var ObjectList
+             * @var ArrayList
              */
             protected $_cache;
             /**
@@ -66,7 +66,7 @@
             {
                 $this->_point = $point;
                 $this->_reader = $reader;
-                $this->_cache = new ObjectList();
+                $this->_cache = new ArrayList();
                 $this->_returnAs = $returnAs;
             }
 
@@ -79,7 +79,7 @@
             public static function Create($point)
             {
                 if (is_string($point)) {
-                    $point = App::$dataAccessPoints->Get($point);
+                    $point = App::DataAccessPoints()->Get($point);
                 }
                 return new DataTable($point);
             }

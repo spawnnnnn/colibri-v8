@@ -77,7 +77,7 @@
                 $this->_key = $key ? $key : uniqid();
                 $this->_id = Randomization::Integer(0, 999999999);
 
-                $mode = App::$config ? App::$config->Query('mode')->GetValue() : App::ModeDevelopment;
+                $mode = App::Config() ? App::Config()->Query('mode')->GetValue() : App::ModeDevelopment;
                 $this->_log = new FileLogger($mode == App::ModeDevelopment ? Logger::Debug : Logger::Error, 'worker_log_'.$this->_id); // лог файл не режется на куски
             }
 

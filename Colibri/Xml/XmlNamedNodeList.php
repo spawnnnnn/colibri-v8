@@ -9,13 +9,13 @@
      */
     namespace Colibri\Xml {
 
-        use Colibri\Collections\ObjectCollection;
+        use Colibri\Collections\ReadonlyCollection;
 
         /**
          * Список узлов
          * @property-read DOMDocument $document
          */
-        class XmlNamedNodeList extends ObjectCollection {
+        class XmlNamedNodeList extends ReadonlyCollection {
 
             /**
              * Документ
@@ -39,6 +39,15 @@
                 }
     
                 parent::__construct($data);
+            }
+
+            /**
+             * Возвращает итератор для обхода методом foreach
+             *
+             * @return XmlNamedNodeListIterator
+             */
+            public function getIterator() {
+                return new XmlNamedNodeListIterator($this);
             }
             
             /**

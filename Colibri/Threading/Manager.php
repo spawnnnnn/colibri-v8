@@ -21,7 +21,7 @@
              * Синглтон
              * @var Manager
              */
-            public static $instance;
+            protected static $instance;
 
             /**
              * Конструктор, запускает обработку воркера, если задан
@@ -36,7 +36,7 @@
              *
              * @return void
              */
-            public static function Create()
+            public static function Instance()
             {
                 if (!self::$instance) {
                     self::$instance = new self();
@@ -51,9 +51,9 @@
              */
             private function _processWorkers()
             {
-                if (App::$request->get->worker) {
-                    $worker = Worker::Unserialize(App::$request->get->worker);
-                    $worker->Prepare(App::$request->get->params);
+                if (App::Request()->get->worker) {
+                    $worker = Worker::Unserialize(App::Request()->get->worker);
+                    $worker->Prepare(App::Request()->get->params);
                     $worker->Run();
                     exit;
                 }

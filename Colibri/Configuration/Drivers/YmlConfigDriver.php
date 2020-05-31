@@ -106,10 +106,10 @@
                     $res = preg_match('/include\((.*)\)/', $value, $matches);
                     if ($res > 0) {
                         try {
-                            $return = \yaml_parse_file(App::$appRoot.'/Config/'.$matches[1]);
+                            $return = \yaml_parse_file(App::AppRoot().'/Config/'.$matches[1]);
                         }
                         catch(\Exception $e) {
-                            throw new ConfigException('An included file does not found on disk. File: '.(App::$appRoot.'/Config/'.$matches[1]));
+                            throw new ConfigException('An included file does not found on disk. File: '.(App::AppRoot().'/Config/'.$matches[1]));
                         }
                     } else {
                         $return = null;

@@ -25,7 +25,7 @@
              * @param mixed $device название файла
              */
             public function __construct($maxLogLevel = 7, $device = '') {
-                $this->_device = !$device ? App::$appRoot.'_cache/unnamed.log' : $device;
+                $this->_device = !$device ? App::AppRoot().'_cache/unnamed.log' : $device;
                 $this->_maxLogLevel = $maxLogLevel;
             }
 

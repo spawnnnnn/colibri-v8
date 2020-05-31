@@ -9,12 +9,13 @@
      */
     namespace Colibri\Xml {
 
-        use Colibri\Collections\ArrayListIterator;
+        use Colibri\Collections\CollectionIterator;
+
         /**
          * Класс итератора для XmlNodeList
          * @method XmlNode current()
          * @method XmlNode next()
          */
-        class XmlNodeListIterator extends ArrayListIterator { }
+        class XmlNamedNodeListIterator extends CollectionIterator { }
 
     }

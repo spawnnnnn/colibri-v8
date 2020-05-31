@@ -53,7 +53,7 @@
             /**
              * Возвращает текущую позицию
              *
-             * @return int
+             * @return mixed
              */
             public function current()
             {

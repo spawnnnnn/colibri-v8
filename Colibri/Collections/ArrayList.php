@@ -9,7 +9,7 @@
      *
      */
     namespace Colibri\Collections {
-    
+
         /**
          * Базовый класс списка, реализует стандартный функционал
          */
@@ -78,7 +78,7 @@
              * Возвращает значение по идексу
              *
              * @param integer $index
-             * @return mixed
+             * @return T
              */
             public function Item($index)
             {
@@ -89,7 +89,7 @@
              * Добавляет значение с список
              *
              * @param mixed $value
-             * @return mixed
+             * @return T
              */
             public function Add($value)
             {
@@ -102,7 +102,7 @@
              *
              * @param integer $index
              * @param mixed $value
-             * @return mixed
+             * @return T
              */
             public function Set($index, $value)
             {
@@ -141,7 +141,7 @@
              * Удаляет значение
              *
              * @param mixed $value
-             * @return boolean|mixed
+             * @return T
              */
             public function Delete($value)
             {
@@ -149,7 +149,7 @@
                 if ($indices && count($indices) > 0) {
                     return array_splice($this->data, $indices[0], 1);
                 }
-                return false;
+                return null;
             }
 
             /**
@@ -185,6 +185,7 @@
         
             /**
              * Возвращает массив
+             * @return array
              */
             public function ToArray()
             {
@@ -322,12 +323,11 @@
              * Возвращает значение по индексу
              *
              * @param int $offset
-             * @return mixed
+             * @return T
              */
             public function offsetGet($offset)
             {
                 return $this->Item($offset);
             }
-            
         }
     }

@@ -24,7 +24,7 @@
              *
              * @var EventDispatcher
              */
-            public static $instance;
+            protected static $instance;
         
             /**
              * Массив событий
@@ -46,7 +46,7 @@
              *
              * @return EventDispatcher
              */
-            public static function Create()
+            public static function Instance()
             {
                 if (!self::$instance) {
                     self::$instance = new self();
@@ -125,7 +125,7 @@
                 }
             
                 $e = $this->_events->$ename;
-                if ($e == null) {
+                if ($e === null) {
                     return false;
                 }
             
@@ -146,7 +146,7 @@
                 }
 
                 $e = $this->_events->Item($event->name);
-                if ($e == null) {
+                if ($e === null) {
                     return false;
                 }
             
@@ -188,7 +188,7 @@
                 }
             
                 $e = $this->_events->$ename;
-                if ($e == null) {
+                if ($e === null) {
                     return false;
                 }
             

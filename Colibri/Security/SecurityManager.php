@@ -28,7 +28,7 @@
              *
              * @var SecurityManager
              */
-            public static $instance;
+            private static $instance;
 
             /**
              * Список прав
@@ -59,11 +59,11 @@
                 $this->_permissions = [];
                 $this->_permissionsTree = [];
 
-                $dataAdapterClass = 'Colibri\\Security\\Adapters\\'.App::$config->Query('security.data-adapter')->GetValue();
+                $dataAdapterClass = 'Colibri\\Security\\Adapters\\'.App::Config()->Query('security.data-adapter')->GetValue();
                 $this->_dataAdapter = new $dataAdapterClass(
-                    App::$config->Query('security.access-point')->GetValue(), 
-                    App::$config->Query('security.users-source')->GetValue(), 
-                    App::$config->Query('security.roles-source')->GetValue()
+                    App::Config()->Query('security.access-point')->GetValue(), 
+                    App::Config()->Query('security.users-source')->GetValue(), 
+                    App::Config()->Query('security.roles-source')->GetValue()
                 );
 
             }
@@ -73,7 +73,7 @@
              *
              * @return SecurityManager
              */
-            public static function Create()
+            public static function Instance()
             {
                 if (!self::$instance) {
                     self::$instance = new self();
@@ -114,8 +114,8 @@
                 $this->Install();
                 
                 // подключение прав приложения
-                if(method_exists(App::$instance, 'GetPermissions')) {
-                    $this->_permissions = array_merge($this->_permissions, App::$instance->GetPermissions());
+                if(method_exists(App::Instance(), 'GetPermissions')) {
+                    $this->_permissions = array_merge($this->_permissions, App::Instance()->GetPermissions());
                 }
 
                 // подключение прав безопасности
@@ -123,12 +123,12 @@
                     $this->_permissions = array_merge($this->_permissions, $this->GetPermissions());
                 }
 
-                if(method_exists(App::$moduleManager, 'GetPermissions')) {
-                    $this->_permissions = array_merge($this->_permissions, App::$moduleManager->GetPermissions());
+                if(method_exists(App::ModuleManager(), 'GetPermissions')) {
+                    $this->_permissions = array_merge($this->_permissions, App::ModuleManager()->GetPermissions());
                 }
 
                 // подключение прав модулей
-                foreach(App::$moduleManager->list as $module) {
+                foreach(App::ModuleManager()->list as $module) {
                     if(method_exists($module, 'GetPermissions')) {
                         $this->_permissions = array_merge($this->_permissions, $module->GetPermissions());
                     }

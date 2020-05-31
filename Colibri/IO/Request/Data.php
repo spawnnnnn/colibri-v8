@@ -12,6 +12,7 @@
 
         /**
          * Данные запроса
+         * @extends ArrayList<DataItem> 
          */
         class Data extends ArrayList
         {

@@ -32,7 +32,7 @@
              *
              * @var ModuleManager
              */
-            public static $instance;
+            protected static $instance;
 
             /**
              * Настройки
@@ -61,7 +61,7 @@
              *
              * @return ModuleManager
              */
-            public static function Create()
+            public static function Instance()
             {
                 if (!self::$instance) {
                     self::$instance = new self();
@@ -76,7 +76,7 @@
              */
             public function Initialize()
             {
-                $this->_settings = App::$config->Query('modules');
+                $this->_settings = App::Config()->Query('modules');
                 $entities = $this->_settings->Query('module');
                 foreach ($entities as $moduleConfig) {
                     if (!$moduleConfig->Query('enabled', true)->GetValue()) {

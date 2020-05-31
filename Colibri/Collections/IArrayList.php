@@ -10,8 +10,6 @@
      */
     namespace Colibri\Collections {
 
-        use ArrayAccess;
-
         /**
          * Интерфейс списка
          */
@@ -21,7 +19,7 @@
              * Возвращает знаение по индексу
              *
              * @param integer $index
-             * @return mixed
+             * @return T
              */
             public function Item($index);
         
@@ -35,8 +33,8 @@
             /**
              * Добавляет список значений в массив
              *
-             * @param mixed $values
-             * @return mixed
+             * @param mixed[] $values
+             * @return void
              */
             public function Append($values);
         
@@ -69,6 +67,5 @@
              * @return array
              */
             public function ToArray();
-            
         }
     }

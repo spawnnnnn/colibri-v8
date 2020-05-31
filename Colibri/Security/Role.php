@@ -53,7 +53,7 @@
              */
             public static function Load($role)
             {
-                $roles = SecurityManager::$instance->dataAdapter->Roles();
+                $roles = SecurityManager::Instance()->dataAdapter->Roles();
                 foreach ($roles as $r) {
                     if ($r->id == $role) {
                         return $r;
@@ -70,7 +70,7 @@
             public function Users()
             {
                 $users = array();
-                $xusers = SecurityManager::$instance->dataAdapter->Users();
+                $xusers = SecurityManager::Instance()->dataAdapter->Users();
                 foreach ($xusers as $user) {
                     if ($user->role->id == $this->id) {
                         $users[] = $user;
@@ -97,7 +97,7 @@
                 $roleData['name'] = $this->name;
                 $roleData['permissions'] = $permissions;
 
-                $this->id = SecurityManager::$instance->dataAdapter->UpdateRole($roleData, $this->id);
+                $this->id = SecurityManager::Instance()->dataAdapter->UpdateRole($roleData, $this->id);
             }
 
 

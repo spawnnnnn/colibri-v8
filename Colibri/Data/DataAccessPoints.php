@@ -19,7 +19,7 @@
          *
          * try {
          *
-         *      $accessPoint = App::$dataAccessPoints->Get('main');
+         *      $accessPoint = App::DataAccessPoints()->Get('main');
          *
          *      # Получение данных по запросу
          *
@@ -89,12 +89,12 @@
              *
              * @var DataAccessPoints
              */
-            public static $instance;
+            protected static $instance;
 
             /**
              * Список точек доступа
              *
-             * @var array
+             * @var stdClass
              */
             private $_accessPoints;
 
@@ -111,7 +111,7 @@
             public function __construct()
             {
                 $this->_accessPointsPool = [];
-                $this->_accessPoints = App::$config->Query('databases.access-points', (object)[])->AsObject();
+                $this->_accessPoints = App::Config()->Query('databases.access-points', (object)[])->AsObject();
             }
 
             /**
@@ -119,12 +119,11 @@
              *
              * @return DataAccessPoints
              */
-            public static function Create()
+            public static function Instance()
             {
-                if (self::$instance) {
-                    return self::$instance;
+                if (!self::$instance) {
+                    self::$instance = new DataAccessPoints();
                 }
-                self::$instance = new DataAccessPoints();
                 return self::$instance;
             }
 

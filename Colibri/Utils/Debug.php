@@ -49,9 +49,9 @@
              */
             public static function Out() {
 
-                $mode = App::$config ? App::$config->Query('mode')->GetValue() : 'development';
+                $mode = App::Config() ? App::Config()->Query('mode')->GetValue() : 'development';
                 if($mode === App::ModeTest) {
-                    App::$log->WriteLine(Logger::Error, func_get_args());
+                    App::Logger()->WriteLine(Logger::Error, func_get_args());
                 }
                 else if($mode === App::ModeDevelopment) {
                     $result = self::_createArgs(func_get_args());
@@ -68,9 +68,9 @@
              */
             public static function IOut(){
 
-                $mode = App::$config ? App::$config->Query('mode')->GetValue() : 'development';
+                $mode = App::Config() ? App::Config()->Query('mode')->GetValue() : 'development';
                 if($mode === App::ModeTest) {
-                    App::$log->WriteLine(Logger::Error, func_get_args());
+                    App::Logger()->WriteLine(Logger::Error, func_get_args());
                 }
                 else if($mode === App::ModeDevelopment) {
                     $clickevent = "onclick='javascript: iout_toggle(event);'";

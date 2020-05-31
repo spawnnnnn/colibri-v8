@@ -92,19 +92,19 @@
                     $xml = XmlNode::LoadHTML('<'.'?xml version="1.0" encoding="utf-8" ?'.'>'.$this->_data, false, 'utf-8');
                     foreach ($xml->Query('//img') as $image) {
                         if ($image->attributes->src && strstr($image->attributes->src->value, '://') === false) {
-                            $image->attributes->src->value = 'https://'.App::$request->server->server_name.$image->attributes->src->value;
+                            $image->attributes->src->value = 'https://'.App::Request()->server->server_name.$image->attributes->src->value;
                         }
                     }
                     
                     foreach ($xml->Query('//iframe') as $iframe) {
                         if ($iframe->attributes->src && strstr($iframe->attributes->src->value, '://') === false) {
-                            $iframe->attributes->src->value = 'https://'.App::$request->server->server_name.$iframe->attributes->src->value;
+                            $iframe->attributes->src->value = 'https://'.App::Request()->server->server_name.$iframe->attributes->src->value;
                         }
                     }
 
                     foreach ($xml->Query('//a') as $a) {
                         if ($a->attributes->href && strstr($a->attributes->href->value, '://') === false) {
-                            $a->attributes->href->value = 'https://'.App::$request->server->server_name.$a->attributes->href->value;
+                            $a->attributes->href->value = 'https://'.App::Request()->server->server_name.$a->attributes->href->value;
                         }
                     }
                     

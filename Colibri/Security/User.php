@@ -59,7 +59,7 @@
              */
             public static function Load($user)
             {
-                $users = SecurityManager::$instance->dataAdapter->Users();
+                $users = SecurityManager::Instance()->dataAdapter->Users();
                 foreach ($users as $u) {
                     if ($u->id == $user || $u->name == $user) {
                         return $u;
@@ -146,7 +146,7 @@
                 $userData['role'] = $this->role->id;
                 $userData['permissions'] = $permissions;
 
-                $this->id = SecurityManager::$instance->dataAdapter->UpdateUser($userData, $this->id);
+                $this->id = SecurityManager::Instance()->dataAdapter->UpdateUser($userData, $this->id);
             }
         }
 

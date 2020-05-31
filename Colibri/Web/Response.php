@@ -29,7 +29,7 @@
             *
             * @var Response
             */
-            static $instance;
+            protected static $instance;
     
             /**
              * Коды ответов
@@ -126,11 +126,11 @@
              *
              * @return Response
              */
-            public static function Create() {
-                if(!Response::$instance) {
-                    Response::$instance = new Response();
+            public static function Instance() {
+                if(!self::$instance) {
+                    self::$instance = new self();
                 }
-                return Response::$instance;
+                return self::$instance;
             }
     
             /**

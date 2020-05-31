@@ -44,7 +44,7 @@
             * @var Request
             *
             */
-            static $instance;
+            protected static $instance;
 
             /** Тип запроса JSON */
             const PAYLOAD_TYPE_JSON = 'json';
@@ -80,11 +80,11 @@
              *
              * @return Request
              */
-            public static function Create() {
-                if(!Request::$instance) {
-                    Request::$instance = new Request();
+            public static function Instance() {
+                if(!self::$instance) {
+                    self::$instance = new self();
                 }
-                return Request::$instance;
+                return self::$instance;
             }
 
             /**

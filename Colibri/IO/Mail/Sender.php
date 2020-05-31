@@ -44,7 +44,7 @@
             /**
              * Отправитель (эл. адрес)
              *
-             * @var string
+             * @var Address
              */
             public $Sender          = '';
             
@@ -186,7 +186,7 @@
              */
             public static function Create($mailer, $domain = '')
             {
-                $config = App::$config->Query('mailer.'.$mailer)->AsObject();
+                $config = App::Config()->Query('mailer.'.$mailer)->AsObject();
                 
                 $sender = new Sender($mailer);
                 if ($mailer == MailerTypes::Smtp) {
@@ -305,7 +305,7 @@
              * @param string $body
              * @return bool
              */
-            private function SendmailSend(Message $m, $header, $body)
+            protected function SendmailSend(Message $m, $header, $body)
             {
                 if ($this->Sender != '') {
                     $sendmail = sprintf("%s -oi -f %s -t", escapeshellcmd($this->Sendmail), escapeshellarg($this->Sender));
@@ -344,7 +344,7 @@
              * @param string $body
              * @return bool
              */
-            private function MailSend(Message $m, $header, $body)
+            protected function MailSend(Message $m, $header, $body)
             {
                 $toArr = array();
                 
@@ -381,7 +381,7 @@
              * @param string $body
              * @return bool
              */
-            private function SmtpSend(Message $m, $header, $body)
+            protected function SmtpSend(Message $m, $header, $body)
             {
                 $bad_rcpt = array();
                 
@@ -450,7 +450,7 @@
              *
              * @return void
              */
-            private function SmtpConnect()
+            protected function SmtpConnect()
             {
                 if (Variable::IsNull($this->smtp)) {
                     $this->smtp = new SMTP();
@@ -514,7 +514,7 @@
              *
              * @return void
              */
-            private function SmtpClose()
+            protected function SmtpClose()
             {
                 if (!is_null($this->smtp) && $this->smtp->Connected()) {
                     $this->smtp->Quit();
@@ -774,7 +774,7 @@
              * @param Message $m
              * @return string
              */
-            private function AttachAll(Message $m)
+            protected function AttachAll(Message $m)
             {
                 // Return text of body
                 $mime = array();

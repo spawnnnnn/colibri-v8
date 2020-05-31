@@ -58,7 +58,7 @@
             /**
              * Загружает данные об атрибутах
              *
-             * @return void
+             * @return Attributes
              */
             protected function getAttributesObject()
             {
@@ -71,7 +71,7 @@
             /**
              * Загружает данные о правах доступа
              *
-             * @return void
+             * @return Security
              */
             protected function getSecurityObject()
             {

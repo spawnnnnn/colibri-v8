@@ -273,13 +273,13 @@
                 if(!Variable::IsNull($this->credentials)){
                     curl_setopt($handle, CURLOPT_USERPWD, $this->credentials->login.':'.$this->credentials->secret);
                     if($this->credentials->ssl) {
-                        curl_setopt($handle, CURLOPT_FTP_SSL, true);
+                        curl_setopt($handle, CURLOPT_USE_SSL, true);
                     }
                 }
 
                 $_headers = array(
                     "Connection: Keep-Alive",
-                    'HTTP_X_FORWARDED_FOR: '.App::$request->remoteip,
+                    'HTTP_X_FORWARDED_FOR: '.App::Request()->remoteip,
                     'Expect:'
                 );
 

@@ -68,15 +68,15 @@
             public function CloseResponse($type, $result) {
                 if ($result->result) {
                     if ($type == Server::JSON) {
-                        App::$response->Close($result->code, json_encode($result->result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+                        App::Response()->Close($result->code, json_encode($result->result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
                     } elseif ($type == Server::XML) {
-                        App::$response->Close($result->code, XmlEncoder::Encode($result->result));
+                        App::Response()->Close($result->code, XmlEncoder::Encode($result->result));
                     } elseif ($type == Server::HTML) {
-                        App::$response->Close($result->code, HtmlEncoder::Encode($result->result));
+                        App::Response()->Close($result->code, HtmlEncoder::Encode($result->result));
                     }
                 }
                 else {
-                    App::$response->Close($result->code, $result->message);
+                    App::Response()->Close($result->code, $result->message);
                 }
             }
 
@@ -158,9 +158,9 @@
                 $method = $parsed->method;
                 $type = $parsed->type;
 
-                $get = App::$request->get;
-                $post = App::$request->post;
-                $payload = App::$request->GetPayloadCopy();
+                $get = App::Request()->get;
+                $post = App::Request()->post;
+                $payload = App::Request()->GetPayloadCopy();
                 
                 $args = (object)['transformer' => $transformer, 'get' => $get, 'post' => $post, 'payload' => $payload];
                 $this->DispatchEvent(EventsContainer::ServerGotRequest, $args);
