@@ -106,7 +106,7 @@
                     return false;
                 }
 
-                $module = $className::Create();
+                $module = new $className();
                 $module->InitializeModule();
             
                 return $module;
