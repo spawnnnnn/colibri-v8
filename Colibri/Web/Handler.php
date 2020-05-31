@@ -23,9 +23,9 @@
          * /buh/web/page/method1.json
          * /buh/web/page/method1.xml
          * 
-         * namespace App\Transformers\Buh\Web
+         * namespace App\Handlers\Buh\Web
          * 
-         * class PageController extends Colibri\Web\Controller {
+         * class PageHandler extends Colibri\Web\Handler {
          * 
          *      public function Method1($get, $post, $payload) {
          *          
@@ -68,7 +68,7 @@
          * }
          * 
          */
-        class Transformer {
+        class Handler {
 
             /**
              * Обьект Сервер
@@ -116,14 +116,14 @@
                 // если контроллер в модуле
                 if(strpos($class, 'App\\Modules\\') === 0) {
                     $class = str_replace('App\\', '', $class);
-                    $class = str_replace('Transformers\\', '', $class);
+                    $class = str_replace('Handlers\\', '', $class);
                 }
                 else {
-                    $class = str_replace('App\\Transformers\\', '', $class);
+                    $class = str_replace('App\\Handlers\\', '', $class);
                 }
 
                 $class = str_replace('\\', '/', $class);
-                $class = substr($class, 0, -1 * strlen('Transformer'));
+                $class = substr($class, 0, -1 * strlen('Handler'));
                 $parts = explode('/', $class);
                 $newParts = [];
                 foreach($parts as $c) {

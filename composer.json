@@ -19,7 +19,8 @@
         }
     },
     "require": {
-        "scssphp/scssphp": "1.1.0"
+        "scssphp/scssphp": "1.1.0",
+        "psr/log": "^1.1"
     },
     "require-dev": {
         "phpdocumentor/phpdocumentor": "^2.9",

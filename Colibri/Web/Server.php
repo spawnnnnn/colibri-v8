@@ -86,17 +86,17 @@
              * @param string $class текст запроса
              * @return string
              */
-            protected function _getTransformerFullName($class) {
+            protected function _getHandlerFullName($class) {
                 $class = Strings::UrlToNamespace($class);
                 if(strpos($class, 'Modules') === 0) {
 
                     $parts = explode('\\', $class);
-                    $parts[count($parts) - 1] = 'Transformers\\'.$parts[count($parts) - 1];
+                    $parts[count($parts) - 1] = 'Handlers\\'.$parts[count($parts) - 1];
                     $class = implode('\\', $parts);
 
-                    return '\\App\\'.$class.'Transformer';
+                    return '\\App\\'.$class.'Handler';
                 }
-                return '\\App\\Transformers\\'.$class.'Transformer';
+                return '\\App\\Handlers\\'.$class.'Handler';
             }
 
             /**
@@ -124,7 +124,7 @@
                 $this->_lastParsedData = (object)[
                     'cmd' => $cmd,
                     'class' => $class,
-                    'transformer' => $this->_getTransformerFullName($class), 
+                    'handler' => $this->_getHandlerFullName($class), 
                     'method' => Strings::ToCamelCaseAttr($method, true), 
                     'type' => $type
                 ];
@@ -137,9 +137,9 @@
              * Запускает команду
              * 
              * Команда должна быть сформирована следующим образом
-             * папки, после \App\Transformers превращаются в namespace
+             * папки, после \App\Handlers превращаются в namespace
              * т.е. /buh/test-rpc/test-query.json 
-             * будет превращено в \App\Transformers\Buh\TestRpcController
+             * будет превращено в \App\Handlers\Buh\TestRpcController
              * а метод будет TestQuery 
              * 
              * т.е. нам нужно получить lowercase url в котором все большие 
@@ -154,7 +154,7 @@
 
                 // /namespace[/namespace]/command[.type]
                 $parsed = $this->_parseCommandLine($cmd);
-                $transformer = $parsed->transformer;
+                $handler = $parsed->handler;
                 $method = $parsed->method;
                 $type = $parsed->type;
 
@@ -162,17 +162,17 @@
                 $post = App::Request()->post;
                 $payload = App::Request()->GetPayloadCopy();
                 
-                $args = (object)['transformer' => $transformer, 'get' => $get, 'post' => $post, 'payload' => $payload];
+                $args = (object)['handler' => $handler, 'get' => $get, 'post' => $post, 'payload' => $payload];
                 $this->DispatchEvent(EventsContainer::ServerGotRequest, $args);
                 if (isset($args->cancel) && $args->cancel === true) {
                     $result = isset($args->result) ? $args->result : (object)[];
                     $this->CloseResponse($type, $result);
                 }
 
-                if (!class_exists($transformer)) {
-                    $message = 'Unknown transformer '.$transformer;
+                if (!class_exists($handler)) {
+                    $message = 'Unknown handler '.$handler;
                     $this->DispatchEvent(EventsContainer::ServerRequestError, (object)[
-                        'transformer' => $transformer,
+                        'handler' => $handler,
                         'get' => $get,
                         'post' => $post,
                         'payload' => $payload,
@@ -195,15 +195,15 @@
                 // если не найден ищем $methodController, если есть тогда предполагаем наличие $methodView
                 $realMethodName = $method;
                 $realViewName = null;
-                if (!method_exists($transformer, $realMethodName)) {
+                if (!method_exists($handler, $realMethodName)) {
                     $realMethodName = $method.'Controller';
                     $realViewName = $method.'View';
                 }                
  
-                if (!method_exists($transformer, $realMethodName) || ($realViewName && !method_exists($transformer, $realViewName))) {
-                    $message = 'Can not find method Controller and/or View method in '.$transformer;
+                if (!method_exists($handler, $realMethodName) || ($realViewName && !method_exists($handler, $realViewName))) {
+                    $message = 'Can not find method Controller and/or View method in '.$handler;
                     $this->DispatchEvent(EventsContainer::ServerRequestError, (object)[
-                        'transformer' => $transformer,
+                        'handler' => $handler,
                         'method' => $method,
                         'get' => $get,
                         'post' => $post,
@@ -223,11 +223,11 @@
 
                 }
 
-                $transformerObject = new $transformer($this);
-                $result = (object)$transformerObject->$realMethodName($get, $post, $payload);
+                $handlerObject = new $handler($this);
+                $result = (object)$handlerObject->$realMethodName($get, $post, $payload);
 
                 $this->DispatchEvent(EventsContainer::ServerRequestProcessed, (object)[
-                    'controller' => $transformerObject,
+                    'controller' => $handlerObject,
                     'get' => $get,
                     'post' => $post,
                     'payload' => $payload,
@@ -237,7 +237,7 @@
                 // после выполнения контроллера, ищем соответствующий метод View и 
                 // если нет метода, то пропускаем
                 if($realViewName) {
-                    $transformerObject->$realViewName($result);
+                    $handlerObject->$realViewName($result);
                 }
                 else {
                     $this->CloseResponse($type, $result);
@@ -259,8 +259,8 @@
                 else if(strtolower($property) == 'class' && $this->_lastParsedData !== null) {
                     $return = $this->_lastParsedData->class;
                 }
-                else if(strtolower($property) == 'transformer' && $this->_lastParsedData !== null) {
-                    $return = $this->_lastParsedData->transformer;
+                else if(strtolower($property) == 'handler' && $this->_lastParsedData !== null) {
+                    $return = $this->_lastParsedData->handler;
                 }
                 else if(strtolower($property) == 'method' && $this->_lastParsedData !== null) {
                     $return = $this->_lastParsedData->method;
