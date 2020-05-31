@@ -24,7 +24,7 @@
              */
             public function DispatchEvent($event, $args = null)
             {
-                return EventDispatcher::Create()->Dispatch(new Event($this, $event), $args);
+                return EventDispatcher::Instance()->Dispatch(new Event($this, $event), $args);
             }
         
             /**
@@ -36,7 +36,7 @@
              */
             public function HandleEvent($ename, $listener)
             {
-                EventDispatcher::Create()->AddEventListener($ename, $listener, $this);
+                EventDispatcher::Instance()->AddEventListener($ename, $listener, $this);
                 return $this;
             }
         
@@ -49,7 +49,7 @@
              */
             public function RemoveHandler($ename, $listener)
             {
-                EventDispatcher::Create()->RemoveEventListener($ename, $listener);
+                EventDispatcher::Instance()->RemoveEventListener($ename, $listener);
                 return $this;
             }
         }
