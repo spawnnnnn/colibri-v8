@@ -120,7 +120,7 @@
              * @param mixed $value
              * @return boolean
              */
-            public function IsTime($value)
+            public static function IsTime($value)
             {
                 if (preg_match('/\d{2}:\d{2}/', $value, $matches) > 0) {
                     return true;
