@@ -74,14 +74,15 @@
              * Статический конструктор
              *
              * @param DataAccessPoint|string $point
+             * @param string $returnAs
              * @return DataTable
              */
-            public static function Create($point)
+            public static function Create($point, $returnAs = 'Colibri\\Data\\Models\\DataRow')
             {
                 if (is_string($point)) {
                     $point = App::DataAccessPoints()->Get($point);
                 }
-                return new DataTable($point);
+                return new DataTable($point, null, $returnAs);
             }
 
             /**
