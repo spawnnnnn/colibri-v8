@@ -42,12 +42,14 @@
              * @var IDataReader
              */
             protected $_reader;
+            
             /**
              * Кэш загруженных строк
              *
              * @var ArrayList
              */
             protected $_cache;
+
             /**
              * Название класса представления строк
              *
