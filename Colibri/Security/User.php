@@ -11,7 +11,7 @@
     namespace Colibri\Security {
 
         use Colibri\Encryption\Crypt;
-        use Colibri\Utils\ObjectEx;
+        use Colibri\Utils\ExtendedObject;
         use Colibri\Xml\XmlNode;
 
         /**
@@ -19,7 +19,7 @@
          * 
          * @property-read Role $role
          */
-        class User extends ObjectEx
+        class User extends ExtendedObject
         {
 
             /**

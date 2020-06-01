@@ -14,7 +14,7 @@
         use Colibri\Data\DataAccessPoint;
         use Colibri\Data\SqlClient\IDataReader;
         use Colibri\Helpers\Variable;
-        use Colibri\Utils\ObjectEx;
+        use Colibri\Utils\ExtendedObject;
         use Countable;
 
         /**
@@ -53,7 +53,7 @@
             /**
              * Название класса представления строк
              *
-             * @var ObjectEx
+             * @var ExtendedObject
              */
             protected $_returnAs;
             
@@ -188,7 +188,7 @@
             /**
              * Создает обьект данных представления строки
              *
-             * @param ObjectEx $result
+             * @param ExtendedObject $result
              * @return mixed
              */
             protected function _createDataRowObject($result)
@@ -278,16 +278,96 @@
              *
              * @return mixed
              */
-            public function EmptyRow()
+            public function CreateEmptyRow()
             {
-                return $this->_createDataRowObject(new \stdClass());
+                return $this->_createDataRowObject([]);
+            }
+
+            /**
+             * Сохраняет переданную строку в базу данных
+             * @param DataRow $row строка для сохранения
+             * @return bool
+             * @throws DataModelException
+             */
+            public function SaveRow(DataRow $row)
+            {
+                if (!$row->changed) {
+                    return false;
+                }
+
+                $tables = [];
+                $idFields = [];
+                $fields = $row->properties;
+                foreach ($fields as $field) {
+                    if (in_array('PRI_KEY', $field->flags)) {
+                        $idFields[] = $field->name;
+                    }
+                    $tables[$field->table] = $field->table;
+                }
+
+                if (count($tables) != 1) {
+                    throw new DataModelException('Can not find any table name to use in save operation');
+                }
+                $table = reset($tables);
+
+                if (count($idFields) == 0) {
+                    throw new DataModelException('table does not have and autoincrement and can not be saved in standart mode');
+                }
+
+                $res = $this->_point->InsertOrUpdate($table, $row->ToArray(), $idFields);
+                if ($res->affected == 0) {
+                    return false;
+                }
+                
+                // если это ID то сохраняем
+                if (count($idFields) == 1) {
+                    foreach ($idFields as $f) {
+                        $row->$f = $res->insertid;
+                    }
+                }
+
+                return true;
+            }
+            
+            /**
+             * Удаляет строку
+             * @param DataRow $row строка
+             * @return void
+             */
+            public function DeleteRow(DataRow $row)
+            {
+                $tables = [];
+                $idFields = [];
+                $fields = $row->properties;
+                foreach ($fields as $field) {
+                    if (in_array('PRI_KEY', $field->flags)) {
+                        $idFields[] = $field->name;
+                    }
+                    $tables[$field->table] = $field->table;
+                }
+
+                if (count($tables) != 1) {
+                    throw new DataModelException('Can not find any table name to use in save operation');
+                }
+                $table = reset($tables);
+
+                if (count($idFields) == 0) {
+                    throw new DataModelException('table does not have and autoincrement and can not be saved in standart mode');
+                }
+
+                $condition = [];
+                foreach ($idFields as $f) {
+                    $condition[] = $f->escaped.'=\''.$row->{$f->name}.'\'';
+                }
+
+                return $this->_point->Delete($table, implode(' and ', $condition));
             }
             
             /**
              * Устанавливает строку по выбранному индексу в кэш
              *
              * @param integer $index
-             * @param ObjectEx $data
+             * @param ExtendedObject $data
              * @return void
              */
             public function Set($index, $data)
@@ -316,7 +396,7 @@
              *
              * @return void
              */
-            public function Save()
+            public function SaveAllRows()
             {
                 foreach ($this as $row) {
                     $row->Save();
@@ -328,7 +408,7 @@
              *
              * @return void
              */
-            public function Delete()
+            public function DeleteAllRows()
             {
                 foreach ($this as $row) {
                     $row->Delete();

@@ -2,26 +2,25 @@
 
     /**
      * Utils
-     * 
+     *
      * @author Vahan P. Grigoryan <vahan.grigoryan@gmail.com>
      * @copyright 2020 ColibriLab
      * @package Colibri\Utils
-     * 
+     *
      */
     namespace Colibri\Utils {
 
+        use ArrayAccess;
         use Colibri\Events\TEventDispatcher;
+        use Colibri\Helpers\Variable;
+        use InvalidArgumentException;
+        use IteratorAggregate;
 
         /**
          * Класс обьект, все обьектноподобные классы и обьекты будут наследоваться от него
-         *
-         * @property string $prefix - Префикс полей
-         * @property stdClass $data - Данные
-         * @property stdClass $orifinal - Оригинальные данные перед изменением
          */
-        class ObjectEx
+        class ExtendedObject implements ArrayAccess, IteratorAggregate
         {
-
             use TEventDispatcher;
 
             /**
@@ -63,7 +62,7 @@
                 if (is_null($data)) {
                     $this->_data = array();
                 } else {
-                    if ($data instanceof ObjectEx) {
+                    if ($data instanceof ExtendedObject) {
                         $this->_data = $data->ToArray();
                         $this->_prefix = $data->prefix;
                     } elseif (is_array($data)) {
@@ -104,7 +103,7 @@
              *
              * @param mixed $data - данные
              */
-            public function setData($data)
+            public function SetData($data)
             {
                 $this->_data = $data;
                 $this->_changed = true;
@@ -139,7 +138,8 @@
              *
              * @return \stdClass
              */
-            public function Original() {
+            public function Original()
+            {
                 return (object)$this->_original;
             }
 
@@ -148,7 +148,8 @@
              *
              * @return string
              */
-            public function Prefix() {
+            public function Prefix()
+            {
                 return $this->_prefix;
             }
 
@@ -157,7 +158,8 @@
              *
              * @return \stdClass
              */
-            public function GetData() {
+            public function GetData()
+            {
                 return $this->_data;
             }
 
@@ -219,44 +221,7 @@
                 if (!empty($this->_prefix) && strpos($property, $this->_prefix) === false) {
                     $property = $this->_prefix.$property;
                 }
-                $this->_typeExchange('set', $property, $value);            
-                $this->_changed = true;
-
-            }
-
-            /**
-             * Добавляет свойство к обьекту
-             *
-             * @param string $property название свойства
-             * @param mixed $value значение свойства
-             */
-            public function AddProperty($property, $value)
-            {
-                $property = $this->_prefix.$property;
-                $this->_data[$property] = $value;
-                $this->_changed = true;
-            }
-            
-            /**
-             * Возвращает свойство обьекта
-             *
-             * @param string $property название свойства
-             */
-            public function GetProperty($property)
-            {
-                $property = $this->_prefix.$property;
-                return isset($this->_data[$property]) ? $this->_data[$property] : null;
-            }
-
-            /**
-             * Удаляет свойство из обьекта
-             *
-             * @param mixed $property название свойства
-             */
-            public function DeleteProperty($property)
-            {
-                $property = $this->_prefix.$property;
-                unset($this->_data[$property]);
+                $this->_typeExchange('set', $property, $value);
                 $this->_changed = true;
             }
 
@@ -274,6 +239,65 @@
                 } else {
                     $this->_data[$property] = $value;
                 }
+            }
+
+            public function getIterator()
+            {
+                return new ExtendedObjectIterator($this->GetData());
+            }
+
+            /**
+             * Устанавливает значение по индексу
+             * @param string $offset
+             * @param DataRow $value
+             * @return void
+             */
+            public function offsetSet($offset, $value)
+            {
+                if (!Variable::IsString($offset)) {
+                    throw new InvalidArgumentException();
+                }
+                $this->$offset = $value;
+            }
+        
+            /**
+             * Проверяет есть ли данные по индексу
+             * @param string $offset
+             * @return bool
+             */
+            public function offsetExists($offset)
+            {
+                if (!Variable::IsString($offset)) {
+                    throw new InvalidArgumentException();
+                }
+                return isset($this->$offset);
+            }
+        
+            /**
+             * удаляет данные по индексу
+             * @param string $offset
+             * @return void
+             */
+            public function offsetUnset($offset)
+            {
+                if (!Variable::IsString($offset)) {
+                    throw new InvalidArgumentException();
+                }
+                unset($this->$offset);
+            }
+        
+            /**
+             * Возвращает значение по индексу
+             *
+             * @param string $offset
+             * @return mixed
+             */
+            public function offsetGet($offset)
+            {
+                if (!Variable::IsString($offset)) {
+                    throw new InvalidArgumentException();
+                }
+                return $this->$offset;
             }
         }
     }

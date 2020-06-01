@@ -14,7 +14,7 @@
         use Colibri\AppException;
         use Colibri\Events\TEventDispatcher;
         use Colibri\IO\FileSystem\File;
-        use Colibri\Utils\ObjectEx;
+        use Colibri\Utils\ExtendedObject;
 
         /**
          * Класс шаблона
@@ -56,7 +56,7 @@
             public function Render($args = null) {
                 $template = $this;
 
-                $args = new ObjectEx($args);
+                $args = new ExtendedObject($args);
 
                 $this->DispatchEvent(EventsContainer::TemplateRendering, array('template' => $this, 'args' => $args));
 
@@ -100,10 +100,10 @@
              * Замена вставок в шаблон
              *
              * @param string $code код для выполнения
-             * @param ObjectEx $args аргументы для передачи в код
+             * @param ExtendedObject $args аргументы для передачи в код
              * @return void
              */
-            public static function Run($code, ObjectEx $args) {
+            public static function Run($code, ExtendedObject $args) {
                 return preg_replace_callback('/\{\?\=(.*?)\?\}/', function($match) use ($args) {
                     return eval('return '.html_entity_decode($match[1]).';');
                 }, $code);

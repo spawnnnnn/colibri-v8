@@ -9,7 +9,7 @@
      */
     namespace Colibri\Data\Models {
 
-        use Colibri\Utils\ObjectEx;
+        use Colibri\Utils\ExtendedObject;
 
         /**
          * Представление строки данных
@@ -17,7 +17,7 @@
          * @property array $properties
          *
          */
-        class DataRow extends ObjectEx
+        class DataRow extends ExtendedObject
         {
             
             /**
@@ -34,20 +34,10 @@
              * @param mixed $data
              * @param string $tablePrefix
              */
-            public function __construct(DataTable $table, $data = null, $tablePrefix = '')
+            public function __construct(DataTable $table, $data, $tablePrefix = '')
             {
                 parent::__construct($data, $tablePrefix);
                 $this->_table = $table;
-            }
-
-            /**
-             * Создает модель
-             *
-             * @return DataRow
-             */
-            public static function Create(DataTable $table, $data = null, $tablePrefix = '')
-            {
-                return new DataRow($table, $data, $tablePrefix);
             }
             
             /**
@@ -62,6 +52,8 @@
                 $property = strtolower($property);
                 if ($property == 'properties') {
                     $return = $this->_table->Fields();
+                } elseif ($property == 'changed') {
+                    $return = $this->_changed;
                 } else {
                     $return = parent::__get($property);
                 }
@@ -77,7 +69,11 @@
             public function __set($property, $value)
             {
                 $property = strtolower($property);
-                if ($property !== 'properties') {
+                if ($property == 'properties') {
+                    throw new DataModelException('Can not set the readonly property');
+                } elseif ($property == 'changed') {
+                    $this->_changed = $value;
+                } else {
                     parent::__set($property, $value);
                 }
             }
@@ -85,90 +81,11 @@
             /**
              * Копирует в обьект
              *
-             * @return ObjectEx
+             * @return ExtendedObject
              */
             public function CopyToObject()
             {
-                return new ObjectEx($this->_data, $this->_prefix);
-            }
-            
-            /**
-             * Сохраняет модель
-             *
-             * @return void
-             */
-            public function Save()
-            {
-                if (!$this->_changed) {
-                    return false;
-                }
-
-                $tables = [];
-                $idFields = [];
-                $fields = $this->properties;
-                foreach ($fields as $field) {
-                    if (in_array('PRI_KEY', $field->flags)) {
-                        $idFields[] = $field->name;
-                    }
-                    $tables[$field->table] = $field->table;
-                }
-
-                if (count($tables) != 1) {
-                    throw new DataModelException('Can not find any table name to use in save operation');
-                }
-                $table = reset($tables);
-
-                if (count($idFields) == 0) {
-                    throw new DataModelException('table does not have and autoincrement and can not be saved in standart mode');
-                }
-
-                $res = $this->_table->Point()->InsertOrUpdate($table, $this->_data, $idFields);
-                if ($res->affected == 0) {
-                    return false;
-                }
-                
-                // если это ID то сохраняем
-                if (count($idFields) == 1) {
-                    foreach ($idFields as $f) {
-                        $this->$f = $res->insertid;
-                    }
-                }
-
-                return true;
-            }
-            
-            /**
-             * Удаляет модель
-             *
-             * @return void
-             */
-            public function Delete()
-            {
-                $tables = [];
-                $idFields = [];
-                $fields = $this->properties;
-                foreach ($fields as $field) {
-                    if (in_array('PRI_KEY', $field->flags)) {
-                        $idFields[] = $field->name;
-                    }
-                    $tables[$field->table] = $field->table;
-                }
-
-                if (count($tables) != 1) {
-                    throw new DataModelException('Can not find any table name to use in save operation');
-                }
-                $table = reset($tables);
-
-                if (count($idFields) == 0) {
-                    throw new DataModelException('table does not have and autoincrement and can not be saved in standart mode');
-                }
-
-                $condition = [];
-                foreach ($idFields as $f) {
-                    $condition[] = $f->escaped.'=\''.$this->{$f->name}.'\'';
-                }
-
-                $this->_table->Point()->Delete($table, implode(' and ', $condition));
+                return new ExtendedObject($this->_data, $this->_prefix);
             }
         }
 

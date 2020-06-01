@@ -11,13 +11,13 @@
      */
     namespace Colibri\Security {
 
-        use Colibri\Utils\ObjectEx;
+        use Colibri\Utils\ExtendedObject;
         use Colibri\Xml\XmlNode;
 
         /**
          * Роль пользователя
          */
-        class Role extends ObjectEx
+        class Role extends ExtendedObject
         {
             /**
              * Конструктор

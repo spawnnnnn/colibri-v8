@@ -8,14 +8,14 @@
      */
     namespace Colibri\IO\Request {
 
-        use Colibri\Utils\ObjectEx;
+        use Colibri\Utils\ExtendedObject;
 
         /**
          * Строка данных в запросе
          * @property string $name
          * @property string $value
          */
-        class DataItem extends ObjectEx
+        class DataItem extends ExtendedObject
         {
             /**
              * Конструктор

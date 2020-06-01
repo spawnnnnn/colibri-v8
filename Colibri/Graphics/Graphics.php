@@ -11,7 +11,7 @@
 
         use Colibri\IO\FileSystem\File;
         use Colibri\Helpers\Randomization;
-        use Colibri\Utils\ObjectEx;
+        use Colibri\Utils\ExtendedObject;
 
         /**
          * Работа с изображениями
@@ -417,7 +417,7 @@
             public static function Info($path)
             {
                 list($width, $height, $type, $attr) = getimagesize($path);
-                $o = new ObjectEx();
+                $o = new ExtendedObject();
                 $o->size = new Size($width, $height);
                 $o->type = $type;
                 $o->attr = $attr;
