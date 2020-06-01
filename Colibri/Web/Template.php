@@ -74,16 +74,6 @@
             }
 
             /**
-             * Статический конструктор
-             *
-             * @param string $file
-             * @return Template
-             */
-            public static function Create($file) {
-                return new Template($file);
-            }
-
-            /**
              * Get
              *
              * @param string $prop
