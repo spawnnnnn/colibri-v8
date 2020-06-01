@@ -15,8 +15,9 @@
         use Colibri\Helpers\Variable;
         use InvalidArgumentException;
         use IteratorAggregate;
+    use Traversable;
 
-        /**
+/**
          * Класс обьект, все обьектноподобные классы и обьекты будут наследоваться от него
          */
         class ExtendedObject implements ArrayAccess, IteratorAggregate
@@ -240,7 +241,11 @@
                     $this->_data[$property] = $value;
                 }
             }
-
+            
+            /**
+             * Возвращает итератор
+             * @return ExtendedObjectIterator 
+             */
             public function getIterator()
             {
                 return new ExtendedObjectIterator($this->GetData());

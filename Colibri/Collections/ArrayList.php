@@ -78,7 +78,7 @@
              * Возвращает значение по идексу
              *
              * @param integer $index
-             * @return T
+             * @return mixed
              */
             public function Item($index)
             {
@@ -89,7 +89,7 @@
              * Добавляет значение с список
              *
              * @param mixed $value
-             * @return T
+             * @return mixed
              */
             public function Add($value)
             {
@@ -102,7 +102,7 @@
              *
              * @param integer $index
              * @param mixed $value
-             * @return T
+             * @return mixed
              */
             public function Set($index, $value)
             {
@@ -141,7 +141,7 @@
              * Удаляет значение
              *
              * @param mixed $value
-             * @return T
+             * @return mixed|null
              */
             public function Delete($value)
             {
