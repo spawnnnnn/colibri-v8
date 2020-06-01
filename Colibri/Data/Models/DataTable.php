@@ -332,7 +332,7 @@
             /**
              * Удаляет строку
              * @param DataRow $row строка
-             * @return void
+             * @return bool
              */
             public function DeleteRow(DataRow $row)
             {
@@ -399,7 +399,7 @@
             public function SaveAllRows()
             {
                 foreach ($this as $row) {
-                    $row->Save();
+                    $this->SaveRow($row);
                 }
             }
 
@@ -411,8 +411,17 @@
             public function DeleteAllRows()
             {
                 foreach ($this as $row) {
-                    $row->Delete();
+                    $this->DeleteRow($row);
                 }
+            }
+
+            /**
+             * Очищает таблицу
+             * @return void
+             */
+            public function Clear()
+            {
+                $this->_point->Delete($this->_storage->name, ''); // используется truncate
             }
 
             /**
