@@ -122,7 +122,7 @@
 
             /**
              * Шаблон обрабатывается
-             * параметры: Template $template, ObjectEx $args
+             * параметры: Template $template, ExtendedObject $args
              * результат не используется
              */
             const TemplateRendering = 'template.rendering';

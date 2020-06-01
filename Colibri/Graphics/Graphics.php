@@ -412,7 +412,7 @@
              * Возвращает информацию об изображении
              *
              * @param string $path
-             * @return void
+             * @return ExtendedObject
              */
             public static function Info($path)
             {
