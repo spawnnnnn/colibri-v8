@@ -161,7 +161,7 @@
              */
             public function GetData()
             {
-                return $this->_data;
+                return $this->_typeToData($this->_data);
             }
 
             /**
@@ -242,6 +242,15 @@
                 }
             }
             
+            /**
+             * Конвертирует данные для передачи через функцию GetData
+             * @param mixed $data данные для конвертации
+             * @return mixed конвертированные данные
+             */
+            protected function _typeToData($data) {
+                return $data;
+            }
+
             /**
              * Возвращает итератор
              * @return ExtendedObjectIterator 
