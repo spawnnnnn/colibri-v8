@@ -350,7 +350,8 @@
              */
             public function Save($file)
             {
-                switch ($this->_type) {
+                $fi = new File($file);
+                switch ($fi->extension) {
                     case 'png':
                         \imagepng($this->_img, $file);
                         break;
