@@ -321,7 +321,7 @@
                     curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, $this->sslVerify);
                 }
 
-                $result = new RequestResult();
+                $result = new Result();
 
                 $result->data = curl_exec($handle);
                 $result->status = curl_getinfo($handle, CURLINFO_HTTP_CODE);

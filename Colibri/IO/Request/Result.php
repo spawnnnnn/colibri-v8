@@ -11,7 +11,7 @@
         /**
          * Результат запроса
          */
-        class RequestResult
+        class Result
         {
          
             /**
