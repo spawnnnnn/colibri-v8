@@ -287,6 +287,9 @@
                 else if($this->encryption == Encryption::JsonEncoded) {
                     $_headers[] = "Content-Type: application/json";
                 }
+                else if($this->encryption == Encryption::XmlEncoded) {
+                    $_headers[] = "Content-Type: application/xml";
+                }
                 
                 if($this->method == Type::Post) {
                     curl_setopt($handle, CURLOPT_POST, true);
