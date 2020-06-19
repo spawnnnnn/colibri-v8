@@ -36,6 +36,7 @@
                 if (File::Exists($filePathOrFileData)) {
                     $fi = new File($filePathOrFileData);
                     $filename = $fi->name;
+                    $filePathOrFileData = File::Read($filePathOrFileData);
                 }
 
                 parent::__construct($name, $filePathOrFileData);
