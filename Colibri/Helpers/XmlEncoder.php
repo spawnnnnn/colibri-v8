@@ -26,7 +26,7 @@
             {
                 $ret = '';
                 if (Variable::IsObject($v) || Variable::IsArray($v)) {
-                    $ret = XmlEncoder::Encode($v);
+                    $ret = XmlEncoder::Encode($v, null, $cdata);
                 } elseif (Variable::IsBool($v) || ($v == 't' || $v == 'f')) {
                     $ret =  ($v || $v == 't' ? 'true' : 'false');
                 } elseif (!Variable::IsNull($v) && !Variable::IsEmpty($v)) {
