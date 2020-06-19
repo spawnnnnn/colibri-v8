@@ -77,7 +77,7 @@
             public function __destruct()
             {
                 if (is_resource($this->_img)) {
-                    @imagedestroy($this->_img);
+                    @\imagedestroy($this->_img);
                 }
             }
             
@@ -109,7 +109,7 @@
                     }
                     case 'transparency':{
                         if (!is_null($this->_img)) {
-                            $return = @imagecolortransparent($this->_img);
+                            $return = @\imagecolortransparent($this->_img);
                         }
                         break;
                     }
@@ -146,8 +146,8 @@
             public function LoadFromData($data)
             {
                 $this->_file = basename(Randomization::Mixed(20));
-                $this->_img = @imagecreatefromstring($data);
-                $this->_size = new Size(imagesx($this->_img), imagesy($this->_img));
+                $this->_img = @\imagecreatefromstring($data);
+                $this->_size = new Size(\imagesx($this->_img), \imagesy($this->_img));
                 $this->_history = array();
                 $this->_safeAlpha();
             }
@@ -166,21 +166,21 @@
                 
                 switch ($this->_type) {
                     case 'png':
-                        $this->_img = imagecreatefrompng($file);
+                        $this->_img = \imagecreatefrompng($file);
                         break;
                     case 'gif':
-                        $this->_img = imagecreatefromgif($file);
+                        $this->_img = \imagecreatefromgif($file);
                         break;
                     case 'jpg':
                     case 'jpeg':
-                        $this->_img = imagecreatefromjpeg($file);
+                        $this->_img = \imagecreatefromjpeg($file);
                         break;
                     default: {
                         break;
                     }
                 }
 
-                $this->_size = new Size(imagesx($this->_img), imagesy($this->_img));
+                $this->_size = new Size(\imagesx($this->_img), \imagesy($this->_img));
                 $this->_history = array();
                 $this->_safeAlpha();
             }
@@ -194,7 +194,7 @@
             public function LoadEmptyImage($size)
             {
                 $this->_type = "unknown";
-                $this->_img = imagecreatetruecolor($size->width, $size->height);
+                $this->_img = \imagecreatetruecolor($size->width, $size->height);
                 $this->_size = $size;
                 $this->_history = array();
                 $this->_safeAlpha();
@@ -209,9 +209,9 @@
             public function Resize($size)
             {
                 if ($this->isValid) {
-                    $newImage = imagecreatetruecolor($size->width, $size->height);
-                    imagealphablending($newImage, false);
-                    imagesavealpha($newImage, true);
+                    $newImage = \imagecreatetruecolor($size->width, $size->height);
+                    \imagealphablending($newImage, false);
+                    \imagesavealpha($newImage, true);
                     ImageCopyResampled($newImage, $this->_img, 0, 0, 0, 0, $size->width, $size->height, $this->_size->width, $this->_size->height);
                     ImageDestroy($this->_img);
                     $this->_img = $newImage;
@@ -228,9 +228,9 @@
              */
             public function Rotate($degree = 90)
             {
-                $this->_img = imagerotate($this->_img, $degree, -1);
-                imagealphablending($this->_img, true);
-                imagesavealpha($this->_img, true);
+                $this->_img = \imagerotate($this->_img, $degree, -1);
+                \imagealphablending($this->_img, true);
+                \imagesavealpha($this->_img, true);
             }
             
             /**
@@ -282,57 +282,57 @@
                 switch ($filter) {
                     case IMG_FILTER_NEGATE:{
                         $this->_history[] = array('operation' => 'filter', 'postfix' => 'negate');
-                        $return = imagefilter($this->_img, $filter);
+                        $return = \imagefilter($this->_img, $filter);
                         break;
                     }
                     case IMG_FILTER_GRAYSCALE:{
                         $this->_history[] = array('operation' => 'filter', 'postfix' => 'grayscale');
-                        $return = imagefilter($this->_img, $filter);
+                        $return = \imagefilter($this->_img, $filter);
                         break;
                     }
                     case IMG_FILTER_BRIGHTNESS:{
                         $this->_history[] = array('operation' => 'filter', 'postfix' => 'brightness-'.$arg1);
-                        $return = imagefilter($this->_img, $filter, $arg1);
+                        $return = \imagefilter($this->_img, $filter, $arg1);
                         break;
                     }
                     case IMG_FILTER_CONTRAST:{
                         $this->_history[] = array('operation' => 'filter', 'postfix' => 'contrast-'.$arg1);
-                        $return = imagefilter($this->_img, $filter, $arg1);
+                        $return = \imagefilter($this->_img, $filter, $arg1);
                         break;
                     }
                     case IMG_FILTER_COLORIZE:{
                         $this->_history[] = array('operation' => 'filter', 'postfix' => 'colorize-'.$arg1.'x'.$arg2.'x'.$arg3);
-                        $return = imagefilter($this->_img, $filter, $arg1, $arg2, $arg3);
+                        $return = \imagefilter($this->_img, $filter, $arg1, $arg2, $arg3);
                         break;
                     }
                     case IMG_FILTER_EDGEDETECT:{
                         $this->_history[] = array('operation' => 'filter', 'postfix' => 'edgedetect');
-                        $return = imagefilter($this->_img, $filter);
+                        $return = \imagefilter($this->_img, $filter);
                         break;
                     }
                     case IMG_FILTER_EMBOSS:{
                         $this->_history[] = array('operation' => 'filter', 'postfix' => 'emboss');
-                        $return = imagefilter($this->_img, $filter);
+                        $return = \imagefilter($this->_img, $filter);
                         break;
                     }
                     case IMG_FILTER_GAUSSIAN_BLUR:{
                         $this->_history[] = array('operation' => 'filter', 'postfix' => 'gausian-blur');
-                        $return = imagefilter($this->_img, $filter);
+                        $return = \imagefilter($this->_img, $filter);
                         break;
                     }
                     case IMG_FILTER_SELECTIVE_BLUR:{
                         $this->_history[] = array('operation' => 'filter', 'postfix' => 'blur');
-                        $return = imagefilter($this->_img, $filter);
+                        $return = \imagefilter($this->_img, $filter);
                         break;
                     }
                     case IMG_FILTER_MEAN_REMOVAL:{
                         $this->_history[] = array('operation' => 'filter', 'postfix' => 'mean-removal');
-                        $return = imagefilter($this->_img, $filter);
+                        $return = \imagefilter($this->_img, $filter);
                         break;
                     }
                     case IMG_FILTER_SMOOTH:{
                         $this->_history[] = array('operation' => 'filter', 'postfix' => 'smooth-'.$arg1);
-                        $return = imagefilter($this->_img, $filter, $arg1);
+                        $return = \imagefilter($this->_img, $filter, $arg1);
                         break;
                     }
                     default: {
@@ -352,17 +352,17 @@
             {
                 switch ($this->_type) {
                     case 'png':
-                        imagepng($this->_img, $file);
+                        \imagepng($this->_img, $file);
                         break;
                     case 'gif':
-                        imagegif($this->_img, $file);
+                        \imagegif($this->_img, $file);
                         break;
                     case 'jpg':
                     case 'jpeg':
-                        imagejpeg($this->_img, $file);
+                        \imagejpeg($this->_img, $file);
                         break;
                     default:
-                        imagegd2($this->_img, $file);
+                        \imagegd2($this->_img, $file);
                         break;
                 }
             }
@@ -375,8 +375,8 @@
             private function _safeAlpha()
             {
                 // save alpha
-                imagealphablending($this->_img, 1);
-                imagesavealpha($this->_img, 1);
+                \imagealphablending($this->_img, 1);
+                \imagesavealpha($this->_img, 1);
             }
             
             /**
@@ -389,17 +389,17 @@
                 $tempFile = tempnam(null, null);
                 switch ($this->_type) {
                     case 'png':
-                        imagepng($this->_img, $tempFile);
+                        \imagepng($this->_img, $tempFile);
                         break;
                     case 'gif':
-                        imagegif($this->_img, $tempFile);
+                        \imagegif($this->_img, $tempFile);
                         break;
                     case 'jpg':
                     case 'jpeg':
-                        imagejpeg($this->_img, $tempFile);
+                        \imagejpeg($this->_img, $tempFile);
                         break;
                     default:
-                        imagegd2($this->_img, $tempFile);
+                        \imagegd2($this->_img, $tempFile);
                         break;
                 }
                 
@@ -416,7 +416,7 @@
              */
             public static function Info($path)
             {
-                list($width, $height, $type, $attr) = getimagesize($path);
+                list($width, $height, $type, $attr) = \getimagesize($path);
                 $o = new ExtendedObject();
                 $o->size = new Size($width, $height);
                 $o->type = $type;
