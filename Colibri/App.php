@@ -124,7 +124,7 @@
                         $path = __DIR__;
                     }
 
-                    self::$webRoot = trim($path, '/').'/';
+                    self::$webRoot = '/'.trim($path, '/').'/';
 
                     // корень приложения должен находится на уровень выше
                     $parts = explode('/', $path);
