@@ -12,8 +12,9 @@
         use Colibri\IO\FileSystem\File;
         use Colibri\Helpers\Strings;
         use Colibri\Helpers\Variable;
+    use Colibri\Helpers\XmlEncoder;
 
-        /**
+/**
          * Класс запроса
          */
         class Request {
@@ -199,15 +200,7 @@
                     return $this->_createMultipartRequestBody($this->boundary, $this->postData);
                 }
                 else if($this->encryption == Encryption::XmlEncoded) {
-
-                    $data = '<request>';
-
-                    foreach($this->postData as $value) {
-                        $data .= '<'.$value->name.'>'.Strings::PrepareAttribute($value->value).'</'.$value->name.'>';
-                    }
-
-                    $return = $data.'</request>';
-
+                    $return = Variable::IsString($this->postData) ? $this->postData : XmlEncoder::Encode($this->postData, null, false);
                 }
                 else if($this->encryption == Encryption::JsonEncoded) {
                     $return = Variable::IsString($this->postData) ? $this->postData : json_encode($this->postData);
