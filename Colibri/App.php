@@ -269,7 +269,7 @@
              */
             public function Get($id) {
                 if(!$this->Has($id)) {
-                    throw new AppException('Container not found');
+                    return null;
                 }
                 return $this->_containedDIObjects[$id];
             }
