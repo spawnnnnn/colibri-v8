@@ -49,7 +49,13 @@
              */
             public static function Out() {
 
-                $mode = App::Config() ? App::Config()->Query('mode')->GetValue() : 'development';
+                try {
+                    $mode = App::Config()->Query('mode')->GetValue();
+                }
+                catch(\Exception $e) {
+                    $mode = App::ModeDevelopment;
+                }
+
                 if($mode === App::ModeTest) {
                     App::Logger()->WriteLine(Logger::Error, func_get_args());
                 }
