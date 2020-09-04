@@ -79,7 +79,7 @@
                     $this->_type = $type;
                 }
 
-                $className = 'Colibri\\Configuration\\Drivers\\'.$type.'ConfigDriver';
+                $className = 'Colibri\\Configuration\\Drivers\\'.Strings::ToUpperFirst($type).'ConfigDriver';
                 if(class_exists($className)) {
                     return $className;
                 }
