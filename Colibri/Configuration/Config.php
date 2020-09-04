@@ -12,6 +12,7 @@
 
         use Colibri\App;
         use Colibri\Helpers\Objects;
+        use Colibri\Helpers\Strings;
         use Colibri\Helpers\Variable;
         use Colibri\IO\FileSystem\File;
 
