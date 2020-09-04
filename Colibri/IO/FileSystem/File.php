@@ -15,7 +15,7 @@
          * @property-read string $filename
          * @property-read string $name
          * @property-read string $extension
-         * @property-read string $directory
+         * @property-read Directory $directory
          * @property-read boolean $dotfile
          * @property-read string $path
          * @property-read int $size
