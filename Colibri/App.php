@@ -208,7 +208,7 @@
              * @param Exception $ex
              */
             public function ExeptionHandler($ex) {
-                Debug::IOut("An error was accured: code ".$ex->GetCode().' message: '.$ex->GetMessage(), debug_backtrace());
+                Debug::Out("An error was accured: code ".$ex->GetCode().' message: '.$ex->GetMessage(), debug_backtrace());
             }
 
             /**
