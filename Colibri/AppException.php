@@ -9,12 +9,13 @@
      */
     namespace Colibri {
 
+        use Psr\Container\NotFoundExceptionInterface;
         use Throwable;
 
         /**
          * Класс исключения для приложения
          */
-        class AppException extends \Exception {
+        class AppException extends \Exception implements NotFoundExceptionInterface {
 
             /**
              * Данные приложения
