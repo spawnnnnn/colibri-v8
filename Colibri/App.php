@@ -83,7 +83,8 @@
             /**
              * Закрываем конструктор
              */
-            private function __construct() { 
+            private function __construct() {
+                // Do nothing: Закрываенм конструктор
             }
 
             /**
@@ -252,8 +253,7 @@
              * @param string $type
              * @return Server[]
              */
-            public function GetServices($type) {
-                return isset(self::$services[$type]) ? self::$services[$type] : []; 
+            public function GetServices($type) {return isset(self::$services[$type]) ? self::$services[$type] : []; 
             }
 
 
