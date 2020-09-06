@@ -136,8 +136,8 @@
              * Поднять событие
              *
              * @param string $event
-             * @param mixed $args
-             * @return void
+             * @param stdClass $args
+             * @return stdClass
              */
             public function Dispatch($event, $args = null)
             {
