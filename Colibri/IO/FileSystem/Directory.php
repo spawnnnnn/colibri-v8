@@ -155,6 +155,15 @@
             }
 
             /**
+             * Возвращает реальный путь
+             * @param mixed $path относительный путь
+             * @return string|false 
+             */
+            public static function RealPath($path) {
+                return \realpath($path);
+            }
+
+            /**
              * Проверяет есть ли директория на диске
              *
              * @param string $path путь к директории

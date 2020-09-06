@@ -13,7 +13,8 @@
         use Colibri\Events\EventsContainer;
         use Colibri\AppException;
         use Colibri\Events\TEventDispatcher;
-        use Colibri\IO\FileSystem\File;
+    use Colibri\IO\FileSystem\Directory;
+    use Colibri\IO\FileSystem\File;
         use Colibri\Utils\ExtendedObject;
 
         /**
@@ -40,7 +41,7 @@
              */
             public function __construct($file) {
 
-                $this->_file = $file.'.layout';
+                $this->_file = Directory::RealPath($file.'.layout');
                 if(!File::Exists($this->_file)) {
                     throw new AppException('Unknown template, file:'.$this->_file);
                 }
