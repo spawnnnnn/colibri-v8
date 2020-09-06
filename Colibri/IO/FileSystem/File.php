@@ -203,10 +203,10 @@
              * @param string $path пусть к файлу
              * @param string $content контент, который нужно записать
              * @param boolean $recursive если true то папки будут созданы по всему пути до достижения $path
-             * @param integer $mode режим создания файла и папок, по умолчанию 0777
+             * @param integer $mode режим создания файла и папок, по умолчанию 777
              * @return void
              */
-            public static function Write($path, $content, $recursive = false, $mode = 0777)
+            public static function Write($path, $content, $recursive = false, $mode = '777')
             {
                 if (!self::Exists($path)) {
                     self::Create($path, $recursive, $mode);
@@ -221,10 +221,10 @@
              * @param string $path путь к файлу
              * @param string $content данные, которые нужно дозаписать
              * @param boolean $recursive если true то папки будут созданы по всему пути до достижения $path
-             * @param integer $mode режим создания файла и папок, по умолчанию 0777
+             * @param integer $mode режим создания файла и папок, по умолчанию 777
              * @return void
              */
-            public static function Append($path, $content, $recursive = false, $mode = 0777)
+            public static function Append($path, $content, $recursive = false, $mode = '777')
             {
                 if (!self::Exists($path)) {
                     self::Create($path, $recursive, $mode);
