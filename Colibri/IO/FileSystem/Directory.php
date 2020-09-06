@@ -187,10 +187,7 @@
                 if (!self::Exists($path)) {
                     $path2 = dirname($path[strlen($path) - 1] == '/' ? $path . '#' : $path);
                     mkdir($path2, $mode, $recursive);
-                    try {
-                        chmod($path2, $mode);
-                    } catch (Exception $e) {
-                    }
+                    system('chmod -R '.$mode.' '.$path2);
                 }
 
                 return new self($path);
