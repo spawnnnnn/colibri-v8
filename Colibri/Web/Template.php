@@ -42,7 +42,7 @@
 
                 $this->_file = $file.'.layout';
                 if(!File::Exists($this->_file)) {
-                    throw new AppException('Unknown template');
+                    throw new AppException('Unknown template, file:'.$this->_file);
                 }
 
             }
