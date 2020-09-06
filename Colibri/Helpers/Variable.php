@@ -25,6 +25,9 @@
                 if (is_object($var)) {
                     return is_null($var);
                 }
+                else if(is_array($var)) {
+                    return empty($var);
+                }
                 return ($var === null || $var === "");
             }
             
