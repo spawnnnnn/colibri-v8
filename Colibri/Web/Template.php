@@ -68,7 +68,7 @@
 
                 $args = new ExtendedObject($args);
 
-                $this->DispatchEvent(EventsContainer::TemplateRendering, array('template' => $this, 'args' => $args));
+                $this->DispatchEvent(EventsContainer::TemplateRendering, (object)['template' => $this, 'args' => $args]);
 
                 ob_start();
 
@@ -77,7 +77,7 @@
                 $ret = ob_get_contents();
                 ob_end_clean();
 
-                $this->DispatchEvent(EventsContainer::TemplateRendered, array('template' => $this, 'content' => $ret));
+                $this->DispatchEvent(EventsContainer::TemplateRendered, (object)['template' => $this, 'content' => $ret]);
 
                 return $ret;
 
