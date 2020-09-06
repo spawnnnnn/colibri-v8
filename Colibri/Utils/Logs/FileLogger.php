@@ -43,7 +43,7 @@
                 }
 
                 if(!File::Exists($this->_device)) {
-                    File::Create($this->_device, true, 0777);
+                    File::Create($this->_device, true, '777');
                 }
 
                 $args = !is_array($data) ? [$data] : $data;
@@ -53,7 +53,7 @@
                 $fi = new File($this->_device);
                 if($fi->size > 1048576) {
                     File::Move($this->_device, $this->_device.'.'.Date::ToDbString(microtime(true), '%Y-%m-%d-%H-%M-%S-%f'));
-                    File::Create($this->_device, true, 0777);
+                    File::Create($this->_device, true, '777');
                 }
 
                 File::Append($this->_device, $args);

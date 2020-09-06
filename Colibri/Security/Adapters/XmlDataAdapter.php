@@ -82,9 +82,9 @@
              */
             public function Create()
             {
-                Directory::Create(App::AppRoot().'Config/'.$this->_dataPoint, true, 0777);
-                File::Create(App::AppRoot().'Config/'.$this->_dataPoint.'users.xml', true, 0777);
-                File::Create(App::AppRoot().'Config/'.$this->_dataPoint.'roles.xml', true, 0777);
+                Directory::Create(App::AppRoot().'Config/'.$this->_dataPoint, true, '777');
+                File::Create(App::AppRoot().'Config/'.$this->_dataPoint.'users.xml', true, '777');
+                File::Create(App::AppRoot().'Config/'.$this->_dataPoint.'roles.xml', true, '777');
 
                 File::Write(App::AppRoot().'Config/'.$this->_dataPoint.'/'.$this->_sourceUsers.'.xml', '<'.'?xml version="1.0" encoding="utf-8"?'.'>
                 <users>

@@ -179,15 +179,14 @@
              *
              * @param string $path пусть к директории
              * @param boolean $recursive если true то директории будут созданы по всему пути до достижения указанной директории
-             * @param integer $mode режим создания по умолчанию 0777
+             * @param string $mode режим создания по умолчанию 777
              * @return Directory
              */
-            public static function Create($path, $recursive = true, $mode = 0777)
+            public static function Create($path, $recursive = true, $mode = '777')
             {
                 if (!self::Exists($path)) {
                     $path2 = dirname($path[strlen($path) - 1] == '/' ? $path . '#' : $path);
-                    mkdir($path2, $mode, $recursive);
-                    system('chmod -R '.$mode.' '.$path2);
+                    shell_exec('mkdir'.($recursive ? ' -p' : '').' -m'.$mode.' '.$path2);
                 }
 
                 return new self($path);

@@ -279,10 +279,10 @@
              *
              * @param string $path путь к файлу
              * @param boolean $recursive если true то папки будут созданы по всему пути до достижения $path
-             * @param integer $mode режим создания файла и папок, по умолчанию 0777
+             * @param string $mode режим создания файла и папок, по умолчанию 777
              * @return FileStream
              */
-            public static function Create($path, $recursive = true, $mode = 0777)
+            public static function Create($path, $recursive = true, $mode = '777')
             {
                 if (!Directory::Exists($path) && $recursive) {
                     Directory::Create($path, $recursive, $mode);
