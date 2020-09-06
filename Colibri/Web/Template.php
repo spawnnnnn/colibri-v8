@@ -48,6 +48,15 @@
             }
 
             /**
+             * Статический конструктор
+             * @param mixed $file файл шаблона
+             * @return Template созданный шаблон
+             */
+            public static function Create($file) {
+                return new self($file);
+            }
+
+            /**
              * Вывод шаблона
              *
              * @param mixed $args
