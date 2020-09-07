@@ -8,7 +8,9 @@
      */
     namespace Colibri\Helpers {
 
-        /**
+use Colibri\Collections\Collection;
+
+/**
          * Работа со строками
          */
         class Strings
@@ -423,6 +425,31 @@
             {
                 return Randomization::Mixed($length);
             }
+
+            /**
+             * Добавляет или удаляет часть параметров в queryString
+             * @param string $url URL
+             * @param mixed $params 
+             * @param bool $encode 
+             * @return string 
+             */
+            public static function AddToQueryString($url, $params, $encode = true) {
+
+                if(strstr($url, '?') !== false) {
+                    $qs = explode('?', $url);
+                    $hashTable = Collection::FromString($qs[1], array('=', '&'));
+                    $url = $qs[0];
+                }
+                else {
+                    $hashTable = new Collection();
+                }
+    
+                $hashTable->Append($params);
+    
+                return $url.'?'.$hashTable->ToString(array('=', '&'), function($v) use ($encode) { return $encode ? urlencode($v) : $v; });
+    
+            }
+    
         }
 
     }
