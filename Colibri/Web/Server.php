@@ -55,7 +55,7 @@
              * Конструктор
              */
             public function __construct() {
-
+                // Do nothing
             }
 
             /**
@@ -66,17 +66,19 @@
              * @return void
              */
             public function CloseResponse($type, $result) {
-                if ($result->result) {
-                    if ($type == Server::JSON) {
-                        App::Response()->Close($result->code, json_encode($result->result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-                    } elseif ($type == Server::XML) {
-                        App::Response()->Close($result->code, XmlEncoder::Encode($result->result));
-                    } elseif ($type == Server::HTML) {
-                        App::Response()->Close($result->code, HtmlEncoder::Encode($result->result));
+                if(isset($result->result)) {
+                    if ($result->result) {
+                        if ($type == Server::JSON) {
+                            App::Response()->Close($result->code, json_encode($result->result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+                        } elseif ($type == Server::XML) {
+                            App::Response()->Close($result->code, XmlEncoder::Encode($result->result));
+                        } elseif ($type == Server::HTML) {
+                            App::Response()->Close($result->code, HtmlEncoder::Encode($result->result));
+                        }
                     }
-                }
-                else {
-                    App::Response()->Close($result->code, $result->message);
+                    else {
+                        App::Response()->Close($result->code, $result->message);
+                    }
                 }
             }
 
