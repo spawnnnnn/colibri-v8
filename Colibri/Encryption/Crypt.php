@@ -20,12 +20,13 @@
              *
              * @param string $key ключ
              * @param string $data данные
+             * @param string $stringifyMethod метод превращения в строку
              * @return string
              */
-            static function Encrypt($key, $data) {
+            static function Encrypt($key, $data, $stringifyMethod = 'base64') {
                 $sha = hash('sha256', $key);
                 $data = Rc4Crypt::Encrypt($sha, $data);
-                return bin2hex($data);    
+                return $stringifyMethod == 'hex' ? bin2hex($data) : base64_encode($data); 
             }
             
             /**
@@ -33,11 +34,12 @@
              *
              * @param string $key ключ
              * @param string $data данные
+             * @param string $stringifyMethod метод превращения в строку
              * @return string
              */
-            static function Decrypt($key, $data) {
+            static function Decrypt($key, $data, $stringifyMethod = 'base64') {
                 $sha = hash('sha256', $key);
-                $data = hex2bin($data);
+                $data = $stringifyMethod == 'hex' ? hex2bin($data) : base64_decode($data);
                 return Rc4Crypt::Decrypt($sha, $data);
             }
             
