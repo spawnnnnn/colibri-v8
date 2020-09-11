@@ -17,8 +17,9 @@
         use Colibri\Events\TEventDispatcher;
         use Colibri\Events\EventsContainer;
         use Colibri\Helpers\Strings;
-        
-        /**
+    use Colibri\Utils\Debug;
+
+/**
          * Веб сервер
          */
         class Server {
@@ -197,6 +198,7 @@
                 // если не найден ищем $methodController, если есть тогда предполагаем наличие $methodView
                 $realMethodName = $method;
                 $realViewName = null;
+
                 if (!method_exists($handler, $realMethodName)) {
                     $realMethodName = $method.'Controller';
                     $realViewName = $method.'View';

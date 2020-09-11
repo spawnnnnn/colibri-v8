@@ -12,9 +12,9 @@
         use Colibri\IO\FileSystem\File;
         use Colibri\Helpers\Strings;
         use Colibri\Helpers\Variable;
-    use Colibri\Helpers\XmlEncoder;
+        use Colibri\Helpers\XmlEncoder;
 
-/**
+        /**
          * Класс запроса
          */
         class Request {
